@@ -1,0 +1,100 @@
+.message-cont .centerBike {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 26px;
+    margin-left: -12px;
+}
+
+.message-cont .loop-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+
+.message-cont #loop {
+    height: 100px;
+    width: 100px;
+    border: var(--main-color) solid 4px;
+    border-radius: 200px;
+}
+
+.message-cont #loop:before {
+    background: linear-gradient(to left, rgba(187, 95, 39, 0) 0%, rgb(80 109 132) 30%, rgb(80 109 132) 70%, rgba(187, 95, 39, 0) 100%);
+    content: "";
+    display: block;
+    height: 4px;
+    position: relative;
+    top: 94px;
+    width: 300px;
+}
+
+html[lang="en"] .message-cont #loop:before {
+    left: -100px;
+}
+
+html[lang="ar"] .message-cont #loop:before {
+    right: -100px;
+}
+
+.message-cont #bike-wrapper {
+    height: 108px;
+    width: 108px;
+    animation: custom-drive 3s linear infinite;
+}
+
+.message-cont #bike {
+    height: 24px;
+    width: 25px;
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/133687/motorbike.png");
+}
+
+@media (min-width: 768px) {
+    @keyframes custom-drive {
+        0% {
+            margin-left: -364px;
+            opacity: 0;
+        }
+        33.33% {
+            transform: rotate(0deg);
+            margin-left: -50px;
+            opacity: 1;
+        }
+        66.66% {
+            transform: rotate(-360deg);
+            margin-left: -50px;
+            opacity: 1;
+        }
+        100% {
+            margin-left: 264px;
+            transform: rotate(-360deg);
+            opacity: 0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    @keyframes custom-drive {
+        0% {
+            margin-left: -180px;
+            opacity: 0;
+        }
+        33.33% {
+            transform: rotate(0deg);
+            margin-left: -50px;
+            opacity: 1;
+        }
+        66.66% {
+            transform: rotate(-360deg);
+            margin-left: -50px;
+            opacity: 1;
+        }
+        100% {
+            margin-left: 150px;
+            transform: rotate(-360deg);
+            opacity: 0;
+        }
+    }
+}

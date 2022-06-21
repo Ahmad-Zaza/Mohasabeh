@@ -1,0 +1,426 @@
+# Webalizer V2.23-08 Incremental Data - 04/23/2022 20:34:28
+2022 4 23 20 34 28
+837 828 39 50 6 31 19803077 100 36 0
+7 54 201 21 23
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+441 432 10058536 28 51 19
+205 205 5083003 10 31 10
+191 191 4661538 7 18 7
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0
+135 135 3362967 8
+54 54 1412013 10
+54 54 1411995 10
+44 44 1073001 2
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+78 75 1067662 17
+57 55 1500220 14
+101 101 2524921 9
+201 197 4828430 13
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+111 111 2596350 15
+0 0 0 0
+0 0 0 0
+2 2 25518 2
+0
+0
+0
+828
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+3
+3
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+2
+0
+0
+0
+0
+0
+# -urls- 
+/js/jquery.steps.js
+0 15 0 185736 0 0
+/fonts/material-design-iconic-font/css/material-design-iconic-font.css
+0 14 0 205715 0 0
+/images/_icon2.png
+0 13 0 204646 0 0
+/images/icon3.png
+0 20 0 139339 0 0
+/uploads/2022-04/5d6c029ece8ceb8bb0807afae3e4bdcb.png
+0 20 0 33958 0 0
+/js/plugins.js
+0 16 0 596555 0 0
+/.well-known/acme-challenge/letsencrypt_1650545223_1c7c163d885a8860
+0 1 0 204 0 0
+/fonts/century-gothic/CenturyGothic.ttf
+0 12 0 1047974 0 0
+/images/icon4.png
+0 20 0 219477 0 0
+/uploads/2022-04/c0c42a9edc42c6cc2c778a79208c135e.png
+0 21 0 100011 0 0
+/images/cost.png
+0 19 0 503702 0 0
+/images/_icon3.png
+0 14 0 207053 0 0
+/images/_icon4.png
+0 14 0 230589 0 0
+/images/Login.svg
+0 19 0 114154 0 0
+/images/personalization.png
+0 19 0 727019 0 0
+/images/sections/accounting_7.png
+0 20 0 1073626 0 0
+/images/icon5.png
+0 20 0 235516 0 0
+/js/sticky-sidebar.js
+0 16 0 104530 0 0
+/css/animate.css
+0 13 0 61150 0 0
+/js/aos.js
+0 15 0 75624 0 0
+/.well-known/acme-challenge/letsencrypt_1650545223_b6904724e6565029
+0 1 0 204 0 0
+/css/owl.carousel.css
+0 14 0 24956 0 0
+/images/sections/accounting_1.png
+0 19 0 1049203 0 0
+/images/accounting_highlight/accounting_highlight.jpg
+0 18 0 1646425 0 0
+/css/aos.css
+0 13 0 33482 0 0
+/css/style.css
+0 14 0 129646 0 0
+/images/sections/accounting_2.png
+0 20 0 1057107 0 0
+/css/owl.theme.css
+0 13 0 10484 0 0
+/.well-known/acme-challenge/FbM91QO6LpKOBUzhPN5idT7xukjqfdvzf7ev8b9xJVY
+0 4 0 1518 0 0
+/js/jquery.appear.js
+0 16 0 30210 0 0
+/images/center.png
+0 20 0 701751 0 0
+/images/sections/accounting_5.png
+0 19 0 965280 0 0
+/images/sections/accounting_4.png
+0 19 0 975103 0 0
+/js/jquery.nav.js
+0 15 0 32560 0 0
+/css/steps-style.css
+0 14 0 41211 0 0
+/images/sections/accounting_3.png
+0 20 0 1065506 0 0
+/images/_icon1.png
+0 19 0 176255 0 0
+/css/ionicons.min.css
+0 13 0 112201 0 0
+/.well-known/acme-challenge/letsencrypt_1650545223_aa8231cb7ca5617c
+0 1 0 204 0 0
+/.well-known/acme-challenge/agfNP49N34LcnkQ-RWVH0CyZ8INXuE2DprUUmjJXBBY
+0 4 0 1518 0 0
+/
+0 94 0 1496828 35 6
+/js/jquery.validate.min.js
+0 15 0 116709 0 0
+/images/advanced.png
+0 19 0 353611 0 0
+/images/sections/accounting_6.png
+0 20 0 1013646 0 0
+/.well-known/acme-challenge/letsencrypt_1650545223_6bcd91f13ce5dbe9
+0 1 0 204 0 0
+/images/3545758.png
+0 13 0 917814 0 0
+/css/custom.css
+0 14 0 1012067 0 0
+/js/custom.js
+0 16 0 30737 0 0
+/images/icon2.png
+0 19 0 277202 0 0
+/images/icon1.png
+0 20 0 210836 0 0
+# End Of Table - urls
+# -sites- (monthly)
+52.25.138.85
+0 1 1 378 0 0
+-
+205.169.39.247
+0 53 53 1158587 1 1650549821
+/
+93.119.227.19
+0 2 2 146674 1 1650552851
+/
+161.35.89.84
+0 4 4 25752 1 1650574229
+/
+18.206.55.48
+0 18 18 158872 3 1650746064
+/
+69.4.87.74
+0 2 2 146683 1 1650549499
+/
+54.227.32.154
+0 144 144 4077172 2 1650746068
+/
+35.226.130.222
+0 23 23 509464 2 1650677306
+/
+167.248.133.47
+0 2 2 25561 1 1650547421
+/
+178.128.255.174
+0 4 4 25730 1 1650718225
+/
+51.81.167.146
+0 1 1 646 1 1650545372
+/
+66.133.109.36
+0 1 1 380 0 0
+-
+205.169.39.32
+0 88 88 2158172 1 1650555823
+/
+35.226.163.190
+0 22 21 570681 1 1650555925
+-
+65.154.226.220
+0 53 53 1158562 1 1650573892
+/
+69.4.89.106
+0 2 2 146669 1 1650549924
+/
+34.134.161.250
+0 34 34 798567 1 1650677309
+/
+13.59.153.150
+0 1 1 380 0 0
+-
+89.175.184.250
+0 1 1 3714 1 1650545372
+/
+18.192.99.12
+0 1 1 378 0 0
+-
+151.106.120.184
+0 2 2 139195 1 1650590910
+/
+34.71.226.94
+0 47 44 1026574 1 1650555949
+/
+179.43.169.181
+0 3 3 8241 1 1650545479
+/
+34.140.248.32
+0 2 2 25518 2 1650669063
+/
+64.78.149.164
+0 1 1 380 0 0
+-
+93.119.227.91
+0 2 2 146668 1 1650548666
+/
+3.21.43.5
+0 1 1 380 0 0
+-
+34.216.192.11
+0 1 1 380 0 0
+-
+34.67.190.118
+0 64 64 1713097 1 1650677269
+/
+77.44.196.191
+0 53 50 1182310 1 1650546454
+/
+65.154.226.169
+0 44 44 1073001 1 1650601607
+/
+3.70.226.171
+0 1 1 380 0 0
+-
+65.154.226.166
+0 44 44 1073003 1 1650555464
+/
+161.35.89.180
+0 4 2 2004 1 1650545462
+/
+65.154.226.171
+0 44 44 1072991 1 1650549634
+/
+34.135.25.172
+0 57 57 1198170 2 1650677266
+/
+161.35.89.202
+0 4 4 25755 1 1650631825
+/
+3.237.92.180
+0 2 2 1192 1 1650545439
+/
+170.10.162.19
+0 4 4 816 0 0
+-
+# End Of Table - sites (monthly)
+# -sites- (daily)
+18.206.55.48
+0 6 6 52954 1 1650746064
+/
+54.227.32.154
+0 48 48 1359082 1 1650746068
+/
+35.226.130.222
+0 12 12 291512 1 1650677306
+/
+178.128.255.174
+0 4 4 25730 1 1650718225
+/
+34.134.161.250
+0 25 25 636508 1 1650677309
+/
+34.67.190.118
+0 53 53 1501865 1 1650677269
+/
+34.135.25.172
+0 43 43 793887 1 1650677266
+/
+# End Of Table - sites (daily)
+# -referrers- 
+https://live.mohasabeh.com/
+0 42
+- (Direct Request)
+0 300
+http://live.mohasabeh.com/css/style.css
+0 11
+https://live.mohasabeh.com/css/style.css
+0 1
+http://live.mohasabeh.com/setLang/ar
+0 1
+http://live.mohasabeh.com/
+0 482
+# End Of Table - referrers
+# -agents- 
+Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36
+0 18
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36
+0 88
+Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:65.0) Gecko/20100101 Firefox/65.0
+0 8
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Safari/605.1.15
+0 15
+Apache-HttpClient/5.1.2 (Java/11.0.14.1)
+0 6
+Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/92.0.4515.131 Safari/537.36
+0 178
+Mozilla/5.0 (compatible; Let's Encrypt validation server; +https://www.letsencrypt.org)
+0 8
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.71 Safari/537.36
+0 220
+Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3608.0 Safari/537.36
+0 1
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+0 15
+Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)
+0 2
+Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36
+0 33
+Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36
+0 1
+Go-http-client/1.1
+0 77
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:58.0) Gecko/20100101 Firefox/58.0
+0 1
+Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0
+0 1
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36
+0 22
+Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 
+0 4
+Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0
+0 3
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36
+0 53
+Mozilla/5.0 (iPhone; CPU iPhone OS 15_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Mobile/15E148 
+0 1
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
+0 1
+Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile
+0 1
+Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0
+0 19
+python-requests/2.27.1
+0 2
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36 OPR/80.0.4
+0 19
+Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+0 13
+Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2224.3 Safari/537.36
+0 1
+Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36
+0 2
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36 Edg/96.0.1
+0 20
+curl/7.29.0
+0 4
+# End Of Table - agents
+# -search strings- 
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames

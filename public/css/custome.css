@@ -1,0 +1,341 @@
+.overlay_para {
+    width: 100%;
+    height: 66px;
+    position: absolute;
+    bottom: -64px;
+    z-index: 1;
+    background-image: url(https://mohasabeh.com//images/Path_8854-svg.svg);
+    display: none;
+}
+
+.features-intro p {
+    text-align: center !important;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('https://mohasabeh.com//fonts/Poppins/Poppins-Regular.ttf')
+}
+
+body {
+    /* font-family: 'Open Sans' !important; */
+    width: 100% !important;
+    overflow-x: hidden;
+    background-color: #f2f5fa !important;
+}
+
+html[lang="en"] h2,
+html[lang="en"] .modal h3,
+html[lang="en"] h2 * {
+    /* font-family: 'Open Sans' !important; */
+}
+
+.form .submit-button,
+.custom-button,
+.actions li a,
+.request-a-demo {
+    height: 30px;
+    border-radius: 4px;
+}
+
+.contact .info-box {
+    color: #0b2341;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+    padding: 20px 0 30px 0;
+    background: #fff;
+}
+
+.contact .info-box i {
+    font-size: 32px;
+    color: #ed502e;
+    border-radius: 50%;
+    padding: 8px;
+    border: 2px dotted #fbdad2;
+}
+
+.bx {
+    font-family: boxicons !important;
+    font-weight: 400;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    display: inline-block;
+    text-transform: none;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.contact .info-box h3 {
+    font-size: 20px;
+    color: #777777;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.contact .info-box p {
+    padding: 0;
+    line-height: 24px;
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.contact .php-email-form {
+    box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+    padding: 30px;
+    background: #fff;
+}
+
+.contact .php-email-form input {
+    padding: 10px 15px;
+}
+
+.my-3 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.contact .php-email-form button[type=submit] {
+    background: #dd4a48;
+    border: 0;
+    padding: 10px 30px;
+    border-radius: 4px;
+    color: #fff;
+    transition: 0.4s;
+}
+
+.section {
+    padding: 60px 0;
+    background: #506d84 !important;
+    position: relative;
+}
+
+nav#main,
+#hero {
+    background-color: #f2f5fa !important;
+}
+
+.footer-sm {
+    background: #506d84 !important;
+}
+
+.opisit_overlay_para {
+    width: 100%;
+    height: 66px;
+    position: absolute;
+    top: -64px;
+    z-index: 1;
+    background-image: url(https://mohasabeh.com//images/Path_8854new-svg.svg);
+    display: none;
+}
+
+.Testimoners_section_Secc {
+    position: relative;
+}
+
+#contact {
+    /* background-color: #f2f5fa !important; */
+}
+
+#contact-form .form-group label {
+    display: none;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 100;
+    text-transform: uppercase;
+}
+
+#contact-form.no-placeholder .form-group label {
+    display: block;
+}
+
+#contact-form .controls {
+    padding: 0;
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+}
+
+#contact-form .form-control {
+    /* background: transparent !important; */
+    border: none;
+    /* border-bottom: 3px solid transparent; */
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+    height: 56px;
+    font-size: 21px;
+    line-height: 32px;
+    font-weight: 100;
+    padding-left: 64px;
+    -webkit-transition: border-color .3s ease-out;
+    transition: border-color .3s ease-out;
+    border-radius: 2px;
+}
+
+#contact-form .form-group {
+    position: relative;
+}
+
+#contact-form .form-group [class*=fa] {
+    display: block;
+    width: 64px;
+    position: absolute;
+    top: 0;
+    left: 5px;
+    /*color:#e5e5e5;*/
+    color: #888888;
+    font-size: 24px;
+    line-height: 53px;
+    text-align: center;
+    font-weight: 300;
+    opacity: 0.5;
+    transition: opacity .2s ease-out;
+}
+
+#contact-form.no-placeholder .form-group [class*=fa] {
+    top: 30px;
+}
+
+#contact-form .form-control:focus+[class*=fa] {
+    opacity: 1;
+}
+
+#contact-form textarea.form-control {
+    height: auto;
+    max-width: 100%;
+    min-width: 100%;
+    font-size: 21px;
+    line-height: 32px;
+    padding-top: 10px;
+}
+
+#contact-form .form-control:focus {
+    background: #fff;
+    border-bottom: 3px solid #dd4a48;
+    outline: none;
+    box-shadow: none;
+    -webkit-transition: border-color .3s ease-in;
+    transition: border-color .3s ease-in;
+}
+
+#contact-form .error-message {
+    padding: 5px 0;
+    position: absolute;
+    top: -30px;
+    right: 0;
+    font-size: 14px;
+    font-weight: 300;
+    color: #ff0000;
+    z-index: 10;
+}
+
+#contact-form .error-message:before {
+    content: "\00d7";
+    font-size: 21px;
+    line-height: 21px;
+    margin-right: 5px;
+}
+
+
+/*----------------------
+----- Footer Styles ----
+------------------------*/
+
+#main-footer {
+    background: #fff;
+}
+
+#main-footer p a {
+    padding-bottom: 40px;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+#main-footer p {
+    text-align: center;
+}
+
+.social-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.social-links li {
+    display: inline-block;
+    margin: 0 5px;
+    border-radius: 3px;
+    box-shadow: 0 4px 0 transparent;
+    -webkit-transition: all .3s ease-out;
+    transition: all .3s ease-out;
+}
+
+.social-links li a {
+    display: block;
+    color: #fff;
+    font-size: 21px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background: #509B9E;
+    border-radius: 50%;
+    -webkit-transition: all .3s ease-out;
+    transition: all .3s ease-out;
+}
+
+.social-links li a:hover {
+    color: #fff;
+    background: #dd4a48;
+    text-decoration: none !important;
+}
+
+.footer-sm ul li a:hover {
+    text-decoration: none !important;
+}
+
+.big-text {
+    font-size: 48px !important;
+    font-weight: 300;
+    line-height: 62px;
+    letter-spacing: 0.01em;
+    word-spacing: 0.15em;
+    color: white;
+    /* text-transform: uppercase; */
+}
+
+.btn-color1,
+.btn-color2 {
+    padding: 10px 30px !important;
+    color: #fff;
+    font-size: 21px;
+    font-weight: 300;
+    background: #dd4a48 !important;
+    outline: none !important;
+    border-radius: 0;
+    transition: opacity .2s ease-out;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text_new_gray {
+    color: #efefefc4 !important;
+}
+
+button.btn-color2:hover {
+    color: #fff !important;
+}
+
+.footer-sm ul li a:before {
+    display: none;
+}
+
+.comp.external-content.mntl-external-component {
+    color: #fff;
+}
