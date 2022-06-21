@@ -12,5 +12,3 @@ yarn-error.log
 .env
 /public/vendor
 /storage
-vendor/crocodicstudio_voila/crudbooster
-public/main/mohasabeh_system/site/vendor/crocodicstudio_voila/crudbooster
