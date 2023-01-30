@@ -41,14 +41,14 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Name", "name" => "first_name", "callback_php" => '$row->first_name." ".$row->last_name'];
-        $this->col[] = ["label" => "HIDDEN", "name" => "last_name","visible"=>false];
+        $this->col[] = ["label" => "HIDDEN", "name" => "last_name", "visible" => false];
         // $this->col[] = ["label" => "Company", "name" => "company"];
         $this->col[] = ["label" => "Email", "name" => "email"];
         $this->col[] = ["label" => "Phone", "name" => "phone"];
         $this->col[] = ["label" => "Free Trial", "name" => "is_free_trial", "callback_php" => '$row->is_free_trial?"<span class=\"fa fa-check text-success\"></span>":"<span class=\"fa fa-close text-danger\"></span>"'];
         $this->col[] = ["label" => "Link", "name" => "host_link", "callback_php" => '$row->host_link?"<a target=\"_blank\" href=\"$row->host_link\">$row->host_link</a>":""'];
         $this->col[] = ["label" => "Due Date", "name" => "free_trial_end_date", "callback_php" => '$row->free_trial_end_date?$row->free_trial_end_date:$row->subscription_end_date'];
-        $this->col[] = ["label" => "HIDDEN", "name" => "subscription_end_date","visible"=>false];
+        $this->col[] = ["label" => "HIDDEN", "name" => "subscription_end_date", "visible" => false];
         $this->col[] = ["label" => "active", "name" => "active"];
         # END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -141,13 +141,13 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
             'color' => 'success',
             'showIf' => '[active] == 1',
         ];
-        
+
         $this->addaction[] = [
             'label' => 'Delete',
-            'icon'  => 'fa fa-close',
+            'icon' => 'fa fa-close',
             'color' => 'danger',
             'confirmation' => true,
-            'url'   => CRUDBooster::mainpath('delete-customer/[id]'),
+            'url' => CRUDBooster::mainpath('delete-customer/[id]'),
         ];
 
         // $this->addaction[] = [
@@ -321,39 +321,13 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         set_time_limit(0);
         //----------------------------------------------//
         //--------- 1- create subdomain
-        $subdomainName = str_replace(" ", "", $customer->website);
-        $folderName = strtolower($subdomainName . ".mohasabeh.com");
-        $folderPath = "/home/mohasabeh/domains/$subdomainName";
+        $domainName = str_replace(" ", "", $customer->website);
+        $folderName = strtolower($domainName . ".mohasabeh.com");
+        $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com/public_html";
         $mainDomainFolderPath = "/home/mohasabeh/domains/mohasabeh.com/public_html";
-        //---------------------//
-        //--- Check if subdomain already exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "mohasabeh.com"]);
-        if ($da->error) {
-            return new Exception("error");
-        }
-        $exist = false;
-        if (count($result) > 0) {
-            foreach ($result as $domain) {
-                if ($domain . ".mohasabeh.com" == $folderName) {
-                    $exist = true;
-                }
-            }
-        }
-        //---------------------//
-        if (!$exist) {
-            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-            $result = $da->query('CMD_API_SUBDOMAINS',
-                array(
-                    'action' => 'create',
-                    'domain' => 'mohasabeh.com',
-                    'subdomain' => $subdomainName,
-                ));
-            if ($da->error) {
-                throw new Exception("error");
-            }
-        }
-        //--------- 2- create subdomain folder
+        //check if exist & create domain
+        $this->createDomainIfNotExist($folderName, $domainName);
+        //--------- 2- create domain folder
         if (file_exists($folderPath)) {
             rrmdir($folderPath);
         }
@@ -376,7 +350,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $this->copydir($formDir, $toDir);
         //----------------------------------------------//
         // 8- create customer db and change settings in .env of backend
-        $customerDB = "mohasabeh_db-{$customer->id}";
+        $customerDB = "mohasabeh_db-{$customer->website}";
         $customerDBHost = "localhost";
         $customerDBUser = "{$customerDB}";
         $customerDBPassword = $this->randomPassword();
@@ -402,14 +376,18 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES", array(
             'action' => 'create',
-            'name' => "db-{$customer->id}",
-            'user' => "db-{$customer->id}",
+            'name' => "db-{$customer->website}",
+            'user' => "db-{$customer->website}",
             'passwd' => "$customerDBPassword",
             'passwd2' => "$customerDBPassword",
         ));
         if ($da->error) {
             return new Exception("Error");
         }
+
+        //add Mohasabeh user to customer database
+        $this->addMohasabehUsertoCustomerDatabase($customerDB);
+
         $customer->database_name = $customerDB;
         $customer->database_password = $customerDBPassword;
         $customer->folder_location = $folderPath;
@@ -427,6 +405,10 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
             $query = str_replace('$$users_num$$', -1, $query);
             $query = str_replace('$$inventories_num$$', -1, $query);
             $query = str_replace('$$currencies_num$$', -1, $query);
+            $query = str_replace('$$clients_num$$', -1, $query);
+            $query = str_replace('$$month_bills_num$$', -1, $query);
+            $query = str_replace('$$backups_size$$', -1, $query);
+            $query = str_replace('$$attachs_size$$', -1, $query);
         } else {
             $package = PricePkg::where("id", $customer->package_id)->first();
             $query = str_replace('$$users_num$$', $package->users_count, $query);
@@ -535,7 +517,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
                 $client = new Client([
                     "http_errors" => false,
                 ]);
-                $client->request("GET", $customer->host_link."/clear-cache");
+                $client->request("GET", $customer->host_link . "/clear-cache");
             } catch (ClientException $e) {
                 Log::log("error", "Error Clearing Cache $e");
             }
@@ -726,14 +708,93 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         return implode($pass) . "&L123"; //turn the array into a string
     }
 
-    public function getDeleteCustomer($id){
+    public function getDeleteCustomer($id)
+    {
         $customer = Customer::find($id);
-        //-- Delete Subdomain
-        $subdomainName = strtolower($customer->website);
-        
-        $folderPath = "/home/mohasabeh/domains/$subdomainName";
-        $customerDB = "mohasabeh_db-{$customer->id}";
-        
+		
+        //-- Delete domain
+        $domainName = strtolower($customer->website);
+        if(!$domainName)
+            return CRUDBooster::redirect(
+                CRUDBooster::adminPath('customers'),
+                "Some thing wrong!",
+                "danger"
+            );
+        $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com";
+        $customerDB = "mohasabeh_db-{$customer->website}";
+
+        //--- Check if domain already exist
+        $this->deleteDomain($domainName);
+
+        //--- 2- delete domain folder
+        if (file_exists($folderPath)) {
+            rrmdir($folderPath);
+        }
+		
+        //-----------------------------//
+        //--- 3- delete customer database
+        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query("CMD_API_DATABASES");
+        if ($da->error) {
+            return new Exception("error");
+        }
+		print_r($result);
+        foreach ($result as $database) {
+            if ($database == $customerDB) {
+                $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+                $result = $da->query("CMD_API_DATABASES", [
+                    "action" => "delete",
+                    "select0" => $customerDB,
+                ]);
+                if ($da->error) {
+                    return new Exception("error");
+                }
+            }
+        }
+        //-----------------------------//
+        $customer->delete();
+        //-----------------------------//
+        return CRUDBooster::redirect(
+            CRUDBooster::adminPath('customers'),
+            "customer {$customer->first_name} {$customer->last_name} Deleted!",
+            "success"
+        );
+    }
+
+    private function createSubdomainIfNotExist($folderName, $subdomainName)
+    {
+        //--------- 1- create subdomain
+        //--- Check if subdomain already exist
+        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "mohasabeh.com"]);
+        if ($da->error) {
+            return new Exception("error");
+        }
+        $exist = false;
+        if (count($result) > 0) {
+            foreach ($result as $domain) {
+                if ($domain . ".mohasabeh.com" == $folderName) {
+                    $exist = true;
+                }
+            }
+        }
+        //---------------------//
+        if (!$exist) {
+            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+            $result = $da->query('CMD_API_SUBDOMAINS',
+                array(
+                    'action' => 'create',
+                    'domain' => 'mohasabeh.com',
+                    'subdomain' => $subdomainName,
+                ));
+            if ($da->error) {
+                throw new Exception("error");
+            }
+        }
+    }
+
+    private function deleteSubDomain($subdomainName)
+    {
         //--- Check if subdomain already exist
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "mohasabeh.com"]);
@@ -762,36 +823,103 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
                 throw new Exception("error");
             }
         }
-        //--- 2- delete subdomain folder
-        if (file_exists($folderPath)) {
-            rrmdir($folderPath);
-        }
-        //-----------------------------//
-        //--- 3- delete customer database
+    }
+
+    private function createDomainIfNotExist($folderName, $domainName)
+    {
+        //--------- 1- create domain
+        //--- Check if domain already exist
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query("CMD_API_DATABASES");
+        $result = $da->query('CMD_API_SHOW_DOMAINS', []);
         if ($da->error) {
             return new Exception("error");
         }
-        foreach ($result as $database) {
-            if ($database == $customerDB) {
-                $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-                $result = $da->query("CMD_API_DATABASES", [
-                    "action" => "delete",
-                    "select0" => $customerDB,
-                ]);
-                if ($da->error) {
-                    return new Exception("error");
+        $exist = false;
+        if (count($result) > 0) {
+            foreach ($result as $domain) {
+                if ($domain  == $folderName) {
+                    $exist = true;
                 }
             }
         }
-        //-----------------------------//
-        $customer->delete();
-        //-----------------------------//
-        CRUDBooster::redirect(
-            CRUDBooster::adminPath('customers'),
-            "customer {$customer->first_name} {$customer->last_name} Deleted!",
-            "success"
-        );
+        //---------------------//
+        if (!$exist) {
+            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
+            $result = $da->query('CMD_API_DOMAIN',
+                array(
+                    'action' => 'create',
+                    'domain' => $domainName . ".mohasabeh.com",
+                    'php' => 'ON',
+                    'ssl' => 'ON',
+                    'bandwidth' => '1000',
+                    'cgi' => 'ON',
+                    'quota' => '20000',
+                )
+            );
+            if ($da->error) {
+                throw new Exception("error");
+            }
+        }
+    }
+
+    private function deleteDomain($domainName)
+    {
+        //--- Check if domain already exist
+        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query('CMD_API_SHOW_DOMAINS', []);
+        if ($da->error) {
+            return new Exception("error");
+        }
+        $exist = false;
+        if (count($result) > 0) {
+            foreach ($result as $item) {
+                if ($item == $domainName . '.mohasabeh.com') {
+                    $exist = true;
+                }
+            }
+        }
+        //---------------------//
+        if ($exist) {
+            //delete domain query
+            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+            $result = $da->query('CMD_API_DOMAIN',
+                array(
+                    'confirmed' => 'Confirm',
+                    'delete' => 'yes',
+                    'select0 ' => $domainName . '.mohasabeh.com',
+                ));
+            if ($da->error) {
+                throw new Exception("error");
+            }
+        }
+    }
+
+    public function addMohasabehUsertoCustomerDatabase($databaseName)
+    {
+
+        try {
+            try {
+                $client = new Client([
+                    "http_errors" => false,
+                    "headers" => [
+                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                    ],
+                ]);
+                $body = [
+                    "name" => $databaseName,
+                    "userlist" => "db",
+                    "domain" => "mohasabeh.com",
+                    "json" => "yes",
+                    "action" => "createuser",
+                    "passwd" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                    "passwd2" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                ];
+                return $client->request("POST", "https://mohasabeh.com:2222/CMD_DB?json=yes", ["form_params" => $body]);
+            } catch (ClientException $e) {
+                Log::log("error", "Error changePhpVersion $e");
+            }
+        } catch (RequestException $e) {
+            Log::log("error", "Error changePhpVersion $e");
+        }
     }
 }

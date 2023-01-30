@@ -92,8 +92,18 @@ return [
     'cont_name'=>'Name',
     'your_email'=>'Your Email',
     'cont_email'=>'Email',
+    'your_phone'=>'Your Phone',
     'cont_Message'=>'Message',
     'your_message'=>'Your Message',
     'send_message'=>' Send Message ',
-    'alert_recaptcha' => "Please make sure you check the security CAPTCHA box"
+    'alert_recaptcha' => "Please make sure you check the security CAPTCHA box",
+    'please_fill_the_required_fields'=>'Please Fill the required fields',
+    'contact_us_successfully'=>'Contact us Successfully',
+    'contact_us_failed'=>'Contact us Failed',
+    'forget_password'=>'Forget password?',
+    'get_new_password'=>'Get New Password',
+    'forget_password_message'=>'We will generate new password for you, and send it to your email. Please enter your email.',
+    'send'=>'Send',
+    'we_generate_new_password_please_check_your_email'=>'We generate new password. Please, check your email.',
+
 ];

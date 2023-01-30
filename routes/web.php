@@ -25,6 +25,7 @@ Route::get('/clear/route', function () {
 });
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
+Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
 
 Route::get('/', "HomeController@index")->name("home");
 Route::post('save-customer', 'HomeController@saveCustomer')->name('save-customer');

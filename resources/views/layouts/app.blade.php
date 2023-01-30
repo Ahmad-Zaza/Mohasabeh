@@ -134,6 +134,45 @@
                                             <button type="submit" onclick="loginSubmit(event)"
                                                 class="btn btn-primary">{{ __('data.login') }}</button>
                                         </div>
+                                        <div class="form-row">
+                                            <a type="" data-toggle="modal" data-target="#forgetPasswordModal" style="color:#4c4c4e">{{__('data.forget_password')}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade forgetPasswordModal" id="forgetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgetPasswordModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form action="" id="forgetPasswordForm" class="requestForm needs-validation"
+                            enctype="multipart/form-data" method="POST">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <section>
+                                <div>
+                                    <div class="form-content">
+                                        <div class="form-header">
+                                            <h2 class="text-blue mb-4">{{ __('data.get_new_password') }}</h2>
+                                        </div>
+                                        <div class="form-row" style="margin-top:60px;">
+                                            <p>{{__('data.forget_password_message')}}</p>
+                                        </div>    
+                                        <div class="form-row">
+                                            <div class="form-holder w-100 flex">
+                                                <input type="email" placeholder="{{ __('data.email') }}" name="email"
+                                                    required class="form-control mr-1">
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="form-row text-center justify-content-center">
+                                            <button type="submit" onclick="forgetPasswordSubmit(event)"
+                                                class="btn btn-primary">{{ __('data.send') }}</button>
+                                        </div>
+                                       
                                     </div>
                                 </div>
                             </section>
@@ -201,6 +240,7 @@
                                         <p>{{ __('data.domain_info') }}</p>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
+                                                <label class="english-text" style="direction: ltr;" for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1">
                                                 <span style="direction: ltr;">.mohasabeh.com</span>
@@ -296,6 +336,7 @@
                                         <p>{{ __('data.domain_info') }}</p>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
+                                                <label class="english-text" style="direction: ltr;" for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1 w-100">
                                             </div>
@@ -442,7 +483,7 @@
             <!-- Scroll To Top -->
             <div id="back-top" class="bk-top">
                 <div class="bk-top-txt">
-                    <a class="back-to-top js-scroll-trigger" href="#main"><i class=" fa fa-angle-up"
+                    <a class="back-to-top js-scroll-trigger" href="#"><i class=" fa fa-angle-up"
                             style="font-size: 18px;"></i></a>
                 </div>
             </div>
@@ -799,6 +840,55 @@
                 });
             }
         }
+
+        function forgetPasswordSubmit(event) {
+            event.preventDefault();
+            let form = $("#forgetPasswordForm");
+            let inputs = form.find('input');
+            let isValid = true;
+            inputs.each(function() {
+                if (!$(this).valid()) {
+                    isValid = false;
+                    $(this).closest("div.form-holder").addClass("was-validated");
+                }
+            });
+            if (isValid) {
+                let data = $("#forgetPasswordForm").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('forget-password-customer') }}',
+                    beforeSend: function() {
+                        $('#forgetPasswordForm [type="submit"]').html(
+                            '<div class="spinner-grow spinner-grow-sm text-light" role="status">' +
+                            '<span class="sr-only">Loading...</span>' +
+                            '</div>').addClass("isDisabled").attr("type", "button").attr("disabled",
+                            "disabled");
+                    },
+                    data: data,
+                    success: function(res) {
+                        $('#forgetPasswordForm [type="button"]').html("{{ __('data.send') }}").removeClass(
+                            "isDisabled").attr("type", "submit").removeAttr("disabled");
+                        $('#forgetPasswordForm').modal('hide');
+                        $('#forgetPasswordForm input').val("");
+                        //hidden Modal and show message
+                        let message = res.message;
+                        $('.success_toast').find('.toast-body').html(message);
+                        $('.success_toast').toast('show');
+                        $('.forgetPasswordModal').modal('hide');
+                    },
+                    error: function(res) {
+                        $('#forgetPasswordForm [type="button"]').html("{{ __('data.send') }}").removeClass(
+                            "isDisabled").attr("type", "submit").removeAttr("disabled");
+                        let message = res.responseJSON.message;
+                        $('.error_toast').find('.toast-body').html(message);
+                        $('.error_toast').toast('show');
+                        setTimeout(function() {
+                            $('.error_toast').toast('hide');
+                        }, 5000);
+                    }
+                });
+            }
+        }
     </script>
     <script>
         function contactSubmit(event) {
@@ -811,9 +901,9 @@
                 }
             });
             if (procceed == 0) {
-                customToast2("error", "Please Fill the required fields");
-            } else if ($('#g-recaptcha-response').val() == "") {
-                customToast2("error", "Please make sure you check the security CAPTCHA box");
+                customToast2("error", "{{trans('data.please_fill_the_required_fields')}}");
+            } else if ($('#g-recaptcha-response-2').val() == "") {
+                customToast2("error", "{{trans('data.alert_recaptcha')}}");
             } else {
                 //   alert($('input[name=email]').val());
                 let data = $("#contact-form").serialize();
@@ -828,13 +918,13 @@
                     success: function(res) {
                         //    console.log(res);
                         $(".cs-preloader").delay(150).fadeOut("slow");
-                        customToast("success", "Contact us Successfully");
+                        customToast("success", "{{trans('data.contact_us_successfully')}}");
                         $("#contact_form").val("").html("");
                     },
                     error: function(res) {
                         $(".cs-preloader").delay(150).fadeOut("slow");
                         console.log(res);
-                        customToast("error", "Contact us Failed");
+                        customToast("error", "{{trans('data.contact_us_failed')}}");
                     }
                 });
             }
@@ -903,6 +993,20 @@
     </script>
 
 
+    <script type="text/javascript">
+        $(document).ready(function() {
+                /***** validation input ******/
+                $("input[name=domain]").keyup(function() {
+                    var input = $(this);
+                    var text = input.val().replace(/[^0-9a-z]/g, ""); //allow  just numbers with +
+                    if(/_|\s/.test(text)) {
+                        text = text.replace(/_|\s/g, "");
+                        // logic to notify user of replacement
+                    }
+                    input.val(text);
+                });
+            }); 
+    </script>
 </body>
 
 </html>

@@ -10,7 +10,7 @@ use App\Http\Models\Module;
 use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
-use App\Models\ContactUs\ContactUs;
+use App\Http\Models\ContactUs;
 use App\PricePkg;
 use Carbon\Carbon;
 use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
@@ -28,7 +28,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDO;
 use PHPUnit\Exception;
-
+use Storage;
 // use Validator;
 
 class HomeController extends Controller
@@ -231,9 +231,9 @@ class HomeController extends Controller
         $lang = App::getLocale();
         if ($customer->is_free_trial) {
             try {
-                $subdomainName = str_replace(" ", "", $customer->website);
-                $folderName = strtolower($subdomainName . ".mohasabeh.com");
-                $this->createSubdomainIfNotExist($folderName,$subdomainName);
+                $domainName = str_replace(" ", "", $customer->website);
+                $folderName = strtolower($domainName . ".mohasabeh.com");
+                $this->createDomainIfNotExist($folderName,$domainName);
                 CRUDBooster::sendEmail([
                     'to' => $request->email,
                     'data' => [
@@ -284,14 +284,14 @@ class HomeController extends Controller
         set_time_limit(0);
         //----------------------------------------------//
         //--------- 1- create subdomain
-        $subdomainName = str_replace(" ", "", $customer->website);
-        $folderName = strtolower($subdomainName . ".mohasabeh.com");
-        $folderPath = "/home/mohasabeh/domains/$subdomainName";
+        $domainName = str_replace(" ", "", $customer->website);
+        $folderName = strtolower($domainName . ".mohasabeh.com");
+        $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com/public_html";
         $mainDomainFolderPath = "/home/mohasabeh/domains/mohasabeh.com/public_html";
         //---------------------//
-        //--- Check if subdomain already exist
-        $this->createSubdomainIfNotExist($folderName,$subdomainName);
-        //--------- 2- create subdomain folder
+        //--- Check if domain already exist
+        $this->createDomainIfNotExist($folderName,$domainName);
+        //--------- 2- create domain folder
         if (file_exists($folderPath)) {
             rrmdir($folderPath);
         }
@@ -300,13 +300,6 @@ class HomeController extends Controller
         }
         //----------------------------------------------//
         //--------- 3- change subdomain settings (PHP VERSION & SUBDOMAIN FOLDERS)
-        // $subdomainSettingFile = "/usr/local/directadmin/data/users/mohasabeh/domains/mohasabeh.com.subdomains.docroot.override";
-        // $fp = fopen($subdomainSettingFile, 'w');
-        // $old_content = file_get_contents($subdomainSettingFile);
-        //if (strpos($old_content, "$subdomainName=") === false) {
-        //     fwrite($fp, $old_content . "\n$subdomainName=" . urlencode("php1_select=1&php2_select=0"));
-        //}
-        // fclose($fp);
         //----------------------------------------------//
         //--------- 4- Publishing (Copy files from main website to subdomains)
         $formDir = $mainDomainFolderPath . '/main/mohasabeh_system';
@@ -314,7 +307,7 @@ class HomeController extends Controller
         $this->copydir($formDir, $toDir);
         //----------------------------------------------//
         // 8- create customer db and change settings in .env of backend
-        $customerDB = "mohasabeh_db-{$customer->id}";
+        $customerDB = "mohasabeh_db-{$customer->website}";
         $customerDBHost = "localhost";
         $customerDBUser = "{$customerDB}";
         $customerDBPassword = $this->randomPassword();
@@ -340,14 +333,18 @@ class HomeController extends Controller
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES", array(
             'action' => 'create',
-            'name' => "db-{$customer->id}",
-            'user' => "db-{$customer->id}",
+            'name' => "db-{$customer->website}",
+            'user' => "db-{$customer->website}",
             'passwd' => "$customerDBPassword",
             'passwd2' => "$customerDBPassword",
         ));
         if ($da->error) {
             return new Exception("Error");
         }
+
+        //add Mohasabeh user to customer database
+        $this->addMohasabehUsertoCustomerDatabase($customerDB);
+
         $customer->database_name = $customerDB;
         $customer->database_password = $customerDBPassword;
         $customer->folder_location = $folderPath;
@@ -365,6 +362,10 @@ class HomeController extends Controller
             $query = str_replace('$$users_num$$', -1, $query);
             $query = str_replace('$$inventories_num$$', -1, $query);
             $query = str_replace('$$currencies_num$$', -1, $query);
+            $query = str_replace('$$clients_num$$', -1, $query);
+            $query = str_replace('$$month_bills_num$$', -1, $query);
+            $query = str_replace('$$backups_size$$', -1, $query);
+            $query = str_replace('$$attachs_size$$', -1, $query);
         } else {
             $package = PricePkg::where("id", $customer->package_id)->first();
             $query = str_replace('$$users_num$$', $package->users_count, $query);
@@ -421,6 +422,7 @@ class HomeController extends Controller
             'data' => [
                 'full_name' => $customer->first_name . ' ' . $customer->last_name,
                 'site_link' => 'https://' . env("HOST_LINK") . $folderName,
+                'host' =>  env("HOST_LINK") . $folderName,
                 'email' => $customer->email,
                 'password' => $customerEmailPassword,
             ],
@@ -528,6 +530,47 @@ class HomeController extends Controller
         return response()->json(["url" => $customer->host_link . "/modules/voila-login?email=" . urlencode($email) . "&password=" . urlencode($password)], 200);
     }
 
+    public function forgetPasswordCustomer(Request $request)
+    {
+        $email = $request->email;
+        $customer = Customer::where("email", $email)->first();
+        if (!$customer) {
+            return response()->json(["message" => __("data.email_wrong")], 500);
+        }
+        //do some thing here
+
+        //generate  new password
+        $customerEmailNewPassword = $this->randomPassword();
+        $newPasswordHash = password_hash($customerEmailNewPassword, PASSWORD_DEFAULT);
+        //change custome database admin pass
+        $customerDB = "{$customer->database_name}";
+        $customerDBHost = "localhost";
+        $customerDBUser = "{$customer->database_name}";
+        $customerDBPassword = "{$customer->database_password}";
+        $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+        $query ="UPDATE `cms_users` SET `password` = '$newPasswordHash' WHERE `cms_users`.`email` = '$customer->email';";
+        $dbh->exec($query);
+        if ($dbh->errorCode() != "00000") {
+            throw new Exception("error");
+        }
+        //send new password to customer email
+        CRUDBooster::sendEmail([
+            'to' => $customer->email,
+            'data' => [
+                'full_name' => $customer->first_name . ' ' . $customer->last_name,
+                'site_link' => $customer->host_link,
+                'host' =>  str_replace('https://','',$customer->host_link),
+                'email' => $customer->email,
+                'password' => $customerEmailNewPassword,
+            ],
+            'template' => 'customer_get_new_password',
+            'attachments' => [],
+        ]);
+
+        return response()->json(["status" =>'success',"message"=>__("data.we_generate_new_password_please_check_your_email")], 200);
+    }
+
+
     public static function post_captcha($user_response)
     {
         $fields_string = '';
@@ -561,16 +604,17 @@ class HomeController extends Controller
                 'email' => [
                     'required',
                     'email',
-                    Rule::unique('customers')->whereNull('deleted_at'),
+                    //Rule::unique('customers')->whereNull('deleted_at'),
                 ],
             ], [
                 'email.email' => __("data.email_valid", [], Lang::getLocale()),
-                'email.unique' => __("data.email_unique", [], Lang::getLocale()),
+                //'email.unique' => __("data.email_unique", [], Lang::getLocale()),
             ]);
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors(), 'request' => $request->all()], 200);
             }
             //-----------------------
+            //save reqest to database
             ContactUs::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -578,10 +622,25 @@ class HomeController extends Controller
                 'subject' => $request->subject,
                 'message' => $request->message,
             ]);
+
+            //send mail to client
             CRUDBooster::sendEmail([
                 'to' => $request->email,
                 "data" => [],
                 'template' => 'client-contact-us',
+                'attachments' => [],
+            ]);
+            //send mail to admin
+            CRUDBooster::sendEmail([
+                'to' => 'info@mohasabeh.com',
+                "data" => [
+                    'email'=>$request->email,
+                    'name'=>$request->name,
+                    'phone'=>$request->phone,
+                    'message'=>$request->message,
+
+                ],
+                'template' => 'admin-contact-us',
                 'attachments' => [],
             ]);
             return response()->json([], 200);
@@ -622,4 +681,70 @@ class HomeController extends Controller
             }
         }
     }
+
+    private function createDomainIfNotExist($folderName, $domainName)
+    {
+        //--------- 1- create domain
+        //--- Check if domain already exist
+        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query('CMD_API_SHOW_DOMAINS', []);
+        if ($da->error) {
+            return new Exception("error");
+        }
+		Storage::append('publish_result.txt', "check domains: ".json_encode($result));
+        $exist = false;
+        if (count($result) > 0) {
+            foreach ($result as $domain) {
+                if ($domain == $folderName) {
+                    $exist = true;
+                }
+            }
+        }
+        //---------------------//
+        if (!$exist) {
+            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
+            $result = $da->query('CMD_API_DOMAIN',
+                                array(
+                                    'action' => 'create',
+                                    'domain' => $domainName . ".mohasabeh.com",
+                                    'php' => 'ON',
+                                    'ssl' => 'ON',
+                                    'bandwidth' => '1000',
+                                    'cgi' => 'ON',
+                                    'quota' => '20000'
+                                )
+                            );
+                if ($da->error) {
+                    throw new Exception("error");
+                }
+        }
+    }
+    public function addMohasabehUsertoCustomerDatabase($databaseName){
+
+        try {
+                try {
+                    $client = new Client([
+                        "http_errors" => false,
+                        "headers" => [
+                                    "Authorization" => "Basic ".base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER").":".config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"))
+                                    ]
+                    ]);
+                    $body = [
+                        "name" => $databaseName,
+                        "userlist" => "db",
+                        "domain" => "mohasabeh.com",
+                        "json" => "yes",
+                        "action" => "createuser",
+                        "passwd" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                        "passwd2" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                    ];
+                    return $client->request("POST", "https://mohasabeh.com:2222/CMD_DB?json=yes",["form_params"=>$body]);
+                } catch (ClientException $e) {
+                     Log::log("error", "Error changePhpVersion $e");
+                }
+            } catch (RequestException $e) {
+                  Log::log("error", "Error changePhpVersion $e");
+            }
+    }
+
 }

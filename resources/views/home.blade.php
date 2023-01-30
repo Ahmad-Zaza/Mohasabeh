@@ -225,7 +225,7 @@
                     <div class="form-group">
                         <label class="control-label" for="contact-phone">Phone</label>
                         <div class=" controls">
-                            <input id="contact-phone" type="text" name="phone" placeholder="Your Phone"
+                            <input id="contact-phone" type="text" name="phone" placeholder="{{ __('data.your_phone') }}"
                                 class="form-control requiredField required" data-new-placeholder="Your email"
                                 data-error-empty="Please enter your Phone" data-error-invalid="Invalid Phone Number">
                             <i class="fa fa-phone"></i>

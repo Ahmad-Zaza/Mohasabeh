@@ -59,7 +59,7 @@
                     width = 100;
                     $("#progress-bar").width(width + "%");
                     $("#progress-bar").html(width + "%");
-                    $(".progress-parent").addClass("hide");
+                    //$(".progress-parent").addClass("hide");
                     $(".message-cont").html(res.message);
                 },
                 error: function(data) {

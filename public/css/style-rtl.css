@@ -497,8 +497,8 @@ ul[role="menu"] li {
 }
 
 .feature-card {
-    height: 300px;
-    max-height: 300px !important;
+    height: 350px;
+    max-height: 350px !important;
     border-radius: 20px;
     margin-bottom: 25px;
     background: #fff;
@@ -508,6 +508,7 @@ ul[role="menu"] li {
     z-index: 2;
     max-height: 240px;
     transition: max-height 0.3s;
+    overflow: hidden;
 }
 
 body[lang="ar"] .feature-card {
@@ -552,6 +553,9 @@ body[lang="ar"] .feature-card {
     transition: height .2s;
 }
 
+.feature-card:hover{
+    padding:25px;
+}
 .feature-card:hover img {
     display: none;
 }
@@ -559,6 +563,7 @@ body[lang="ar"] .feature-card {
 .feature-card:hover h3 {
     color: #fff;
     margin-top: -6px;
+    display: none;
 }
 
 .feature-card:hover p {
@@ -568,6 +573,7 @@ body[lang="ar"] .feature-card {
     display: block !important;
     -webkit-line-clamp: initial;
     max-width: none;
+    text-align: justify;
 }
 
 .feature-card:hover:after {
@@ -1734,7 +1740,6 @@ select option::-ms-expand {
     position: fixed;
     min-width: 350px;
     z-index: 1050;
-    top: 0;
     color: #6c757d;
 }
 
@@ -1827,4 +1832,11 @@ select option::-ms-expand {
 
 .flex-direction-row-reverse {
     flex-direction: row;
+}
+
+/********** Added Style ********/
+.foo_phone_box{
+    float:right;
+    margin-right: 0px;
+    margin-left: 7px;
 }

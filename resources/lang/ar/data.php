@@ -91,8 +91,19 @@ return [
     'cont_name' => 'الاسم',
     'your_email' => 'ادخل البريد الالكتروني',
     'cont_email' => 'البريد الالكتروني',
+    'your_phone'=>'ادخل الهاتف',
     'cont_Message' => 'الرسالة',
     'your_message' => 'رسالتك',
     'send_message' => ' ارسال الرسالة ',
     'alert_recaptcha' => "الرجاء التأكد من إتمام عملية الـ recaptcha",
+    'please_fill_the_required_fields'=>'الرجاء قم بإدخال جميع الحقول المطلوبة',
+    'contact_us_successfully'=>'تمت العملية بنجاح',
+    'contact_us_failed'=>'فشلت العملية',
+    'forget_password'=>'نسيت كلمة السر؟',
+    'get_new_password'=>'الحصول على كلمة سر جديدة',
+    'forget_password_message'=>'سنقوم بتوليد كلمة سر جديدة وإرسالها لإيميلك . رجاءا قم بإدخال بريدك الإلكتروني',
+    'send'=>'إرسال',
+    'we_generate_new_password_please_check_your_email'=>'تم توليد كلمة سر جديدة بنجاح. رجاءا التحقق من إيميلك.',
+
+    
 ];
