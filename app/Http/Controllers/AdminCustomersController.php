@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 use PDO;
+use Illuminate\Support\Facades\DB;
 
 class AdminCustomersController extends \crocodicstudio_voila\crudbooster\controllers\CBController
 {
@@ -401,6 +402,18 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $query = str_replace('$$email$$', $customer->email, $query);
         $query = str_replace('$$password$$', password_hash($customerEmailPassword, PASSWORD_DEFAULT), $query);
         $query = str_replace('$$package_id$$', $customer->package_id ? $customer->package_id : 'null', $query);
+
+        $query = str_replace('$$first_name$$', $customer->first_name, $query);
+        $query = str_replace('$$last_name$$', $customer->last_name, $query);
+        $query = str_replace('$$phone$$', $customer->phone, $query);
+
+        $contact_email = DB::table('cms_settings')->where('name', 'contact_emails')->first()->content;
+        $query = str_replace('$$contact_emails$$', $contact_email, $query);
+
+        $company_info = DB::table('company_information')->first();
+        $query = str_replace('$$mohasabeh_phone$$', $company_info->contact_phone, $query);
+        $query = str_replace('$$mohasabeh_email$$', $company_info->email, $query);
+        
         if (!$customer->package_id) {
             $query = str_replace('$$users_num$$', -1, $query);
             $query = str_replace('$$inventories_num$$', -1, $query);
@@ -922,4 +935,29 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
             Log::log("error", "Error changePhpVersion $e");
         }
     }
+
+    public function changeDomainPhpVersion($domain) {
+        try {
+           try {
+                $client = new Client([
+                           "http_errors" => false,
+                           "headers" => [
+                               "Authorization" => "Basic ".base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER").":".config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"))
+                               ]
+                        ]);
+                         $body = [
+                               "php1_select" => 2,
+                               "domain" => $domain . '.mohasabeh.com',
+                               "action" => "php_selector"
+                            ];
+                   $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes",["form_params"=>$body]);
+                   return $result;
+               } catch (ClientException $e) {
+                   Log::log("error", "Error changePhpVersion $e");
+               } 
+           } catch (RequestException $e) { 
+                   Log::log("error", "Error changePhpVersion $e"); 
+           }
+   }
+
 }

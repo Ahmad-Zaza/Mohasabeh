@@ -11,6 +11,6 @@ class Customer extends Model
     protected $table   = 'customers';
     public $timestamps = true;
 
-    protected $fillable = ['name_ar', 'name_en', 'phone', 'email', 'subscription_type', 'company',
+    protected $fillable = ['first_name', 'last_name', 'phone', 'email', 'subscription_type', 'company',
         'users_count', 'sys_lang', 'notes','custom_token'];
 }
