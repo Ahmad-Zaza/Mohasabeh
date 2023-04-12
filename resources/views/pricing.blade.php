@@ -111,7 +111,6 @@
                 try {
                     grecaptcha.getResponse(subscribedRecaptcha);
                 } catch(error) {
-                    console.log(error);
                     subscribedRecaptcha = grecaptcha.render('subscribedRecaptcha', {
                         'sitekey' : '{{ config('app.recaptcha_site_key') }}'
                     });

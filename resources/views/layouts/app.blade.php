@@ -38,6 +38,13 @@
     <link href="{{ asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet" defer>
     <link href="{{ asset('css/custom-toast.css') }}" rel="stylesheet" defer />
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+
+    <!-- Phone number validation -->
+    <link rel="stylesheet" href="{{ asset('intl_tel_input/css/intlTelInput.css') }}">
+    @if ($lang == 'ar')
+        <link rel="stylesheet" href="{{ asset('intl_tel_input/css/intlTelInput_rtl.css') }}">
+    @endif
+
 </head>
 @php $_right = ($lang=="ar"?"left":"right")@endphp
 @php $_r = ($lang=="ar"?"r":"l")@endphp
@@ -49,7 +56,7 @@
         <!-- Navbar Section -->
         <nav id="main" class="navbar navbar-expand-md navbar-light bg-light fixed-top">
             <div class="container">
-                <a class="navbar-brand main" href="{{ url('/') }}">
+                <a class="navbar-brand main" href="#">
                     <img width="150" src="{{ asset($settings['logo']) }}" alt="Mohasabeh" loading="lazy" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -221,8 +228,8 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-holder">
-                                                <input type="text" name="phone" placeholder="{{ __('data.phone') }}"
-                                                    class="num form-control" required>
+                                                <input type="tel" name="phone" id="mobile_phone1"
+                                                    class="tel form-control" required>
                                             </div>
                                         </div>
 
@@ -316,8 +323,9 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-holder">
-                                                <input type="text" name="phone" placeholder="{{ __('data.phone') }}"
-                                                    class="num form-control" required>
+
+                                                <input type="tel" name="phone" id="mobile_phone2"
+                                                    class="tel form-control" required>
                                             </div>
                                         </div>
                                     </div>
@@ -507,6 +515,8 @@
     <script type="text/javascript" src="{{ asset('js/jquery.nav.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/aos.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('intl_tel_input/js/intlTelInput.js') }}"></script>
+
     <script>
         $(function() {
             //------------------------------------------//
@@ -531,6 +541,7 @@
             //------------------------------------------//
             $('.request_now').click(function() {
 
+                //initialize phone number
                 if (typeof($(this).attr('package_id')) !== "undefined" && $(this).attr('package_id') !==
                     null) {
                     package_id = $(this).attr('package_id');
@@ -541,7 +552,6 @@
                 try {
                     grecaptcha.getResponse(freeRecaptcha);
                 } catch(error) {
-                    console.log(error);
                     freeRecaptcha = grecaptcha.render('freeRecaptcha', {
                         'sitekey' : '{{ config('app.recaptcha_site_key') }}'
                     });
@@ -591,8 +601,15 @@
         }
 
         function saveCustomer(wizard) {
-            console.log(wizard);
             if ($('#' + wizard)[0].checkValidity()) {
+                //get full number (country code + number)
+                //we need to find better way to do it
+                //note: iti and iti1 are Global Var
+                if(wizard == 'wizard') {
+                    document.getElementById('mobile_phone1').value = iti.getNumber();
+                } else {
+                    document.getElementById('mobile_phone2').value = iti1.getNumber(); 
+                }
                 event.preventDefault();
                 var form_data = new FormData($('#' + wizard)[0]);
                 if ($('#' + wizard).find('.type').val() != 'free') {
@@ -918,6 +935,8 @@
                     beforeSend: function() {
                         $(".cs-preloader").css("display", "block");
                         $(".cs-preloader_in").css("display", "block");
+                        $("#contact-btn").removeClass("fa fa-paper-plane");
+                        $("#contact-btn").addClass("fa fa-spinner fa-spin");
                     },
                     success: function(res) {
                             
@@ -937,6 +956,9 @@
                         $(".cs-preloader").delay(150).fadeOut("slow");
                         customToast("error", "{{trans('data.contact_us_failed')}}");
                     }
+                }).done(function(data) {
+                    $("#contact-btn").removeClass("fa fa-spinner fa-spin");
+                    $("#contact-btn").addClass("fa fa-paper-plane");
                 });
             }
         }
@@ -1004,6 +1026,51 @@
                     input.val(text);
                 });
             }); 
+    </script>
+
+    <script>
+        $( document ).ready(function() {
+            invalidMobileMessage = "{{trans('data.invalid_mobile')}}";
+            //setup mobile phone
+            var mobilePhone2 = document.getElementById('mobile_phone2');
+            iti1 = window.intlTelInput(mobilePhone2, {
+                customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                    selectedCountryPlaceholder = selectedCountryPlaceholder.replace(/\s/g, '');
+                    return selectedCountryPlaceholder;
+                },
+                initialCountry : "auto",
+                geoIpLookup: function(callback) {
+                    $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+                        
+                        var countryCode = (resp && resp.country) ? resp.country : "ae";
+                        callback(countryCode);
+                    });
+                },
+                utilsScript: "{{ asset('intl_tel_input/js/utils.js?1638200991544') }}"
+            });
+            //end
+
+            //setup mobile phone
+            //setup mobile phone
+            var mobilePhone1 = document.getElementById('mobile_phone1');
+            iti = window.intlTelInput(mobilePhone1, {
+                customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                    selectedCountryPlaceholder = selectedCountryPlaceholder.replace(/\s/g, '');
+                    return selectedCountryPlaceholder;
+                },
+                initialCountry : "auto",
+                geoIpLookup: function(callback) {
+                    $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+                        
+                        var countryCode = (resp && resp.country) ? resp.country : "ae";
+                        callback(countryCode);
+                    });
+                },
+                utilsScript: "{{ asset('intl_tel_input/js/utils.js?1638200991544') }}"
+            });
+            //end
+        });
+
     </script>
 </body>
 

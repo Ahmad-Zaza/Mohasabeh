@@ -418,6 +418,7 @@ body {
     .solution-title {
         font-weight: bold;
         font-size: 26px;
+        color: #364655;
     }
     .hero p {
         font-size: 16px;
@@ -2106,7 +2107,7 @@ select option[selected],
 select option:focus {
     margin: 40px;
     background: rgb(248, 249, 250);
-    color: var(--third-color);
+    /*color: var(--third-color);*/
     text-shadow: none;
     -moz-appearance: none !important;
     -webkit-appearance: none;
@@ -2375,10 +2376,10 @@ body[lang="ar"] .feature-card {
 
 .feature-card:after {
     content: "";
-    border-radius: 20px 0;
+    border-radius: 20px;
     position: absolute;
-    left: 0;
-    right: 0;
+    left: -1px;
+    right: -1px;
     bottom: 0;
     height: 0;
     background-color: var(--third-color);
@@ -2584,4 +2585,16 @@ div.main {
 
 .flex-direction-column {
     flex-direction: column;
+}
+
+.details p {
+    color: #4c4c4e;
+}
+
+a.third-color:hover {
+    color: var(--third-color);
+}
+
+#contact-btn {
+    margin-right: 8px;
 }

@@ -93,7 +93,7 @@
                 @endphp
                 <div class="row service-row align-center header-row {{ $class }} mt-5 mr-auto ml-auto" data-aos="fade-up"
                     data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
-                    <div class="col-md-12 col-lg-6 {{ $leftOffset }}">
+                    <div class="col-md-12 col-lg-6 {{ $leftOffset }}  details">
                         <div class="pt-2 pb-4">
                             <h2 class="d-none d-sm-block solution-title">
                                 {{ $item["name_$lang"] }}</h2>
@@ -174,7 +174,7 @@
                                     <div>
                                         <h3>
                                             <a
-                                                href="tel:{{ $company_information->contact_phone }}">{{ $company_information->contact_phone }}</a>
+                                                href="tel:{{ $company_information->contact_phone }}" class="third-color">{{ $company_information->contact_phone }}</a>
                                         </h3>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                                 <div>
                                     <h3>
                                         <a
-                                            href="mailto:{{ $company_information->email }}">{{ $company_information->email }}</a>
+                                            href="mailto:{{ $company_information->email }}" class="third-color">{{ $company_information->email }}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -247,7 +247,7 @@
                     </div>
                     <p><button name="submit" type="button" class="btn btn-color2 btn-block" data-error-message="Error!"
                             data-sending-message="Sending..." data-ok-message="Message Sent"
-                            onclick="contactSubmit(event)"><i class="fa fa-paper-plane" style="margin-right:8px;"></i>
+                            onclick="contactSubmit(event)"><i class="fa fa-paper-plane" id="contact-btn"></i>
                             {{ __('data.send_message') }} </button></p>
                     <input type="hidden" name="submitted" id="submitted" value="true" />
 

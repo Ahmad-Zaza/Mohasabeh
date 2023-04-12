@@ -453,6 +453,21 @@
   }
 
   function checkEmail(wizard, options, state) {
+    //iti and iti1 defind in views but we need better solution
+    wizardId = wizard.prop("id");
+    var iti_temp = iti;
+    if(wizardId == "wizard1")
+        iti_temp = iti1;
+    if(!iti_temp.isValidNumber()) {
+        wizardId = wizard.prop("id")
+        $(".error_toast").find(".toast-body").html(invalidMobileMessage);
+        $(".error_toast").toast("show");
+        setTimeout(function() {
+            $(".error_toast").toast("hide");
+        }, 3000);
+        return false;
+    }
+    
     let email = wizard.find('[type="email"]').val();
     if (!email) return false;
     $.ajax({
