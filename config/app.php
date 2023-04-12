@@ -233,5 +233,6 @@ return [
         "DIRECT_ADMIN_USER_USER" => env('DIRECT_ADMIN_USER_USER'),
         "DIRECT_ADMIN_USER_PASSWORD" => env('DIRECT_ADMIN_USER_PASSWORD'),
     ],
-    'recaptcha_key' => "6Lc4N9YfAAAAAPlsk-6LuCm_1hLgR41Sr5W64s0t"
+    'recaptcha_site_key' => env('RECAPTCHA_SITE_KEY'),
+    'recaptcha_secret_key' => env('RECAPTCHA_SECRET_KEY'),
 ];

@@ -107,6 +107,16 @@
     <script>
         $(function() {
             $('.subscribe_now').click(function() {
+                //render in show modal
+                try {
+                    grecaptcha.getResponse(subscribedRecaptcha);
+                } catch(error) {
+                    console.log(error);
+                    subscribedRecaptcha = grecaptcha.render('subscribedRecaptcha', {
+                        'sitekey' : '{{ config('app.recaptcha_site_key') }}'
+                    });
+                }
+
                 let title = "{{__('data.subscribe')}}";
                 $('#subscribeModal').find(".modal-header").html(title + " (" + $(this).attr("package_name") +")");
                 $('#subscribeModal').find("[name='package_id']").val($(this).attr("package_id"));

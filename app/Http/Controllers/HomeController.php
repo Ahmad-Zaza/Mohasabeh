@@ -28,6 +28,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDO;
 use PHPUnit\Exception;
+use App\Rules\ReCaptcha;
 use Storage;
 // use Validator;
 
@@ -175,10 +176,12 @@ class HomeController extends Controller
                 Rule::unique('customers')->whereNull('deleted_at'),
             ],
             'company' => 'required',
+            'g-recaptcha-response' => ['required'/*, new ReCaptcha*/]
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
             'email.unique' => __("data.email_unique", [], Lang::getLocale()),
+            'g-recaptcha-response.required' => __("data.alert_recaptcha", [], Lang::getLocale()),
         ]);
         if ($validator->fails()) {
             return response()->json(['success' => false, 'errors' => $validator->errors(), 'request' => $request->all()], 200);
@@ -276,7 +279,8 @@ class HomeController extends Controller
     public function checkEmailUnique($email)
     {
         $status = !Customer::where("email", $email)->get()->count() > 0;
-        $message = $status ? "" : "Email is already registered.";
+        //$message = $status ? "" : "Email is already registered.";
+        $message = $status ? "" : trans('data.email_unique');
         return response()->json(['state' => $status, "msg" => $message], 200);
     }
 
@@ -619,9 +623,11 @@ class HomeController extends Controller
                     'email',
                     //Rule::unique('customers')->whereNull('deleted_at'),
                 ],
+                'g-recaptcha-response' => ['required'/*, new ReCaptcha*/]
             ], [
                 'email.email' => __("data.email_valid", [], Lang::getLocale()),
                 //'email.unique' => __("data.email_unique", [], Lang::getLocale()),
+                'g-recaptcha-response.required' => __("data.alert_recaptcha", [], Lang::getLocale()),
             ]);
             if ($validator->fails()) {
                 return response()->json(['success' => false, 'errors' => $validator->errors(), 'request' => $request->all()], 200);
@@ -656,7 +662,7 @@ class HomeController extends Controller
                 'template' => 'admin-contact-us',
                 'attachments' => [],
             ]);
-            return response()->json([], 200);
+            return response()->json(['success' => true], 200);
         } catch (Exception $e) {
             Log::log("error", "Error $e");
             return response()->json([], 200);

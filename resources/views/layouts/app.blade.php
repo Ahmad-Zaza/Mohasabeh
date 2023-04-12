@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/steps-style.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/aos.css') }}" defer>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     @if ($lang == 'ar')
         <link href="{{ asset('css/style-rtl.css') }}" defer rel="stylesheet" type="text/css" media="all" />
     @endif
@@ -264,8 +264,7 @@
 
                                         <div class="form-row">
                                             <div class="form-holder w-100">
-                                                <div id="g-recaptcha1"
-                                                    data-sitekey="{{ config('app.recaptcha_key') }}"></div>
+                                                <div id="freeRecaptcha"></div>
                                             </div>
                                             <div class="form-holder"></div>
                                         </div>
@@ -338,7 +337,8 @@
                                             <div class="form-holder w-100 flex">
                                                 <label class="english-text" style="direction: ltr;" for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
-                                                    name="domain" required class="form-control mr-1 w-100">
+                                                    name="domain" required class="form-control mr-1">
+                                                    <span style="direction: ltr;">.mohasabeh.com</span>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -358,8 +358,7 @@
 
                                         <div class="form-row">
                                             <div class="form-holder w-100">
-                                                <div id="g-recaptcha2"
-                                                    data-sitekey="{{ config('app.recaptcha_key') }}"></div>
+                                                <div id="subscribedRecaptcha"></div>
                                             </div>
                                             <div class="form-holder"></div>
                                         </div>
@@ -531,11 +530,23 @@
             });
             //------------------------------------------//
             $('.request_now').click(function() {
+
                 if (typeof($(this).attr('package_id')) !== "undefined" && $(this).attr('package_id') !==
                     null) {
                     package_id = $(this).attr('package_id');
                     $('.requestForm').find('input[name=package_id]').val(package_id);
                 }
+
+                //render in show modal
+                try {
+                    grecaptcha.getResponse(freeRecaptcha);
+                } catch(error) {
+                    console.log(error);
+                    freeRecaptcha = grecaptcha.render('freeRecaptcha', {
+                        'sitekey' : '{{ config('app.recaptcha_site_key') }}'
+                    });
+                }
+
                 $('#subscribtionModal').modal('show');
             });
             $('.request_trial').click(function() {
@@ -581,20 +592,7 @@
 
         function saveCustomer(wizard) {
             console.log(wizard);
-            if (wizard == "wizard" && grecaptcha.getResponse(gRecaptcha1) == "" && location.hostname != "127.0.0.1") {
-                $('.error_toast').find('.toast-body').html("{{ __('data.alert_recaptcha') }}");
-                $('.error_toast').toast('show');
-                setTimeout(function() {
-                    $('.error_toast').toast('hide');
-                }, 8000);
-            } else if (wizard == "wizard1" && grecaptcha.getResponse(gRecaptcha2) == "" && location.hostname !=
-                "127.0.0.1") {
-                $('.error_toast').find('.toast-body').html("{{ __('data.alert_recaptcha') }}");
-                $('.error_toast').toast('show');
-                setTimeout(function() {
-                    $('.error_toast').toast('hide');
-                }, 8000);
-            } else if ($('#' + wizard)[0].checkValidity()) {
+            if ($('#' + wizard)[0].checkValidity()) {
                 event.preventDefault();
                 var form_data = new FormData($('#' + wizard)[0]);
                 if ($('#' + wizard).find('.type').val() != 'free') {
@@ -900,6 +898,12 @@
                     $(this).css('border', '1px solid red');
                 }
             });
+            $('textarea').each(function() {
+                if ($(this).hasClass('required') && $(this).val() === "") {
+                    procceed = 0;
+                    $(this).css('border', '1px solid red');
+                }
+            });
             if (procceed == 0) {
                 customToast2("error", "{{trans('data.please_fill_the_required_fields')}}");
             } else if ($('#g-recaptcha-response-2').val() == "") {
@@ -916,14 +920,21 @@
                         $(".cs-preloader_in").css("display", "block");
                     },
                     success: function(res) {
-                        //    console.log(res);
-                        $(".cs-preloader").delay(150).fadeOut("slow");
-                        customToast("success", "{{trans('data.contact_us_successfully')}}");
-                        $("#contact_form").val("").html("");
+                            
+                        if(res.success) {
+                            $(".cs-preloader").delay(150).fadeOut("slow");
+                            customToast("success", "{{trans('data.contact_us_successfully')}}");
+                            $("#contact_form").val("").html("");
+                        } else if (res.errors) {
+                            var message = '';
+                            $.each(res.errors, function(key, value) {
+                                message += '<p>' + value[0] + '</p>';
+                            });
+                            customToast("error", message);
+                        } 
                     },
                     error: function(res) {
                         $(".cs-preloader").delay(150).fadeOut("slow");
-                        console.log(res);
                         customToast("error", "{{trans('data.contact_us_failed')}}");
                     }
                 });
@@ -957,24 +968,11 @@
             // After 3 seconds, remove the show class from DIV
             setTimeout(function() {
                 $(".snackbar." + value).removeClass("show");
-                location.reload();
+                if(value == 'success')
+                    location.reload();
             }, 3000);
         }
 
-
-        var onloadCallback = function() {
-            gRecaptcha1 = grecaptcha.render('g-recaptcha1', {
-                'sitekey': '{{ config('app.recaptcha_key') }}'
-            });
-
-            gRecaptcha2 = grecaptcha.render('g-recaptcha2', {
-                'sitekey': '{{ config('app.recaptcha_key') }}'
-            });
-            if ($("#g-recaptcha").length > 0)
-                grecaptcha.render('g-recaptcha', {
-                    'sitekey': '{{ config('app.recaptcha_key') }}'
-                });
-        };
     </script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->

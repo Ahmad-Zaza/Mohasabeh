@@ -241,7 +241,7 @@
                         </div>
                     </div><!-- End textarea -->
                     <div class="form-group">
-                        <div class="g-recaptcha" id="g-recaptcha" data-sitekey="{{ config('app.recaptcha_key') }}">
+                        <div class="g-recaptcha" id="g-recaptcha" data-sitekey="{{ config('app.recaptcha_site_key') }}">
                         </div>
                         <div class="cs-height_20 cs-height_lg_20"></div>
                     </div>
