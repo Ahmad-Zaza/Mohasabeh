@@ -82,6 +82,9 @@
                                     href="{{ $href }}">{{ $lang == 'ar' ? $item->name_ar : $item->name_en }}</a>
                             </li>
                         @endforeach
+                        <li class="nav-item mobile third-color"><a class="nav-link js-scroll-trigger" href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a></li>
+                        <li class="nav-item mobile"><a type="button" data-toggle="modal" data-target="#loginModal" class="nav-link" >{{ __('data.login') }}</a></li>
+
                         {{-- <li class="nav-item"> --}}
                         {{-- <a type="button" --}}
                         {{-- class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a> --}}

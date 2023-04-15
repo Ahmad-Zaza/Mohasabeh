@@ -1821,7 +1821,7 @@ background: var(--main-color); */
 
 @media only screen and (max-width: 1024px) {
     #services .flex-direction-row-reverse {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 }
 
@@ -2597,4 +2597,20 @@ a.third-color:hover {
 
 #contact-btn {
     margin-right: 8px;
+}
+
+.mobile.third-color a{
+    color: var(--third-color) !important;
+}
+
+@media only screen and (min-width: 768px) {
+    .mobile {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .flex-row {
+        display: inherit;
+    }
 }

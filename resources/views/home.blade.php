@@ -24,7 +24,7 @@
                     @else
                         <div class="col-md-12 col-lg-6">
                 @endif
-                <img class="img-fluid" src="{{ asset($sections['highlight']['image']) }}" data-aos="zoom-out"
+                <img class="img-fluid" src="{{ asset($sections['highlight']['image']) }}" 
                     data-aos-delay="100" alt="Mohasabeh" loading="lazy">
             </div>
         </div>
@@ -32,7 +32,7 @@
     </div>
     <div id="advantages" class="features mt-5 pb-5" style="background: #506d84;position: relative;">
         <div class="row mt-5 mr-auto ml-auto justify-content-center text-center ">
-            <div class="features-intro" data-aos="zoom-in" data-aos-delay="100" style="padding-top: 30px;">
+            <div class="features-intro"  data-aos-delay="100" style="padding-top: 30px;">
                 @if ($sections['advantages']["title_$lang"])
                     <h2 class="text-white">{{ $sections['advantages']["title_$lang"] }}</h2>
                 @endif
@@ -46,7 +46,7 @@
             <div class="flex-row mr-auto ml-auto">
                 @foreach ($advantages as $advantages)
                     <div class="pb-2 @if ($lang == 'ar') col-lg-3 col-md-4 aos-init aos-animate @else flex-row-col @endif"
-                        data-aos="zoom-in" data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
+                         data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
                         <div class="@if ($lang == 'en') feature-list @endif feature-card allHeight pl-2 pr-2 pt-1"
                             style="padding-top: 20px !important;">
                             <div class="card-icon">
@@ -86,14 +86,14 @@
                         $leftOffset = 'offset-lg-1 order-2 service_ar';
                     }
                     if ($lang == 'en' && !$class) {
-                        $rightOffset = 'offset-lg-1 ';
+                        $rightOffset = 'offset-lg-1';
                     } elseif ($lang == 'ar' && $class) {
                         $rightOffset = 'offset-lg-1 order-2 service_ar';
                     }
                 @endphp
                 <div class="row service-row align-center header-row {{ $class }} mt-5 mr-auto ml-auto" data-aos="fade-up"
                     data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
-                    <div class="col-md-12 col-lg-6 {{ $leftOffset }}  details">
+                    <div class=" col-md-12 col-lg-6 {{ $leftOffset }}  details ">
                         <div class="pt-2 pb-4">
                             <h2 class="d-none d-sm-block solution-title">
                                 {{ $item["name_$lang"] }}</h2>
@@ -102,7 +102,7 @@
                                 class="request_now js-scroll-trigger custom-button text-white ml-0 mt-5">{{ __('data.free_trial') }}</a>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-5 {{ $rightOffset }}">
+                    <div class="col-md-12 col-lg-5 {{ $rightOffset }}" >
                         <img class="img-fluid p{{ $lang == 'en' ? ($class ? 'r' : 'l') : ($class ? 'l' : 'r') }}-2"
                             src="{{ asset($item['image']) }}" alt=" {{ $item["name_$lang"] }}" loading="lazy">
                     </div>
@@ -111,7 +111,7 @@
         </div>
     </div>
     <div id="features" class="features mt-5" style="background: #506d84;position:relative;">
-        <div class="row ml-auto mr-auto mt-5 justify-content-center col-md-12" data-aos="zoom-in" data-aos-delay="100">
+        <div class="row ml-auto mr-auto mt-5 justify-content-center col-md-12"  data-aos-delay="100">
             <div class="features-intro">
                 <h2 class="text-white text-center">{{ $sections['features']["title_$lang"] }}</h2>
                 <p class="text_new_gray text-center">{!! $sections['features']["description_$lang"] !!}</p>
@@ -119,7 +119,7 @@
         </div>
         <div class="container" data-aos="fade-up">
             <div class="row ml-auto mr-auto text-center features-row">
-                <div class="row mt-5 ml-auto mr-auto justify-content-center" data-aos="zoom-in">
+                <div class="row mt-5 ml-auto mr-auto justify-content-center" >
                     @foreach ($features as $feature)
                         <div class="col-lg-3 col-md-4" data-aos="fade-out"
                             data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
@@ -137,7 +137,7 @@
     </div>
     <div class="ar-ft-single" data-aos="fade-up" style="margin-top:50px;">
         <div class="container">
-            <div class="row text-center" data-aos="zoom-in" data-aos-delay="100">
+            <div class="row text-center"  data-aos-delay="100">
                 <div class="features-intro mb-5">
                     <h2 class="text-blue">{{ $sections['marketing']["title_$lang"] }}</h2>
                     <p class="text-gray">{!! $sections['marketing']["sub_title_$lang"] !!}</p>
@@ -145,14 +145,14 @@
                 </div>
             </div>
             <div class="row text-center justify-content-center">
-                <img width="600" src="{{ asset($sections['marketing']['image']) }}" data-aos="zoom-out"
+                <img width="600" src="{{ asset($sections['marketing']['image']) }}" 
                     data-aos-delay="100" loading="lazy" alt="mohasabeh" />
             </div>
         </div>
     </div>
     <section id="contact" class="add-padding border-top-color2"
         style="padding-top:96px;padding-bottom:96px;background: #506d84;position: relative;">
-        <div class="row mt-5 justify-content-center col-md-12" data-aos="zoom-in" data-aos-delay="100">
+        <div class="row mt-5 justify-content-center col-md-12"  data-aos-delay="100">
             <div class="features-intro" style="">
             </div>
         </div>
