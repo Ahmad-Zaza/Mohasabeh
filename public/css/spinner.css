@@ -46,9 +46,10 @@ html[lang="ar"] .message-cont #loop:before {
 }
 
 .message-cont #bike {
-    height: 24px;
+    height: 25px;
     width: 25px;
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/133687/motorbike.png");
+    background-image: url("../images/motor.png");
+    /*background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/133687/motorbike.png");*/
 }
 
 @media (min-width: 768px) {

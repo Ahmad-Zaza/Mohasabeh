@@ -30,11 +30,9 @@
                                                     <select class="form-control subscription_ttype"
                                                         name="subscription_type_{{ $pkg->id }}"
                                                         pack_id="{{ $pkg->id }}">
-                                                        <option value="month-{{ $pkg['monthly_price'] }}" selected>Monthly
-                                                            Pricing</option>
-                                                        <option value="six_month-{{ $pkg['six_month_price'] }}">Six Month
-                                                            Pricing</option>
-                                                        <option value="year-{{ $pkg['year_price'] }}">Yearly</option>
+                                                        <option value="month-{{ $pkg['monthly_price'] }}" selected> {{ __('data.monthly_pricing') }}</option>
+                                                        <option value="six_month-{{ $pkg['six_month_price'] }}"> {{ __('data.six_month_pricing') }}</option>
+                                                        <option value="year-{{ $pkg['year_price'] }}"> {{ __('data.yearly_pricing') }}</option>
                                                     </select>
                                                 </div>
                                                 <p class="price" style="text-align: center;">

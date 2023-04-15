@@ -83,8 +83,8 @@
                             </li>
                         @endforeach
                         <li class="nav-item mobile third-color"><a class="nav-link js-scroll-trigger" href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a></li>
-                        <li class="nav-item mobile"><a type="button" data-toggle="modal" data-target="#loginModal" class="nav-link" >{{ __('data.login') }}</a></li>
-
+                        <li class="nav-item mobile login-color" onclick="openLoginModal()">{{ __('data.login') }}</li>
+                        
                         {{-- <li class="nav-item"> --}}
                         {{-- <a type="button" --}}
                         {{-- class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a> --}}
@@ -544,6 +544,7 @@
             //------------------------------------------//
             $('.request_now').click(function() {
 
+                console.log('sdsf');
                 //initialize phone number
                 if (typeof($(this).attr('package_id')) !== "undefined" && $(this).attr('package_id') !==
                     null) {
@@ -560,6 +561,7 @@
                     });
                 }
 
+                
                 $('#subscribtionModal').modal('show');
             });
             $('.request_trial').click(function() {
@@ -655,13 +657,16 @@
                             "href",
                             '#finish').removeAttr("type");
                         if (res.success) {
+                            
                             $('.success_toast').find('.toast-body').html(res.message);
                             $('.success_toast').toast('show');
                             $('.subscribtionModal').modal('hide');
+                            
                             setTimeout(function() {
                                 $('.success_toast').toast('hide');
                             }, 5000);
                             $("form input").val("");
+                            resetForm(wizard);
                         } else if (res.errors) {
                             var message = '';
                             $.each(res.errors, function(key, value) {
@@ -1074,6 +1079,27 @@
             //end
         });
 
+    </script>
+
+    <script>
+        function openLoginModal() {
+            
+            $('#loginModal').modal('show');
+        }
+    </script>
+
+    <script>
+        function resetForm(formName) {
+            document.getElementById(formName).reset();
+            formName = "#" + formName;
+            $( formName ).steps('previous');
+             
+            if(formName == "#wizard1") {
+                grecaptcha.reset(subscribedRecaptcha);
+            } else {
+                grecaptcha.reset(freeRecaptcha);
+            } 
+        }
     </script>
 </body>
 

@@ -106,4 +106,7 @@ return [
     'send'=>'Send',
     'we_generate_new_password_please_check_your_email'=>'We generate new password. Please, check your email.',
     'invalid_mobile' => "you've entered invalid mobile phone",
+    "monthly_pricing" => "Monthly Pricing",
+    "six_month_pricing" => "Six Month Pricing",
+    "yearly_pricing" => "Yearly"
 ];

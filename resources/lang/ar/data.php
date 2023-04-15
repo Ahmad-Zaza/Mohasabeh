@@ -105,5 +105,7 @@ return [
     'send'=>'إرسال',
     'we_generate_new_password_please_check_your_email'=>'تم توليد كلمة سر جديدة بنجاح. رجاءا التحقق من إيميلك.',
     'invalid_mobile' => "لقد قمت بإدخال رقم هاتف غير صحيح",
-    
+    "monthly_pricing" => "الدفع شهري",
+    "six_month_pricing" => "الدفع كل ستة أشهر",
+    "yearly_pricing" => "الدفع سنوي"
 ];

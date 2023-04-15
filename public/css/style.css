@@ -1821,7 +1821,7 @@ background: var(--main-color); */
 
 @media only screen and (max-width: 1024px) {
     #services .flex-direction-row-reverse {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 }
 
@@ -2603,6 +2603,10 @@ a.third-color:hover {
     color: var(--third-color) !important;
 }
 
+.login-color {
+    color: #000 !important;
+}
+
 @media only screen and (min-width: 768px) {
     .mobile {
         display: none;
@@ -2613,4 +2617,22 @@ a.third-color:hover {
     .flex-row {
         display: inherit;
     }
+
+}
+
+@-moz-document url-prefix() {
+    .service-content p {
+        padding-bottom: 30px;
+    }
+}
+
+#forgetPasswordModal button {
+    background: var(--main-color);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 0 13px rgb(80 109 132 / 50%), 0 0 0px rgb(80 109 132 / 50%), 0 0 9px rgb(80 109 132 / 50%);
 }

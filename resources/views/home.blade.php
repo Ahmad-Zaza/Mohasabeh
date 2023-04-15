@@ -94,7 +94,7 @@
                 <div class="row service-row align-center header-row {{ $class }} mt-5 mr-auto ml-auto" data-aos="fade-up"
                     data-aos-delay="{{ ($loop->iteration + 2) * 150 }}">
                     <div class=" col-md-12 col-lg-6 {{ $leftOffset }}  details ">
-                        <div class="pt-2 pb-4">
+                        <div class="pt-2 pb-4 service-content">
                             <h2 class="d-none d-sm-block solution-title">
                                 {{ $item["name_$lang"] }}</h2>
                             {!! $item["description_$lang"] !!}
