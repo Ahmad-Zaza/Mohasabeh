@@ -13,12 +13,12 @@ class CBSeeder extends Seeder
     {
         $this->command->info('Please wait updating the data...');
 
-        $this->call('Cms_usersSeeder');
-        $this->call('Cms_modulsSeeder');
-        $this->call('Cms_privilegesSeeder');
-        $this->call('Cms_privileges_rolesSeeder');
-        $this->call('Cms_settingsSeeder');
-        $this->call('CmsEmailTemplates');
+        // $this->call('Cms_usersSeeder');
+        // $this->call('Cms_modulsSeeder');
+        // $this->call('Cms_privilegesSeeder');
+        // $this->call('Cms_privileges_rolesSeeder');
+        // $this->call('Cms_settingsSeeder');
+        // $this->call('CmsEmailTemplates');
 
         $this->command->info('Updating the data completed !');
     }

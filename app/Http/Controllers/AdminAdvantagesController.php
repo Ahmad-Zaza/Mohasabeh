@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use Illuminate\Support\Facades\DB;
 	use CRUDBooster;
 
-	class AdminAdvantagesController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminAdvantagesController extends CBController {
 
 	    public function cbInit() {
 
@@ -25,6 +26,9 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
+			$this->record_seo = false;
+			$this->page_seo = false;
+			$this->sortable_table = true;
 			$this->table = "advantages";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -34,7 +38,7 @@
 			$this->col[] = ["label"=>"Title Ar","name"=>"title_ar"];
 			$this->col[] = ["label"=>"Description En","name"=>"description_en"];
 			$this->col[] = ["label"=>"Description Ar","name"=>"description_ar"];
-			$this->col[] = ["label"=>"active","name"=>"active"];
+			$this->col[] = ["label"=>"active","name"=>"active", "switch" => true];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -44,7 +48,7 @@
 			$this->form[] = ['label'=>'Description En','name'=>'description_en','type'=>'textarea','validation'=>'required','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Description Ar','name'=>'description_ar','type'=>'textarea','validation'=>'required','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Image','name'=>'image','type'=>'filemanager','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Active','name'=>'active','type'=>'radio','validation'=>'required','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
+			$this->form[] = ['label'=>'Active','name'=>'active','type'=>'switch','validation'=>'required','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

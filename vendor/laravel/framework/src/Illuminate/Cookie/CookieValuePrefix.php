@@ -2,8 +2,6 @@
 
 namespace Illuminate\Cookie;
 
-use Illuminate\Support\Str;
-
 class CookieValuePrefix
 {
     /**
@@ -27,24 +25,5 @@ class CookieValuePrefix
     public static function remove($cookieValue)
     {
         return substr($cookieValue, 41);
-    }
-
-    /**
-     * Verify the provided cookie's value.
-     *
-     * @param  string  $name
-     * @param  string  $value
-     * @param  string  $key
-     * @return string|null
-     */
-    public static function getVerifiedValue($name, $value, $key)
-    {
-        $verifiedValue = null;
-
-        if (Str::startsWith($value, static::create($name, $key))) {
-            $verifiedValue = static::remove($value);
-        }
-
-        return $verifiedValue;
     }
 }

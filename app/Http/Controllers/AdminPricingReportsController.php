@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminPricingReportsController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminPricingReportsController extends CBController {
 
 	    public function cbInit() {
 
@@ -25,6 +26,9 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
+			$this->sortable_table = true;
+			$this->page_seo = false;
+			$this->record_seo = false;
 			$this->table = "pricing_reports";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -32,15 +36,14 @@
 			$this->col = [];
 			$this->col[] = ["label"=>"Title Ar","name"=>"title_ar"];
 			$this->col[] = ["label"=>"Title En","name"=>"title_en"];
-			$this->col[] = ["label"=>"Sorting","name"=>"sorting"];
-			$this->col[] = ["label"=>"active","name"=>"active"];
+			$this->col[] = ["label"=>"active","name"=>"active", "switch" => true];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Title Ar','name'=>'title_ar','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Title En','name'=>'title_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Sorting','name'=>'sorting','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			// $this->form[] = ['label'=>'Sorting','name'=>'sorting','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

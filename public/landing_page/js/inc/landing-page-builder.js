@@ -1,15 +1,27 @@
 var for_edit = false;
 var edit_id = null;
-$(function () {
+$.urlParam = function(name) {
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+        .exec(window.location.search);
+
+    return (results !== null) ? results[1] || 0 : false;
+}
+
+$(function() {
     var pathname = window.location.pathname;
+
+    var filed_name = $.urlParam('filed_name');
+    var current_id = $.urlParam('current_id');
+    var table_name = $.urlParam('table_name');
+
     if (pathname.indexOf("/edit/") > -1) {
         var pathname_split = pathname.split("/");
 
         var id = parseInt(pathname_split[pathname_split.length - 1]);
         if (!isNaN(id)) {
             $.ajax({
-                url: "/landingPage/get/" + id,
-                success: function (res) {
+                url: "/landingPage/get/" + id + "?filed_name=" + filed_name + "&table_name=" + table_name + "&current_id=" + current_id,
+                success: function(res) {
                     if (res) {
                         if (res["background_color"] != "" && res["background_color"] != null) {
                             $("#color-body-temp").val(res["background_color"]);
@@ -22,34 +34,7 @@ $(function () {
                         }
                         for_edit = true;
                         edit_id = id;
-
-
-
                         $("#scratchGrid").html(res["code"]);
-                        $('form[data-form]').hide();
-                        var formId = [];
-                        $('form[data-form]').each(function () {
-                            formId.push($(this).data("form"));
-                        });
-
-                        formId.forEach(element => {
-                            $.ajax({
-                                url: "/modules/getFormCode/" + element,
-                                type: "get",
-                                success: function (res) {
-
-                                    $('[data-form]').each(function () {
-                                        if ($(this).data("form") == element) {
-                                            $(this).html(res);
-                                            $(this).show();
-                                        }
-
-                                    });
-                                },
-
-                            });
-                        });
-
                         $('#scratchGrid').gridEditor({
                             new_row_layouts: [
                                 [12],
@@ -67,9 +52,6 @@ $(function () {
                     }
                 }
             })
-
-
-
         }
     } else {
         $('#scratchGrid').gridEditor({
@@ -127,13 +109,13 @@ tinymce.init({
     save_enablewhendirty: true,
     toolbar1: "  undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | ltr  rtl | blockquote | removeformat |  fontselect | fontsizeselect | styleselect | formatselect |  subscript superscript ",
     toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code   | mybutton1 | galleryButton | widgetButton  | fontawesome | Mail_tags | social-media-links",
-    setup: function (editor) {
+    setup: function(editor) {
 
         editor.addButton('social-media-links', {
             type: 'listbox',
             text: 'Social Media',
             icon: "mce-ico mce-i-flag",
-            onselect: function (e) {
+            onselect: function(e) {
 
                 tinymce.activeEditor.execCommand('mceInsertContent', false, this.value());
 
@@ -151,7 +133,7 @@ tinymce.init({
                 { text: 'Snapchat', value: '<span style="font-size: 18pt;"><a href="https://www.snapchat.com/"  title="Snapchat"><span style="color: #fffc00" class="fa">&#xf2ac;</span></a></span>&nbsp;' },
                 { text: 'Snapchat-alt', value: '<span style="font-size: 18pt;"><a href="https://www.snapchat.com/"  title="Snapchat"><span style="color: #fffc00" class="fa">&#xf2ad;</span></a></span>&nbsp;' },
             ],
-            onPostRender: function () {
+            onPostRender: function() {
                 this.value('Some text 2');
             }
         });
@@ -171,7 +153,7 @@ tinymce.init({
 function uploadForm() {
     showImages(1);
     $("#drop-one").slideToggle(500);
-    $("#all-images").slideToggle(500, function () {
+    $("#all-images").slideToggle(500, function() {
         if ($("#toggle-upload").text() == "back") {
             $("#toggle-upload").text("upload new image");
         } else {
@@ -183,7 +165,7 @@ function uploadForm() {
 var currentImage = null;
 var form_id = null;
 
-window.addEventListener('click', function (event) {
+window.addEventListener('click', function(event) {
     var element = $(event.target);
 });
 
@@ -206,13 +188,13 @@ function showImagesBackground() {
 }
 
 function OpenInsertImageForBackground1() {
-    $("#modalInsertPhotoForBackgroundLanding .modal-body").html(`<iframe width="100%" height="400" src="js/includes/filemanager/dialog.php?type=2&field_id=TempImageSelectedForBackgroundLanding'&fldr=" frameborder="0" style="overflow: scroll; overflow-x: hidden; overflow-y: scroll; "></iframe>`);
+    $("#modalInsertPhotoForBackgroundLanding .modal-body").html(`<iframe width="100%" height="400" src="/js/includes/filemanager/dialog.php?type=2&field_id=TempImageSelectedForBackgroundLanding'&fldr=" frameborder="0" style="overflow: scroll; overflow-x: hidden; overflow-y: scroll; "></iframe>`);
     $("#modalInsertPhotoForBackgroundLanding").modal();
 }
-$('#modalInsertPhotoForBackgroundLanding').on('hidden.bs.modal', function () {
+$('#modalInsertPhotoForBackgroundLanding').on('hidden.bs.modal', function() {
     $("#TempImageSelectedForBackgroundLanding").trigger("change");
 });
-$("#TempImageSelectedForBackgroundLanding").change(function () {
+$("#TempImageSelectedForBackgroundLanding").change(function() {
     $val = $(this).val();
 
     if ($val && $val != "") {
@@ -246,16 +228,9 @@ function saveLanding() {
     var cc = $("#image-background-div").css("background");
     var titleLanding = document.getElementsByClassName("landing-title")[0].value;
 
-    //replace code form with ##id##
-    $('[data-form]').each(function () {
-        $(this).html($(this).data("form"));
-    });
-
     var code = $html = $('#scratchGrid').gridEditor('getHtml');
     var background_color = $("#color-body").val();
     var background_image = $("#image-body").val();
-
-
 
     if (background_color === null && background_color === undefined) {
         background_color = "";
@@ -282,16 +257,15 @@ function saveLanding() {
         data: JSON.stringify(data),
         contentType: "application/json",
         dataType: "json",
-        success: function (data) {
-            $('#title_item').val((data.title) ? data.title : '');
+        success: function(data) {
             $("#edit-form").attr("data-target", "#myModal");
             $('.submitclass').attr("disabled", false);
             $(".p-loader").css("display", "none");
             var url = window.location.href;
             var arr = url.split("/");
-            var result = "/" + arr[3] + "/fromscratch/edit/" + data.id;
+            var result = "/" + arr[3] + "/edit/" + data.id;
             if (for_edit === true && edit_id) {
-                result = "/" + arr[3] + "/fromscratch/edit/" + edit_id;
+                result = "/" + arr[3] + "/edit/" + edit_id;
             }
             window.location.href = result;
 

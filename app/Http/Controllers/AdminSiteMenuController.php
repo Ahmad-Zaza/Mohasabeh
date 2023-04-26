@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminSiteMenuController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminSiteMenuController extends CBController {
 
 	    public function cbInit() {
 

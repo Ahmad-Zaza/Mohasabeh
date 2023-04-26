@@ -3,7 +3,7 @@
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\DriverException;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Types\Type;
 use Throwable;
@@ -11,6 +11,7 @@ use Throwable;
 use function array_change_key_case;
 use function array_values;
 use function assert;
+use function is_string;
 use function preg_match;
 use function sprintf;
 use function str_replace;
@@ -37,7 +38,7 @@ class OracleSchemaManager extends AbstractSchemaManager
             $exception = $exception->getPrevious();
             assert($exception instanceof Throwable);
 
-            if (! $exception instanceof DriverException) {
+            if (! $exception instanceof Exception) {
                 throw $exception;
             }
 
@@ -101,7 +102,7 @@ class OracleSchemaManager extends AbstractSchemaManager
             $keyName = strtolower($tableIndex['name']);
             $buffer  = [];
 
-            if (strtolower($tableIndex['is_primary']) === 'p') {
+            if ($tableIndex['is_primary'] === 'P') {
                 $keyName              = 'primary';
                 $buffer['primary']    = true;
                 $buffer['non_unique'] = false;
@@ -141,7 +142,9 @@ class OracleSchemaManager extends AbstractSchemaManager
         }
 
         // Default values returned from database sometimes have trailing spaces.
-        $tableColumn['data_default'] = trim($tableColumn['data_default']);
+        if (is_string($tableColumn['data_default'])) {
+            $tableColumn['data_default'] = trim($tableColumn['data_default']);
+        }
 
         if ($tableColumn['data_default'] === '' || $tableColumn['data_default'] === 'NULL') {
             $tableColumn['data_default'] = null;
@@ -195,7 +198,7 @@ class OracleSchemaManager extends AbstractSchemaManager
         }
 
         $options = [
-            'notnull'    => (bool) ($tableColumn['nullable'] === 'N'),
+            'notnull'    => $tableColumn['nullable'] === 'N',
             'fixed'      => (bool) $fixed,
             'unsigned'   => (bool) $unsigned,
             'default'    => $tableColumn['data_default'],
@@ -302,15 +305,18 @@ class OracleSchemaManager extends AbstractSchemaManager
             $database = $this->_conn->getDatabase();
         }
 
-        $params   = $this->_conn->getParams();
-        $username = $database;
-        $password = $params['password'];
+        $statement = 'CREATE USER ' . $database;
 
-        $query = 'CREATE USER ' . $username . ' IDENTIFIED BY ' . $password;
-        $this->_conn->executeUpdate($query);
+        $params = $this->_conn->getParams();
 
-        $query = 'GRANT DBA TO ' . $username;
-        $this->_conn->executeUpdate($query);
+        if (isset($params['password'])) {
+            $statement .= ' IDENTIFIED BY ' . $params['password'];
+        }
+
+        $this->_conn->executeStatement($statement);
+
+        $statement = 'GRANT DBA TO ' . $database;
+        $this->_conn->executeStatement($statement);
     }
 
     /**
@@ -324,7 +330,7 @@ class OracleSchemaManager extends AbstractSchemaManager
 
         $sql = $this->_platform->getDropAutoincrementSql($table);
         foreach ($sql as $query) {
-            $this->_conn->executeUpdate($query);
+            $this->_conn->executeStatement($query);
         }
 
         return true;
@@ -382,7 +388,7 @@ WHERE
     AND p.addr(+) = s.paddr
 SQL;
 
-        $activeUserSessions = $this->_conn->fetchAll($sql, [strtoupper($user)]);
+        $activeUserSessions = $this->_conn->fetchAllAssociative($sql, [strtoupper($user)]);
 
         foreach ($activeUserSessions as $activeUserSession) {
             $activeUserSession = array_change_key_case($activeUserSession, CASE_LOWER);
@@ -408,7 +414,7 @@ SQL;
         assert($platform instanceof OraclePlatform);
         $sql = $platform->getListTableCommentsSQL($name);
 
-        $tableOptions = $this->_conn->fetchAssoc($sql);
+        $tableOptions = $this->_conn->fetchAssociative($sql);
 
         if ($tableOptions !== false) {
             $table->addOption('comment', $tableOptions['COMMENTS']);

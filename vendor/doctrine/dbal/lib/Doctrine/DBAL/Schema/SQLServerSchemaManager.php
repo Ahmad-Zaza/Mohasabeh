@@ -3,10 +3,9 @@
 namespace Doctrine\DBAL\Schema;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\DriverException;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Doctrine\DBAL\Types\Type;
-use PDOException;
 use Throwable;
 
 use function assert;
@@ -35,7 +34,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
             $exception = $exception->getPrevious();
             assert($exception instanceof Throwable);
 
-            if (! $exception instanceof DriverException) {
+            if (! $exception instanceof Exception) {
                 throw $exception;
             }
 
@@ -251,13 +250,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
         $sql = $this->_platform->getListTableIndexesSQL($table, $this->_conn->getDatabase());
 
         try {
-            $tableIndexes = $this->_conn->fetchAll($sql);
-        } catch (PDOException $e) {
-            if ($e->getCode() === 'IMSSP') {
-                return [];
-            }
-
-            throw $e;
+            $tableIndexes = $this->_conn->fetchAllAssociative($sql);
         } catch (DBALException $e) {
             if (strpos($e->getMessage(), 'SQLSTATE [01000, 15472]') === 0) {
                 return [];
@@ -277,7 +270,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
         if (count($tableDiff->removedColumns) > 0) {
             foreach ($tableDiff->removedColumns as $col) {
                 $columnConstraintSql = $this->getColumnConstraintSQL($tableDiff->name, $col->getName());
-                foreach ($this->_conn->fetchAll($columnConstraintSql) as $constraint) {
+                foreach ($this->_conn->fetchAllAssociative($columnConstraintSql) as $constraint) {
                     $this->_conn->exec(
                         sprintf(
                             'ALTER TABLE %s DROP CONSTRAINT %s',
@@ -343,7 +336,7 @@ class SQLServerSchemaManager extends AbstractSchemaManager
         assert($platform instanceof SQLServerPlatform);
         $sql = $platform->getListTableMetadataSQL($name);
 
-        $tableOptions = $this->_conn->fetchAssoc($sql);
+        $tableOptions = $this->_conn->fetchAssociative($sql);
 
         if ($tableOptions !== false) {
             $table->addOption('comment', $tableOptions['table_comment']);

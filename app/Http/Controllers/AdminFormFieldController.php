@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use crocodicstudio_voila\crudbooster\controllers\CBController;
+use crocodicstudio\crudbooster\controllers\CBController;
 use Session;
 	use Request;
 	use Illuminate\Support\Facades\DB;

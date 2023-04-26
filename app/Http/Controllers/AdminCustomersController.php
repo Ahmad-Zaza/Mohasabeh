@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Models\Customer;
 use App\PricePkg;
 use Carbon\Carbon;
-use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
+use crocodicstudio\crudbooster\controllers\CBController;
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PDO;
-use Illuminate\Support\Facades\DB;
 
-class AdminCustomersController extends \crocodicstudio_voila\crudbooster\controllers\CBController
+class AdminCustomersController extends CBController
 {
 
     public function cbInit()
@@ -36,6 +37,9 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $this->button_filter = true;
         $this->button_import = false;
         $this->button_export = false;
+        $this->sortable_table = false;
+        $this->page_seo = false;
+        $this->record_seo = false;
         $this->table = "customers";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -50,7 +54,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $this->col[] = ["label" => "Link", "name" => "host_link", "callback_php" => '$row->host_link?"<a target=\"_blank\" href=\"$row->host_link\">$row->host_link</a>":""'];
         $this->col[] = ["label" => "Due Date", "name" => "free_trial_end_date", "callback_php" => '$row->free_trial_end_date?$row->free_trial_end_date:$row->subscription_end_date'];
         $this->col[] = ["label" => "HIDDEN", "name" => "subscription_end_date", "visible" => false];
-        $this->col[] = ["label" => "active", "name" => "active"];
+        $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
 
         # START FORM DO NOT REMOVE THIS LINE
@@ -413,7 +417,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $company_info = DB::table('company_information')->first();
         $query = str_replace('$$mohasabeh_phone$$', $company_info->contact_phone, $query);
         $query = str_replace('$$mohasabeh_email$$', $company_info->email, $query);
-        
+
         if (!$customer->package_id) {
             $query = str_replace('$$users_num$$', -1, $query);
             $query = str_replace('$$inventories_num$$', -1, $query);
@@ -724,15 +728,17 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
     public function getDeleteCustomer($id)
     {
         $customer = Customer::find($id);
-		
+
         //-- Delete domain
         $domainName = strtolower($customer->website);
-        if(!$domainName)
+        if (!$domainName) {
             return CRUDBooster::redirect(
                 CRUDBooster::adminPath('customers'),
                 "Some thing wrong!",
                 "danger"
             );
+        }
+
         $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com";
         $customerDB = "mohasabeh_db-{$customer->website}";
 
@@ -743,7 +749,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         if (file_exists($folderPath)) {
             rrmdir($folderPath);
         }
-		
+
         //-----------------------------//
         //--- 3- delete customer database
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
@@ -751,7 +757,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         if ($da->error) {
             return new Exception("error");
         }
-		print_r($result);
+        print_r($result);
         foreach ($result as $database) {
             if ($database == $customerDB) {
                 $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
@@ -850,7 +856,7 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         $exist = false;
         if (count($result) > 0) {
             foreach ($result as $domain) {
-                if ($domain  == $folderName) {
+                if ($domain == $folderName) {
                     $exist = true;
                 }
             }
@@ -936,28 +942,29 @@ class AdminCustomersController extends \crocodicstudio_voila\crudbooster\control
         }
     }
 
-    public function changeDomainPhpVersion($domain) {
+    public function changeDomainPhpVersion($domain)
+    {
         try {
-           try {
+            try {
                 $client = new Client([
-                           "http_errors" => false,
-                           "headers" => [
-                               "Authorization" => "Basic ".base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER").":".config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"))
-                               ]
-                        ]);
-                         $body = [
-                               "php1_select" => 2,
-                               "domain" => $domain . '.mohasabeh.com',
-                               "action" => "php_selector"
-                            ];
-                   $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes",["form_params"=>$body]);
-                   return $result;
-               } catch (ClientException $e) {
-                   Log::log("error", "Error changePhpVersion $e");
-               } 
-           } catch (RequestException $e) { 
-                   Log::log("error", "Error changePhpVersion $e"); 
-           }
-   }
+                    "http_errors" => false,
+                    "headers" => [
+                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                    ],
+                ]);
+                $body = [
+                    "php1_select" => 2,
+                    "domain" => $domain . '.mohasabeh.com',
+                    "action" => "php_selector",
+                ];
+                $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes", ["form_params" => $body]);
+                return $result;
+            } catch (ClientException $e) {
+                Log::log("error", "Error changePhpVersion $e");
+            }
+        } catch (RequestException $e) {
+            Log::log("error", "Error changePhpVersion $e");
+        }
+    }
 
 }

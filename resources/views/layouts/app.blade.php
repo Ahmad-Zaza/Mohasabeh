@@ -2,6 +2,7 @@
 <html lang="{{ $lang }}">
 @php  $seo= \App\Seo::select('*')->first(); @endphp
 
+
 <head>
     <meta charset="utf-8">
     <title>{{ config('app.name', 'mohasabeh') }}</title>
@@ -11,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="title" content="{{ $seo->title }}" />
     <meta name="description" content="{{ $settings['description'] }}">
-    <meta name="keywords" content="{{ $settings['keywords'] }}">
+    {{-- <meta name="keywords" content="{{ $settings['keywords'] }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" defer> <!-- Resource style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" defer>

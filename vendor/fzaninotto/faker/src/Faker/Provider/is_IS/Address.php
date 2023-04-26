@@ -29,7 +29,7 @@ class Address extends \Faker\Provider\Address
         'Laos', 'Lesótó', 'Lettland', 'Liechtenstein', 'Litháen', 'Líbanon', 'Líbería', 'Líbía', 'Lúxemborg',
         'Madagaskar', 'Makaó', 'Makedónía', 'Malasía', 'Malaví', 'Maldíveyjar', 'Malí', 'Malta', 'Marokkó',
         'Marshall-eyjar', 'Martiník', 'Mayotte', 'Máritanía', 'Máritíus', 'Mexíkó', 'Mið-Afríkulýðveldið',
-        'Miðbaugs-Gínea', 'Míkrónesía', 'Mjanmar', 'Moldóva', 'Mongólía', var(--english-font), 'Mónakó', 'Mósambík',
+        'Miðbaugs-Gínea', 'Míkrónesía', 'Mjanmar', 'Moldóva', 'Mongólía', 'Montserrat', 'Mónakó', 'Mósambík',
         'Namibía', 'Nárú', 'Nepal', 'Niue', 'Níger', 'Nígería', 'Níkaragva', 'Norður-Írland', 'Norður-Kórea',
         'Norður-Maríanaeyjar', 'Noregur', 'Norfolkeyja', 'Nýja-Kaledónía', 'Nýja-Sjáland', 'Óman', 'Pakistan',
         'Palá', 'Palestína', 'Panama', 'Papúa Nýja-Gínea', 'Paragvæ', 'Páfagarður', 'Perú', 'Pitcairn', 'Portúgal',

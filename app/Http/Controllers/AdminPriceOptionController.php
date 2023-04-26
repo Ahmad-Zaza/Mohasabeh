@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use Illuminate\Support\Facades\DB;
 	use CRUDBooster;
 
-	class AdminPriceOptionController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminPriceOptionController extends CBController {
 
 	    public function cbInit() {
 
@@ -25,6 +26,9 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
+			$this->sortable_table = true;
+			$this->record_seo = false;
+			$this->page_seo = false;
 			$this->table = "price_option";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 

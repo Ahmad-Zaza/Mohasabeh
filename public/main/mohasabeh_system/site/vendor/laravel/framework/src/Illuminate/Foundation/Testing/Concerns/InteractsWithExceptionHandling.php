@@ -7,6 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 trait InteractsWithExceptionHandling
 {
@@ -87,7 +88,7 @@ trait InteractsWithExceptionHandling
              * @param  \Exception  $e
              * @return void
              */
-            public function report(Exception $e)
+            public function report(Throwable $e)
             {
                 //
             }
@@ -101,7 +102,7 @@ trait InteractsWithExceptionHandling
              *
              * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException|\Exception
              */
-            public function render($request, Exception $e)
+            public function render($request, Throwable $e)
             {
                 if ($e instanceof NotFoundHttpException) {
                     throw new NotFoundHttpException(
@@ -125,7 +126,7 @@ trait InteractsWithExceptionHandling
              * @param  \Exception  $e
              * @return void
              */
-            public function renderForConsole($output, Exception $e)
+            public function renderForConsole($output, Throwable $e)
             {
                 (new ConsoleApplication)->renderException($e, $output);
             }

@@ -3,6 +3,7 @@
 namespace Illuminate\Contracts\Debug;
 
 use Exception;
+use Throwable;
 
 interface ExceptionHandler
 {
@@ -12,7 +13,7 @@ interface ExceptionHandler
      * @param  \Exception  $e
      * @return void
      */
-    public function report(Exception $e);
+    public function report(Throwable $e);
 
     /**
      * Render an exception into an HTTP response.
@@ -21,7 +22,7 @@ interface ExceptionHandler
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e);
+    public function render($request, Throwable $e);
 
     /**
      * Render an exception to the console.
@@ -30,5 +31,5 @@ interface ExceptionHandler
      * @param  \Exception  $e
      * @return void
      */
-    public function renderForConsole($output, Exception $e);
+    public function renderForConsole($output, Throwable $e);
 }

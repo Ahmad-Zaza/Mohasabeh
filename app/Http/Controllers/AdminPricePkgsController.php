@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminPricePkgsController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminPricePkgsController extends CBController {
 
 	    public function cbInit() {
 
@@ -25,6 +26,9 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
+			$this->sortable_table = true;
+			$this->record_seo = false;
+			$this->page_seo = false;
 			$this->table = "price_pkgs";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -38,7 +42,7 @@
 			$this->col[] = ["label"=>"Monthly Price","name"=>"monthly_price"];
 			$this->col[] = ["label"=>"Six Month_price","name"=>"six_month_price"];
 			$this->col[] = ["label"=>"Year Price","name"=>"year_price"];
-			$this->col[] = ["label"=>"active","name"=>"active"];
+			$this->col[] = ["label"=>"active","name"=>"active", "switch" => true];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

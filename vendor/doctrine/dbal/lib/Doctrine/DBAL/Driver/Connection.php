@@ -43,7 +43,7 @@ interface Connection
      *
      * @param string $sql
      *
-     * @return int
+     * @return int|string
      */
     public function exec($sql);
 
@@ -52,7 +52,7 @@ interface Connection
      *
      * @param string|null $name
      *
-     * @return string
+     * @return string|int|false
      */
     public function lastInsertId($name = null);
 
@@ -80,12 +80,16 @@ interface Connection
     /**
      * Returns the error code associated with the last operation on the database handle.
      *
+     * @deprecated The error information is available via exceptions.
+     *
      * @return string|null The error code, or null if no operation has been run on the database handle.
      */
     public function errorCode();
 
     /**
      * Returns extended error information associated with the last operation on the database handle.
+     *
+     * @deprecated The error information is available via exceptions.
      *
      * @return mixed[]
      */

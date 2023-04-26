@@ -61,6 +61,8 @@ interface Statement extends ResultStatement
     /**
      * Fetches the SQLSTATE associated with the last operation on the statement handle.
      *
+     * @deprecated The error information is available via exceptions.
+     *
      * @see Doctrine_Adapter_Interface::errorCode()
      *
      * @return string|int|bool The error code string.
@@ -69,6 +71,8 @@ interface Statement extends ResultStatement
 
     /**
      * Fetches extended error information associated with the last operation on the statement handle.
+     *
+     * @deprecated The error information is available via exceptions.
      *
      * @return mixed[] The error info array.
      */
@@ -99,7 +103,7 @@ interface Statement extends ResultStatement
      * this behaviour is not guaranteed for all databases and should not be
      * relied on for portable applications.
      *
-     * @return int The number of rows.
+     * @return int|string The number of rows.
      */
     public function rowCount();
 }

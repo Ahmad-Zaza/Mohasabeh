@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
+use crocodicstudio\crudbooster\controllers\CBController;
+use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminCompanyInformationController extends \crocodicstudio_voila\crudbooster\controllers\CBController {
+	class AdminCompanyInformationController extends CBController {
 
 	    public function cbInit() {
 
@@ -25,6 +26,9 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
+			$this->sortable_table = false;
+			$this->page_seo = false;
+			$this->record_seo = false;
 			$this->table = "company_information";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -35,7 +39,7 @@
 			$this->col[] = ["label"=>"Email","name"=>"email"];
 			$this->col[] = ["label"=>"Contact Phone","name"=>"contact_phone"];
 			$this->col[] = ["label"=>"Address","name"=>"address"];
-			$this->col[] = ["label"=>"active","name"=>"active"];
+			$this->col[] = ["label"=>"active","name"=>"active", "switch" => true];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

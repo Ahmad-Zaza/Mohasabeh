@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Advantages;
+use App\Http\Models\ContactUs;
 use App\Http\Models\Customer;
 use App\Http\Models\CustomerModule;
 use App\Http\Models\Feature;
@@ -10,10 +11,9 @@ use App\Http\Models\Module;
 use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
-use App\Http\Models\ContactUs;
 use App\PricePkg;
 use Carbon\Carbon;
-use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception as GlobalException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -28,8 +28,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDO;
 use PHPUnit\Exception;
-use App\Rules\ReCaptcha;
 use Storage;
+
 // use Validator;
 
 class HomeController extends Controller
@@ -162,7 +162,6 @@ class HomeController extends Controller
 
     public function saveCustomer(Request $request)
     {
-        // dd($request->All());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -176,7 +175,7 @@ class HomeController extends Controller
                 Rule::unique('customers')->whereNull('deleted_at'),
             ],
             'company' => 'required',
-            'g-recaptcha-response' => ['required'/*, new ReCaptcha*/]
+            'g-recaptcha-response' => ['required' /*, new ReCaptcha*/],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
@@ -236,7 +235,7 @@ class HomeController extends Controller
             try {
                 $domainName = str_replace(" ", "", $customer->website);
                 $folderName = strtolower($domainName . ".mohasabeh.com");
-                $this->createDomainIfNotExist($folderName,$domainName);
+                $this->createDomainIfNotExist($folderName, $domainName);
                 $this->changeDomainPhpVersion($domainName);
                 CRUDBooster::sendEmail([
                     'to' => $request->email,
@@ -295,7 +294,7 @@ class HomeController extends Controller
         $mainDomainFolderPath = "/home/mohasabeh/domains/mohasabeh.com/public_html";
         //---------------------//
         //--- Check if domain already exist
-        $this->createDomainIfNotExist($folderName,$domainName);
+        $this->createDomainIfNotExist($folderName, $domainName);
         //--------- 2- create domain folder
         if (file_exists($folderPath)) {
             rrmdir($folderPath);
@@ -439,7 +438,7 @@ class HomeController extends Controller
             'data' => [
                 'full_name' => $customer->first_name . ' ' . $customer->last_name,
                 'site_link' => 'https://' . env("HOST_LINK") . $folderName,
-                'host' =>  env("HOST_LINK") . $folderName,
+                'host' => env("HOST_LINK") . $folderName,
                 'email' => $customer->email,
                 'password' => $customerEmailPassword,
             ],
@@ -565,7 +564,7 @@ class HomeController extends Controller
         $customerDBUser = "{$customer->database_name}";
         $customerDBPassword = "{$customer->database_password}";
         $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
-        $query ="UPDATE `cms_users` SET `password` = '$newPasswordHash' WHERE `cms_users`.`email` = '$customer->email';";
+        $query = "UPDATE `cms_users` SET `password` = '$newPasswordHash' WHERE `cms_users`.`email` = '$customer->email';";
         $dbh->exec($query);
         if ($dbh->errorCode() != "00000") {
             throw new Exception("error");
@@ -576,7 +575,7 @@ class HomeController extends Controller
             'data' => [
                 'full_name' => $customer->first_name . ' ' . $customer->last_name,
                 'site_link' => $customer->host_link,
-                'host' =>  str_replace('https://','',$customer->host_link),
+                'host' => str_replace('https://', '', $customer->host_link),
                 'email' => $customer->email,
                 'password' => $customerEmailNewPassword,
             ],
@@ -584,9 +583,8 @@ class HomeController extends Controller
             'attachments' => [],
         ]);
 
-        return response()->json(["status" =>'success',"message"=>__("data.we_generate_new_password_please_check_your_email")], 200);
+        return response()->json(["status" => 'success', "message" => __("data.we_generate_new_password_please_check_your_email")], 200);
     }
-
 
     public static function post_captcha($user_response)
     {
@@ -623,7 +621,7 @@ class HomeController extends Controller
                     'email',
                     //Rule::unique('customers')->whereNull('deleted_at'),
                 ],
-                'g-recaptcha-response' => ['required'/*, new ReCaptcha*/]
+                'g-recaptcha-response' => ['required' /*, new ReCaptcha*/],
             ], [
                 'email.email' => __("data.email_valid", [], Lang::getLocale()),
                 //'email.unique' => __("data.email_unique", [], Lang::getLocale()),
@@ -653,10 +651,10 @@ class HomeController extends Controller
             CRUDBooster::sendEmail([
                 'to' => 'info@mohasabeh.com',
                 "data" => [
-                    'email'=>$request->email,
-                    'name'=>$request->name,
-                    'phone'=>$request->phone,
-                    'message'=>$request->message,
+                    'email' => $request->email,
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'message' => $request->message,
 
                 ],
                 'template' => 'admin-contact-us',
@@ -708,9 +706,10 @@ class HomeController extends Controller
         $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query('CMD_API_SHOW_DOMAINS', []);
         if ($da->error) {
-            return new Exception("error");
+            // return new Exception("error");
+            throw new \Exception("error");
         }
-		Storage::append('publish_result.txt', "check domains: ".json_encode($result));
+        Storage::append('publish_result.txt', "check domains: " . json_encode($result));
         $exist = false;
         if (count($result) > 0) {
             foreach ($result as $domain) {
@@ -722,72 +721,74 @@ class HomeController extends Controller
         //---------------------//
         if (!$exist) {
             $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
-                $result = $da->query('CMD_API_DOMAIN',
-                                array(
-                                    'action' => 'create',
-                                    'domain' => $domainName . ".mohasabeh.com",
-                                    'php' => 'ON',
-                                    'ssl' => 'ON',
-                                    'bandwidth' => '1000',
-                                    'cgi' => 'ON',
-                                    'quota' => '20000'
-                                )
-                            );
-                if ($da->error) {
-                    throw new Exception("error");
-                }
+            $result = $da->query('CMD_API_DOMAIN',
+                array(
+                    'action' => 'create',
+                    'domain' => $domainName . ".mohasabeh.com",
+                    'php' => 'ON',
+                    'ssl' => 'ON',
+                    'bandwidth' => '1000',
+                    'cgi' => 'ON',
+                    'quota' => '20000',
+                )
+            );
+            if ($da->error) {
+                throw new Exception("error");
+            }
         }
     }
-    public function addMohasabehUsertoCustomerDatabase($databaseName){
+    public function addMohasabehUsertoCustomerDatabase($databaseName)
+    {
 
         try {
-                try {
-                    $client = new Client([
-                        "http_errors" => false,
-                        "headers" => [
-                                    "Authorization" => "Basic ".base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER").":".config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"))
-                                    ]
-                    ]);
-                    $body = [
-                        "name" => $databaseName,
-                        "userlist" => "db",
-                        "domain" => "mohasabeh.com",
-                        "json" => "yes",
-                        "action" => "createuser",
-                        "passwd" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
-                        "passwd2" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
-                    ];
-                    return $client->request("POST", "https://mohasabeh.com:2222/CMD_DB?json=yes",["form_params"=>$body]);
-                } catch (ClientException $e) {
-                     Log::log("error", "Error changePhpVersion $e");
-                }
-            } catch (RequestException $e) {
-                  Log::log("error", "Error changePhpVersion $e");
+            try {
+                $client = new Client([
+                    "http_errors" => false,
+                    "headers" => [
+                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                    ],
+                ]);
+                $body = [
+                    "name" => $databaseName,
+                    "userlist" => "db",
+                    "domain" => "mohasabeh.com",
+                    "json" => "yes",
+                    "action" => "createuser",
+                    "passwd" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                    "passwd2" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                ];
+                return $client->request("POST", "https://mohasabeh.com:2222/CMD_DB?json=yes", ["form_params" => $body]);
+            } catch (ClientException $e) {
+                Log::log("error", "Error changePhpVersion $e");
             }
+        } catch (RequestException $e) {
+            Log::log("error", "Error changePhpVersion $e");
+        }
     }
 
-    public function changeDomainPhpVersion($domain) {
-         try {
+    public function changeDomainPhpVersion($domain)
+    {
+        try {
             try {
-                 $client = new Client([
-                            "http_errors" => false,
-                            "headers" => [
-                                "Authorization" => "Basic ".base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER").":".config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"))
-                                ]
-                         ]);
-                          $body = [
-                                "php1_select" => 2,
-                                "domain" => $domain . '.mohasabeh.com',
-                                "action" => "php_selector"
-                             ];
-                    $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes",["form_params"=>$body]);
-                    return $result;
-                } catch (ClientException $e) {
-                    Log::log("error", "Error changePhpVersion $e");
-                } 
-            } catch (RequestException $e) { 
-                    Log::log("error", "Error changePhpVersion $e"); 
+                $client = new Client([
+                    "http_errors" => false,
+                    "headers" => [
+                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                    ],
+                ]);
+                $body = [
+                    "php1_select" => 2,
+                    "domain" => $domain . '.mohasabeh.com',
+                    "action" => "php_selector",
+                ];
+                $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes", ["form_params" => $body]);
+                return $result;
+            } catch (ClientException $e) {
+                Log::log("error", "Error changePhpVersion $e");
             }
+        } catch (RequestException $e) {
+            Log::log("error", "Error changePhpVersion $e");
+        }
     }
 
 }

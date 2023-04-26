@@ -44,9 +44,9 @@ The package offers the following:
  4.2.x        | 0.15.x
  5.0.x/5.1.x  | 1.0.x
  5.2.x-5.4.x (PHP 7 not required)  | 1.2.x
- 5.2.x-5.8.x (PHP 7 required) | 1.3.x
- 5.2.0-6.x (PHP 7 required) | 1.4.x
- 5.2.0-8.x (PHP 7 required) | 1.6.x
+ 5.2.x-5.8.x (PHP version >= 7 required) | 1.3.x
+ 5.2.0-6.x (PHP version >= 7 required) | 1.4.x
+ 5.2.0-9.x (PHP version >= 7 required) | 1.7.x
 
 ## Installation
 
@@ -175,7 +175,7 @@ and `useAcceptLanguageHeader` in `config/laravellocalization.php`:
 
 Whenever a locale is present in the url, it will be stored in the session by this middleware.
 
-In there is no locale present in the url, then this middleware will check the following
+If there is no locale present in the url, then this middleware will check the following
 
  - If no locale is saved in session and `useAcceptLanguageHeader` is set to true, compute locale from browser and redirect to url with locale.
  - If a locale is saved in session redirect to url with locale, unless its the default locale and `hideDefaultLocaleInURL` is set to true.
@@ -186,7 +186,7 @@ For example, if a user navigates to http://url-to-laravel/test  and `en` is the 
 
 Similar to LocaleSessionRedirect, but it stores value in a cookie instead of a session.
 
-Whenever a locale is present in the url, it will be stored in the session by this middleware.
+Whenever a locale is present in the url, it will be stored in the cookie by this middleware.
 
 In there is no locale present in the url, then this middleware will check the following
 
@@ -217,7 +217,7 @@ aswell as the `hideDefaultLocaleInURL` and [Translated Routes](#translated-route
 
 ```php
     // If current locale is Spanish, it returns `/es/test`
-    <a href="{{ LaravelLocalization::localizeUrl('(/test)') }}">@lang('Follow this link')</a>
+    <a href="{{ LaravelLocalization::localizeUrl('/test') }}">@lang('Follow this link')</a>
 ```
 
 #### Get localized URL for an specific locale
@@ -287,6 +287,20 @@ Return current locale's name as string (English/Spanish/Arabic/ ..etc).
 
 ```php
 {{ LaravelLocalization::getCurrentLocaleName() }}
+```
+
+### Get Current Locale Native Name
+Return current locale's native name as string (English/Español/عربى/ ..etc).
+
+```php
+{{ LaravelLocalization::getCurrentLocaleNative() }}
+```
+
+### Get Current Locale Regional Name
+Return current locale's regional name as string (en_GB/en_US/fr_FR/ ..etc).
+
+```php
+{{ LaravelLocalization::getCurrentLocaleRegional() }}
 ```
 
 ### Get Current Locale Direction
@@ -461,7 +475,18 @@ To cache your routes, use:
 php artisan route:trans:cache
 ```
 
-... instead of the normal `route:cache` command.
+... instead of the normal `route:cache` command. Using `artisan route:cache` will **not** work correctly!
+
+For the route caching solution to work, it is required to make a minor adjustment to your application route provision.
+
+In your App's `RouteServiceProvider`, use the `LoadsTranslatedCachedRoutes` trait:
+
+```php
+<?php
+class RouteServiceProvider extends ServiceProvider
+{
+    use \Mcamara\LaravelLocalization\Traits\LoadsTranslatedCachedRoutes;
+```
 
 
 For more details see [here](CACHING.md).
@@ -489,6 +514,10 @@ will not work. Instead, one has to use
 <button>Logout</button>
 </form>
 ```
+
+
+Another way to solve this is to put http method to config to 'laravellocalization.httpMethodsIgnored'
+to prevent of processing this type of requests
 
 ### MethodNotAllowedHttpException
 
@@ -521,7 +550,7 @@ protected function refreshApplicationWithLocale($locale)
     self::setUp();
 }
 
-protected function tearDown()
+protected function tearDown(): void
 {
     putenv(LaravelLocalization::ENV_ROUTE_KEY);
     parent::tearDown();

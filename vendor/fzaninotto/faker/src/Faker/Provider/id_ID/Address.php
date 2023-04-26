@@ -164,7 +164,7 @@ class Address extends \Faker\Provider\Address
         'Martinik',
 
         'Mauritania', 'Mauritius', 'Mayotte', 'Meksiko', 'Mesir', 'Mikronesia', 'Moldova',
-        'Monako', 'Mongolia', 'Montenegro', var(--english-font), 'Mozambik', 'Myanmar',
+        'Monako', 'Mongolia', 'Montenegro', 'Montserrat', 'Mozambik', 'Myanmar',
         'Namibia', 'Nauru', 'Nepal', 'Niger', 'Nigeria', 'Nikaragua', 'Niue', 'Norwegia',
         'Oman', 'Pakistan', 'Palau', 'Panama',
 
