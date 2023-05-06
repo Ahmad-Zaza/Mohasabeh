@@ -6098,16 +6098,16 @@
         },
         {
             "name": "voila_cms/crudbooster",
-            "version": "v2.8.3",
+            "version": "v2.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Voila2020/voila_cms.git",
-                "reference": "cb9d85a2f0112598713917ad88cf2066a7e32b1c"
+                "reference": "dd0a59d254ebe5600ff0562631416ea6a3cd1bc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Voila2020/voila_cms/zipball/cb9d85a2f0112598713917ad88cf2066a7e32b1c",
-                "reference": "cb9d85a2f0112598713917ad88cf2066a7e32b1c",
+                "url": "https://api.github.com/repos/Voila2020/voila_cms/zipball/dd0a59d254ebe5600ff0562631416ea6a3cd1bc0",
+                "reference": "dd0a59d254ebe5600ff0562631416ea6a3cd1bc0",
                 "shasum": ""
             },
             "require": {
@@ -6155,9 +6155,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Voila2020/voila_cms/issues",
-                "source": "https://github.com/Voila2020/voila_cms/tree/v2.8.3"
+                "source": "https://github.com/Voila2020/voila_cms/tree/v2.8.7"
             },
-            "time": "2023-05-06T07:28:41+00:00"
+            "time": "2023-05-06T13:50:16+00:00"
         },
         {
             "name": "voku/portable-ascii",
