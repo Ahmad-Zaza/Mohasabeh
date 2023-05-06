@@ -395,8 +395,8 @@ class ComposerStaticInit48dd58bb880c2f650b9be464af25f6fc
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -456,8 +456,8 @@ class ComposerStaticInit48dd58bb880c2f650b9be464af25f6fc
         ),
         'Intervention\\Image\\' => 
         array (
-            0 => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image',
-            1 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+            0 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+            1 => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image',
         ),
         'Illuminate\\' => 
         array (
@@ -590,7 +590,6 @@ class ComposerStaticInit48dd58bb880c2f650b9be464af25f6fc
         'App\\Http\\Controllers\\AdminPricePkgsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminPricePkgsController.php',
         'App\\Http\\Controllers\\AdminPricingReportsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminPricingReportsController.php',
         'App\\Http\\Controllers\\AdminSectionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminSectionsController.php',
-        'App\\Http\\Controllers\\AdminSeoController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminSeoController.php',
         'App\\Http\\Controllers\\AdminSiteMenuController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminSiteMenuController.php',
         'App\\Http\\Controllers\\AdminSocialMediaController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminSocialMediaController.php',
         'App\\Http\\Controllers\\AdminSolutionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminSolutionsController.php',

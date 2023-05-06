@@ -2,50 +2,39 @@
 
 namespace App\Rules;
 
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Illuminate\Contracts\Validation\Rule;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Http;
 
 class ReCaptcha implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
-
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
+    public function passes($attribute, $token)
     {
-        $client = new Client([
-            'secret' => config('app.recaptcha_secret_key'),
-            'response' => $value
-        ]);
-        $res = $client->request("GET", "https://www.google.com/recaptcha/api/siteverify");
-        
-        $data = json_decode($res->getBody()->getContents()); 
-        return $data["success"];
+        $secretKey = CRUDBooster::getSetting('recaptcha_secret_key');
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array(
+            'secret' => $secretKey,
+            'response' => $token,
+        );
+        $options = array(
+            'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data),
+            ),
+        );
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $response = json_decode($result);
+        return $response->success;
     }
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
     public function message()
     {
-        return $message = __('data.alert_recaptcha');;
+        return $message = cbLang('alert_recaptcha');
     }
 }

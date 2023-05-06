@@ -62,7 +62,6 @@ class AdminController extends CBController
 
     public function postLogin()
     {
-
         $validator = Validator::make(Request::all(), [
             'email' => 'required|email|exists:' . config('crudbooster.USER_TABLE'),
             'password' => 'required',

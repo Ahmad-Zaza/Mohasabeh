@@ -24,7 +24,6 @@ return array(
     'App\\Http\\Controllers\\AdminPricePkgsController' => $baseDir . '/app/Http/Controllers/AdminPricePkgsController.php',
     'App\\Http\\Controllers\\AdminPricingReportsController' => $baseDir . '/app/Http/Controllers/AdminPricingReportsController.php',
     'App\\Http\\Controllers\\AdminSectionsController' => $baseDir . '/app/Http/Controllers/AdminSectionsController.php',
-    'App\\Http\\Controllers\\AdminSeoController' => $baseDir . '/app/Http/Controllers/AdminSeoController.php',
     'App\\Http\\Controllers\\AdminSiteMenuController' => $baseDir . '/app/Http/Controllers/AdminSiteMenuController.php',
     'App\\Http\\Controllers\\AdminSocialMediaController' => $baseDir . '/app/Http/Controllers/AdminSocialMediaController.php',
     'App\\Http\\Controllers\\AdminSolutionsController' => $baseDir . '/app/Http/Controllers/AdminSolutionsController.php',

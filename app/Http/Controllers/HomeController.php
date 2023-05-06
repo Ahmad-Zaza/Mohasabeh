@@ -12,6 +12,7 @@ use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
 use App\PricePkg;
+use App\Rules\ReCaptcha;
 use Carbon\Carbon;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception as GlobalException;
@@ -175,7 +176,7 @@ class HomeController extends Controller
                 Rule::unique('customers')->whereNull('deleted_at'),
             ],
             'company' => 'required',
-            'g-recaptcha-response' => ['required' /*, new ReCaptcha*/],
+            'g-recaptcha-response' => ['required', new ReCaptcha],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
@@ -621,7 +622,7 @@ class HomeController extends Controller
                     'email',
                     //Rule::unique('customers')->whereNull('deleted_at'),
                 ],
-                'g-recaptcha-response' => ['required' /*, new ReCaptcha*/],
+                'g-recaptcha-response' => ['required', new ReCaptcha],
             ], [
                 'email.email' => __("data.email_valid", [], Lang::getLocale()),
                 //'email.unique' => __("data.email_unique", [], Lang::getLocale()),
