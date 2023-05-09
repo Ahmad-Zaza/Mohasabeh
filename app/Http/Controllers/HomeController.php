@@ -176,7 +176,7 @@ class HomeController extends Controller
                 Rule::unique('customers')->whereNull('deleted_at'),
             ],
             'company' => 'required',
-            'g-recaptcha-response' => ['required', new ReCaptcha],
+            'g-recaptcha-response' => ['require', new ReCaptcha],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
