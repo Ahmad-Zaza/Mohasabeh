@@ -6,6 +6,8 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use PDO;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class AdminSiteStatusController extends CBController
 {
@@ -45,11 +47,7 @@ class AdminSiteStatusController extends CBController
         $this->col[] = ["label" => "Inventories Number", "name" => "inventories_num"];
         $this->col[] = ["label" => "Currencies Number", "name" => "currencies_num"];
         $this->col[] = ["label" => "Clients Number", "name" => "clients_num"];
-        $this->col[] = ["label" => "Month Bills Number", "name" => "month_bills_num"];
-        $this->col[] = ["label" => "Backup Size", "name" => "backups_size"];
         $this->col[] = ["label" => "Attachs Size", "name" => "attachs_size"];
-        $this->col[] = ["label" => "Free Trial Start Date", "name" => "free_trial_start_date"];
-        $this->col[] = ["label" => "Free Trial End Date", "name" => "free_trial_end_date"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
         # END COLUMNS DO NOT REMOVE THIS LINE
@@ -340,7 +338,7 @@ class AdminSiteStatusController extends CBController
                 $customerDBHost = "localhost";
                 $customerDBUser = "{$customer->database_name}";
                 $customerDBPassword = "{$customer->database_password}";
-                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null);
+                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
 
                 $bills_query = "SELECT COUNT(*) FROM `bills`";
                 $bills_stmt = $dbh->query($bills_query);
@@ -354,30 +352,66 @@ class AdminSiteStatusController extends CBController
                 $package_config_stmt = $dbh->query($package_config_query);
                 $package_config_data = $package_config_stmt->fetchAll(PDO::FETCH_ASSOC)[0];
 
+                $clients_query = "SELECT count(*) FROM `persons`";
+                $client_stmt = $dbh->query($clients_query);
+                $clients_count = $client_stmt->fetchColumn();
+
+                $users_query = "SELECT count(*) FROM `cms_users`
+						INNER JOIN `cms_privileges` ON cms_privileges.id = cms_users.id_cms_privileges
+						WHERE cms_privileges.is_superadmin != 1";
+                $users_stmt = $dbh->query($users_query);
+                $users_count = $users_stmt->fetchColumn();
+
+                $inventories_query = "SELECT count(*) FROM `inventories`";
+                $inventories_stmt = $dbh->query($inventories_query);
+                $inventories_count = $inventories_stmt->fetchColumn();
+
+                $currencies_query = "SELECT count(*) FROM `currencies`";
+                $currencies_stmt = $dbh->query($currencies_query);
+                $currencies_count = $currencies_stmt->fetchColumn();
+
+                $storagePath = $customer->folder_location . '/site/storage/app';
+
+                $storagePath = $customer->folder_location;
+                if (file_exists($storagePath)) {
+                    $attachment_size = 0;
+                    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($storagePath)) as $file) {
+                        $attachment_size += $file->getSize();
+                    }
+                    // calculate size im MB
+                    $attachment_size = round($attachment_size / 1024 / 1024, 2);
+                }
+                if ($package_config_data['free_trial_start_date'] == null || $package_config_data['free_trial_start_date'] == '0000-00-00') {
+                    $start_date = $package_config_data['subscription_start_date'];
+                } else {
+                    $start_date = $package_config_data['free_trial_start_date'];
+                }
+                if ($package_config_data['free_trial_end_date'] == null || $package_config_data['free_trial_end_date'] == '0000-00-00') {
+                    $end_date = $package_config_data['subscription_end_date'];
+                } else {
+                    $end_date = $package_config_data['free_trial_end_date'];
+                }
+
                 $site_status = DB::table('site_status')->where('customer_id', $customer->id)->get();
                 DB::table('site_status')->updateOrInsert(
                     ['customer_id' => $customer->id],
                     [
                         'bills_count' => $bills_count,
                         'vorches_count' => $vouchers_count,
-                        'users_num' => $package_config_data['users_num'],
-                        'inventories_num' => $package_config_data['inventories_num'],
-                        'currencies_num' => $package_config_data['currencies_num'],
-                        'clients_num' => $package_config_data['clients_num'],
-                        'month_bills_num' => $package_config_data['month_bills_num'],
-                        'backups_size' => $package_config_data['backups_size'],
-                        'attachs_size' => $package_config_data['attachs_size'],
-                        'free_trial_start_date' => $package_config_data['free_trial_start_date'],
-                        'free_trial_end_date' => $package_config_data['free_trial_end_date'],
-                        'subscription_start_date' => ($package_config_data['subscription_start_date'] != '0000-00-00') ? $package_config_data['subscription_start_date'] : null,
-                        'subscription_end_date' => ($package_config_data['subscription_end_date'] != '0000-00-00') ? $package_config_data['subscription_end_date'] : null,
+                        'users_num' => $users_count . "  from  " . ($package_config_data['users_num'] == -1 ? '&infin;' : $package_config_data['users_num']),
+                        'inventories_num' => $inventories_count . "  from  " . ($package_config_data['inventories_num'] == -1 ? '&infin;' : $package_config_data['inventories_num']),
+                        'currencies_num' => $currencies_count . "  from  " . ($package_config_data['currencies_num'] == -1 ? '&infin;' : $package_config_data['currencies_num']),
+                        'clients_num' => $clients_count . "  from  " . ($package_config_data['clients_num'] == -1 ? '&infin;' : $package_config_data['clients_num']),
+                        'attachs_size' => $attachment_size,
+                        'subscription_start_date' => $start_date,
+                        'subscription_end_date' => $end_date,
                     ]
                 );
                 DB::commit();
             }
         } catch (Exception $ex) {
             DB::rollback();
-            return redirect()->back()->with(['message' => cbLang("error_generating_report"), 'message_type' => 'danger']);
+            return redirect()->back()->with(['message' => cbLang("error_generating_report") . $ex->getMessage(), 'message_type' => 'danger']);
             throw $ex;
         }
         return redirect()->back()->with(['message' => cbLang("successfully_generating_report"), 'message_type' => 'success']);

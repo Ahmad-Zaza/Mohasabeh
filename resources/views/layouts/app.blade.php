@@ -28,8 +28,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" async defer
         rel="stylesheet">
     <link href="{{ asset('css/custome.css') }}" rel="stylesheet" type="text/css" media="all" defer />
-    <link href="{{ asset('fonts/material-design-iconic-font/css/material-design-iconic-font.css') }}"
-        rel="stylesheet" type="text/css" media="all" defer />
+    <link href="{{ asset('fonts/material-design-iconic-font/css/material-design-iconic-font.css') }}" rel="stylesheet"
+        type="text/css" media="all" defer />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -60,8 +60,9 @@
                 <a class="navbar-brand main" href="#">
                     <img width="150" src="{{ asset($settings['logo']) }}" alt="Mohasabeh" loading="lazy" />
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -83,9 +84,11 @@
                                     href="{{ $href }}">{{ $lang == 'ar' ? $item->name_ar : $item->name_en }}</a>
                             </li>
                         @endforeach
-                        <li class="nav-item mobile third-color"><a class="nav-link js-scroll-trigger" href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a></li>
+                        <li class="nav-item mobile third-color"><a class="nav-link js-scroll-trigger"
+                                href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a>
+                        </li>
                         <li class="nav-item mobile login-color" onclick="openLoginModal()">{{ __('data.login') }}</li>
-                        
+
                         {{-- <li class="nav-item"> --}}
                         {{-- <a type="button" --}}
                         {{-- class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a> --}}
@@ -116,8 +119,8 @@
 
 
         <div class="main">
-            <div class="modal fade loginModal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal"
-                aria-hidden="true">
+            <div class="modal fade loginModal" id="loginModal" tabindex="-1" role="dialog"
+                aria-labelledby="loginModal" aria-hidden="true">
                 <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <form action="" id="loginForm" class="requestForm needs-validation"
@@ -131,8 +134,8 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
-                                                <input type="email" placeholder="{{ __('data.email') }}" name="email"
-                                                    required class="form-control mr-1">
+                                                <input type="email" placeholder="{{ __('data.email') }}"
+                                                    name="email" required class="form-control mr-1">
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -146,7 +149,8 @@
                                                 class="btn btn-primary">{{ __('data.login') }}</button>
                                         </div>
                                         <div class="form-row">
-                                            <a type="" data-toggle="modal" data-target="#forgetPasswordModal" style="color:#4c4c4e">{{__('data.forget_password')}}</a>
+                                            <a type="" data-toggle="modal" data-target="#forgetPasswordModal"
+                                                style="color:#4c4c4e">{{ __('data.forget_password') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -156,8 +160,8 @@
                 </div>
             </div>
 
-            <div class="modal fade forgetPasswordModal" id="forgetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="forgetPasswordModal"
-                aria-hidden="true">
+            <div class="modal fade forgetPasswordModal" id="forgetPasswordModal" tabindex="-1" role="dialog"
+                aria-labelledby="forgetPasswordModal" aria-hidden="true">
                 <div class="modal-dialog modal-md modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <form action="" id="forgetPasswordForm" class="requestForm needs-validation"
@@ -170,20 +174,20 @@
                                             <h2 class="text-blue mb-4">{{ __('data.get_new_password') }}</h2>
                                         </div>
                                         <div class="form-row" style="margin-top:60px;">
-                                            <p>{{__('data.forget_password_message')}}</p>
-                                        </div>    
+                                            <p>{{ __('data.forget_password_message') }}</p>
+                                        </div>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
-                                                <input type="email" placeholder="{{ __('data.email') }}" name="email"
-                                                    required class="form-control mr-1">
+                                                <input type="email" placeholder="{{ __('data.email') }}"
+                                                    name="email" required class="form-control mr-1">
                                             </div>
                                         </div>
-                                      
+
                                         <div class="form-row text-center justify-content-center">
                                             <button type="submit" onclick="forgetPasswordSubmit(event)"
                                                 class="btn btn-primary">{{ __('data.send') }}</button>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </section>
@@ -196,8 +200,8 @@
                 aria-labelledby="subscribtionModal" aria-hidden="true">
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
-                        <form action="" id="wizard" class="requestForm needs-validation" enctype="multipart/form-data"
-                            method="POST" novalidate>
+                        <form action="" id="wizard" class="requestForm needs-validation"
+                            enctype="multipart/form-data" method="POST" novalidate>
                             <input type="hidden" name="type" class="type">
                             <input type="hidden" name="package_id" class="type">
                             <input type="hidden" name="free_trial" class="type" value="off">
@@ -226,8 +230,9 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-holder">
-                                                <input type="email" name="email" placeholder="{{ __('data.email') }}"
-                                                    class="form-control" required>
+                                                <input type="email" name="email"
+                                                    placeholder="{{ __('data.email') }}" class="form-control"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -251,7 +256,8 @@
                                         <p>{{ __('data.domain_info') }}</p>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
-                                                <label class="english-text" style="direction: ltr;" for="">https://</label>
+                                                <label class="english-text" style="direction: ltr;"
+                                                    for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1">
                                                 <span style="direction: ltr;">.mohasabeh.com</span>
@@ -264,15 +270,6 @@
                                                     name="company" class="form-control">
                                             </div>
                                         </div>
-
-                                        <div class="form-row">
-                                            <div class="form-holder w-100">
-                                                <textarea placeholder="{{ __('data.special_req') }}" class="form-control" name="special_requirements"
-                                                    id="special_requirements" rows="2"></textarea>
-                                            </div>
-                                            <div class="form-holder"></div>
-                                        </div>
-
                                         <div class="form-row">
                                             <div class="form-holder w-100">
                                                 <div id="freeRecaptcha"></div>
@@ -291,8 +288,8 @@
                 aria-labelledby="subscribeModal" aria-hidden="true">
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
-                        <form action="" id="wizard1" class="requestForm needs-validation" enctype="multipart/form-data"
-                            method="POST" novalidate>
+                        <form action="" id="wizard1" class="requestForm needs-validation"
+                            enctype="multipart/form-data" method="POST" novalidate>
                             <input type="hidden" name="type" class="type">
                             <input type="hidden" name="package_id">
                             <input type="hidden" name="free_trial" value="off">
@@ -321,8 +318,9 @@
                                         </div>
                                         <div class="form-row">
                                             <div class="form-holder">
-                                                <input type="email" name="email" placeholder="{{ __('data.email') }}"
-                                                    class="form-control" required>
+                                                <input type="email" name="email"
+                                                    placeholder="{{ __('data.email') }}" class="form-control"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -347,10 +345,11 @@
                                         <p>{{ __('data.domain_info') }}</p>
                                         <div class="form-row">
                                             <div class="form-holder w-100 flex">
-                                                <label class="english-text" style="direction: ltr;" for="">https://</label>
+                                                <label class="english-text" style="direction: ltr;"
+                                                    for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1">
-                                                    <span style="direction: ltr;">.mohasabeh.com</span>
+                                                <span style="direction: ltr;">.mohasabeh.com</span>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -359,15 +358,6 @@
                                                     name="company" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-holder w-100">
-                                                <textarea placeholder="{{ __('data.special_req') }}" class="form-control" name="special_requirements"
-                                                    id="special_requirements" rows="2"></textarea>
-                                            </div>
-
-                                            <div class="form-holder"></div>
-                                        </div>
-
                                         <div class="form-row">
                                             <div class="form-holder w-100">
                                                 <div id="subscribedRecaptcha"></div>
@@ -481,7 +471,8 @@
                     </div>
                     <div class="row justify-content-center logo-row">
                         <a class="footer-logo pr-3" href="{{ url('/') }}">
-                            <img width="80px" src="{{ asset($settings['logo']) }}" alt="Mohasabeh" loading="lazy" />
+                            <img width="80px" src="{{ asset($settings['logo']) }}" alt="Mohasabeh"
+                                loading="lazy" />
                         </a>
                         <span class="ml-3">
                             {{ date('Y') }}
@@ -556,13 +547,13 @@
                 //render in show modal
                 try {
                     grecaptcha.getResponse(freeRecaptcha);
-                } catch(error) {
+                } catch (error) {
                     freeRecaptcha = grecaptcha.render('freeRecaptcha', {
-                        'sitekey' : '{{ config('app.recaptcha_site_key') }}'
+                        'sitekey': '{{ config('app.recaptcha_site_key') }}'
                     });
                 }
 
-                
+
                 $('#subscribtionModal').modal('show');
             });
             $('.request_trial').click(function() {
@@ -611,10 +602,10 @@
                 //get full number (country code + number)
                 //we need to find better way to do it
                 //note: iti and iti1 are Global Var
-                if(wizard == 'wizard') {
+                if (wizard == 'wizard') {
                     document.getElementById('mobile_phone1').value = iti.getNumber();
                 } else {
-                    document.getElementById('mobile_phone2').value = iti1.getNumber(); 
+                    document.getElementById('mobile_phone2').value = iti1.getNumber();
                 }
                 event.preventDefault();
                 var form_data = new FormData($('#' + wizard)[0]);
@@ -658,11 +649,11 @@
                             "href",
                             '#finish').removeAttr("type");
                         if (res.success) {
-                            
+
                             $('.success_toast').find('.toast-body').html(res.message);
                             $('.success_toast').toast('show');
                             $('.subscribtionModal').modal('hide');
-                            
+
                             setTimeout(function() {
                                 $('.success_toast').toast('hide');
                             }, 5000);
@@ -931,9 +922,9 @@
                 }
             });
             if (procceed == 0) {
-                customToast2("error", "{{trans('data.please_fill_the_required_fields')}}");
+                customToast2("error", "{{ trans('data.please_fill_the_required_fields') }}");
             } else if ($('#g-recaptcha-response-2').val() == "") {
-                customToast2("error", "{{trans('data.alert_recaptcha')}}");
+                customToast2("error", "{{ trans('data.alert_recaptcha') }}");
             } else {
                 //   alert($('input[name=email]').val());
                 let data = $("#contact-form").serialize();
@@ -948,10 +939,10 @@
                         $("#contact-btn").addClass("fa fa-spinner fa-spin");
                     },
                     success: function(res) {
-                            
-                        if(res.success) {
+
+                        if (res.success) {
                             $(".cs-preloader").delay(150).fadeOut("slow");
-                            customToast("success", "{{trans('data.contact_us_successfully')}}");
+                            customToast("success", "{{ trans('data.contact_us_successfully') }}");
                             $("#contact_form").val("").html("");
                         } else if (res.errors) {
                             var message = '';
@@ -959,11 +950,11 @@
                                 message += '<p>' + value[0] + '</p>';
                             });
                             customToast("error", message);
-                        } 
+                        }
                     },
                     error: function(res) {
                         $(".cs-preloader").delay(150).fadeOut("slow");
-                        customToast("error", "{{trans('data.contact_us_failed')}}");
+                        customToast("error", "{{ trans('data.contact_us_failed') }}");
                     }
                 }).done(function(data) {
                     $("#contact-btn").removeClass("fa fa-spinner fa-spin");
@@ -999,11 +990,10 @@
             // After 3 seconds, remove the show class from DIV
             setTimeout(function() {
                 $(".snackbar." + value).removeClass("show");
-                if(value == 'success')
+                if (value == 'success')
                     location.reload();
             }, 3000);
         }
-
     </script>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -1024,22 +1014,22 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-                /***** validation input ******/
-                $("input[name=domain]").keyup(function() {
-                    var input = $(this);
-                    var text = input.val().replace(/[^0-9a-z]/g, ""); //allow  just numbers with +
-                    if(/_|\s/.test(text)) {
-                        text = text.replace(/_|\s/g, "");
-                        // logic to notify user of replacement
-                    }
-                    input.val(text);
-                });
-            }); 
+            /***** validation input ******/
+            $("input[name=domain]").keyup(function() {
+                var input = $(this);
+                var text = input.val().replace(/[^0-9a-z]/g, ""); //allow  just numbers with +
+                if (/_|\s/.test(text)) {
+                    text = text.replace(/_|\s/g, "");
+                    // logic to notify user of replacement
+                }
+                input.val(text);
+            });
+        });
     </script>
 
     <script>
-        $( document ).ready(function() {
-            invalidMobileMessage = "{{trans('data.invalid_mobile')}}";
+        $(document).ready(function() {
+            invalidMobileMessage = "{{ trans('data.invalid_mobile') }}";
             //setup mobile phone
             var mobilePhone2 = document.getElementById('mobile_phone2');
             iti1 = window.intlTelInput(mobilePhone2, {
@@ -1047,10 +1037,10 @@
                     selectedCountryPlaceholder = selectedCountryPlaceholder.replace(/\s/g, '');
                     return selectedCountryPlaceholder;
                 },
-                initialCountry : "auto",
+                initialCountry: "auto",
                 geoIpLookup: function(callback) {
                     $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-                        
+
                         var countryCode = (resp && resp.country) ? resp.country : "ae";
                         callback(countryCode);
                     });
@@ -1067,10 +1057,10 @@
                     selectedCountryPlaceholder = selectedCountryPlaceholder.replace(/\s/g, '');
                     return selectedCountryPlaceholder;
                 },
-                initialCountry : "auto",
+                initialCountry: "auto",
                 geoIpLookup: function(callback) {
                     $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-                        
+
                         var countryCode = (resp && resp.country) ? resp.country : "ae";
                         callback(countryCode);
                     });
@@ -1079,12 +1069,11 @@
             });
             //end
         });
-
     </script>
 
     <script>
         function openLoginModal() {
-            
+
             $('#loginModal').modal('show');
         }
     </script>
@@ -1093,13 +1082,13 @@
         function resetForm(formName) {
             document.getElementById(formName).reset();
             formName = "#" + formName;
-            $( formName ).steps('previous');
-             
-            if(formName == "#wizard1") {
+            $(formName).steps('previous');
+
+            if (formName == "#wizard1") {
                 grecaptcha.reset(subscribedRecaptcha);
             } else {
                 grecaptcha.reset(freeRecaptcha);
-            } 
+            }
         }
     </script>
 </body>

@@ -740,7 +740,6 @@ class HomeController extends Controller
     }
     public function addMohasabehUsertoCustomerDatabase($databaseName)
     {
-
         try {
             try {
                 $client = new Client([
