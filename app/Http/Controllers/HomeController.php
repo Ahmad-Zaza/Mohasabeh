@@ -176,7 +176,10 @@ class HomeController extends Controller
                 Rule::unique('customers')->whereNull('deleted_at'),
             ],
             'company' => 'required',
-            'g-recaptcha-response' => ['require', new ReCaptcha],
+            'g-recaptcha-response' => [
+                'required', 
+                // new ReCaptcha
+            ],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
@@ -358,7 +361,7 @@ class HomeController extends Controller
         $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
         //-----------------------//
         $customerEmailPassword = $this->randomPassword();
-        $query = file_get_contents($mainDomainFolderPath . '/main/db.sql');
+        $query = file_get_contents($mainDomainFolderPath . '/site/storage/main/db.sql');
         $query = str_replace('$$company_name$$', $customer->company, $query);
         $query = str_replace('$$email$$', $customer->email, $query);
         $query = str_replace('$$password$$', password_hash($customerEmailPassword, PASSWORD_DEFAULT), $query);
