@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ config('app.name', 'mohasabeh') }}</title>
+    <title>{{ config('app.name', 'CloudSellPOS') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset($settings['favicon']) }}" type="image/png" sizes="16x16">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -58,7 +58,7 @@
         <nav id="main" class="navbar navbar-expand-md navbar-light bg-light fixed-top">
             <div class="container">
                 <a class="navbar-brand main" href="#">
-                    <img width="150" src="{{ asset($settings['logo']) }}" alt="Mohasabeh" loading="lazy" />
+                    <img width="150" src="{{ asset($settings['logo']) }}" alt="CloudSellPOS" loading="lazy" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -260,7 +260,7 @@
                                                     for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1">
-                                                <span style="direction: ltr;">.mohasabeh.com</span>
+                                                <span style="direction: ltr;">.cloudsellpos.com</span>
 
                                             </div>
                                         </div>
@@ -349,7 +349,7 @@
                                                     for="">https://</label>
                                                 <input type="text" placeholder="{{ __('data.website_pref') }}"
                                                     name="domain" required class="form-control mr-1">
-                                                <span style="direction: ltr;">.mohasabeh.com</span>
+                                                <span style="direction: ltr;">.cloudsellpos.com</span>
                                             </div>
                                         </div>
                                         <div class="form-row">
@@ -471,7 +471,7 @@
                     </div>
                     <div class="row justify-content-center logo-row">
                         <a class="footer-logo pr-3" href="{{ url('/') }}">
-                            <img width="80px" src="{{ asset($settings['logo']) }}" alt="Mohasabeh"
+                            <img width="80px" src="{{ asset($settings['logo']) }}" alt="CloudSellPOS"
                                 loading="lazy" />
                         </a>
                         <span class="ml-3">

@@ -350,24 +350,24 @@ class AdminCustomersController extends CBController
         // fclose($fp);
         //----------------------------------------------//
         //--------- 4- Publishing (Copy files from main website to subdomains)
-        $formDir = $mainDomainFolderPath . '/main/mohasabeh_system';
+        $formDir = $mainDomainFolderPath . '/storage/main/cloudsellpos_system';
         $toDir = $folderPath;
         $this->copydir($formDir, $toDir);
         //----------------------------------------------//
         // 8- create customer db and change settings in .env of backend
-        $customerDB = "mohasabeh_db-{$customer->website}";
+        $customerDB = "cloudsell_db-{$customer->website}";
         $customerDBHost = "localhost";
         $customerDBUser = "{$customerDB}";
         $customerDBPassword = $this->randomPassword();
         //--- Check if database exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES");
         if ($da->error) {
             return new Exception("error");
         }
         foreach ($result as $database) {
             if ($database == $customerDB) {
-                $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+                $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
                 $result = $da->query("CMD_API_DATABASES", [
                     "action" => "delete",
                     "select0" => $customerDB,
@@ -378,7 +378,7 @@ class AdminCustomersController extends CBController
             }
         }
         //--- Create Subdomain Database
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES", array(
             'action' => 'create',
             'name' => "db-{$customer->website}",
@@ -390,8 +390,8 @@ class AdminCustomersController extends CBController
             return new Exception("Error");
         }
 
-        //add Mohasabeh user to customer database
-        $this->addMohasabehUsertoCustomerDatabase($customerDB);
+        //add CloudSellPOS user to customer database
+        $this->addMainDatabaseUserToCustomerDatabase($customerDB);
 
         $customer->database_name = $customerDB;
         $customer->database_password = $customerDBPassword;
@@ -740,7 +740,7 @@ class AdminCustomersController extends CBController
         }
 
         $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com";
-        $customerDB = "mohasabeh_db-{$customer->website}";
+        $customerDB = "cloudsell_db-{$customer->website}";
 
         //--- Check if domain already exist
         $this->deleteDomain($domainName);
@@ -752,7 +752,7 @@ class AdminCustomersController extends CBController
 
         //-----------------------------//
         //--- 3- delete customer database
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES");
         if ($da->error) {
             return new Exception("error");
@@ -760,7 +760,7 @@ class AdminCustomersController extends CBController
         print_r($result);
         foreach ($result as $database) {
             if ($database == $customerDB) {
-                $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+                $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
                 $result = $da->query("CMD_API_DATABASES", [
                     "action" => "delete",
                     "select0" => $customerDB,
@@ -784,8 +784,8 @@ class AdminCustomersController extends CBController
     {
         //--------- 1- create subdomain
         //--- Check if subdomain already exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "mohasabeh.com"]);
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "cloudsellpos.com"]);
         if ($da->error) {
             return new Exception("error");
         }
@@ -799,11 +799,11 @@ class AdminCustomersController extends CBController
         }
         //---------------------//
         if (!$exist) {
-            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
             $result = $da->query('CMD_API_SUBDOMAINS',
                 array(
                     'action' => 'create',
-                    'domain' => 'mohasabeh.com',
+                    'domain' => 'cloudsellpos.com',
                     'subdomain' => $subdomainName,
                 ));
             if ($da->error) {
@@ -815,8 +815,8 @@ class AdminCustomersController extends CBController
     private function deleteSubDomain($subdomainName)
     {
         //--- Check if subdomain already exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "mohasabeh.com"]);
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "cloudsellpos.com"]);
         if ($da->error) {
             return new Exception("error");
         }
@@ -830,11 +830,11 @@ class AdminCustomersController extends CBController
         }
         //---------------------//
         if ($exist) {
-            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
             $result = $da->query('CMD_API_SUBDOMAINS',
                 array(
                     'action' => 'delete',
-                    'domain' => 'mohasabeh.com',
+                    'domain' => 'cloudsellpos.com',
                     'select0 ' => $subdomainName,
                     'contents ' => "yes",
                 ));
@@ -848,7 +848,7 @@ class AdminCustomersController extends CBController
     {
         //--------- 1- create domain
         //--- Check if domain already exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query('CMD_API_SHOW_DOMAINS', []);
         if ($da->error) {
             return new Exception("error");
@@ -863,7 +863,7 @@ class AdminCustomersController extends CBController
         }
         //---------------------//
         if (!$exist) {
-            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
+            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
             $result = $da->query('CMD_API_DOMAIN',
                 array(
                     'action' => 'create',
@@ -884,7 +884,7 @@ class AdminCustomersController extends CBController
     private function deleteDomain($domainName)
     {
         //--- Check if domain already exist
-        $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query('CMD_API_SHOW_DOMAINS', []);
         if ($da->error) {
             return new Exception("error");
@@ -900,7 +900,7 @@ class AdminCustomersController extends CBController
         //---------------------//
         if ($exist) {
             //delete domain query
-            $da = new DirectAdmin("https://mohasabeh.com:2222", config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER"), config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"));
+            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
             $result = $da->query('CMD_API_DOMAIN',
                 array(
                     'confirmed' => 'Confirm',
@@ -913,7 +913,7 @@ class AdminCustomersController extends CBController
         }
     }
 
-    public function addMohasabehUsertoCustomerDatabase($databaseName)
+    public function addMainDatabaseUserToCustomerDatabase($databaseName)
     {
 
         try {
@@ -921,19 +921,19 @@ class AdminCustomersController extends CBController
                 $client = new Client([
                     "http_errors" => false,
                     "headers" => [
-                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                        "Authorization" => "Basic " . base64_encode(config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD")),
                     ],
                 ]);
                 $body = [
                     "name" => $databaseName,
                     "userlist" => "db",
-                    "domain" => "mohasabeh.com",
+                    "domain" => "cloudsellpos.com",
                     "json" => "yes",
                     "action" => "createuser",
-                    "passwd" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
-                    "passwd2" => config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                    "passwd" => config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"),
+                    "passwd2" => config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"),
                 ];
-                return $client->request("POST", "https://mohasabeh.com:2222/CMD_DB?json=yes", ["form_params" => $body]);
+                return $client->request("POST", "https://cloudsellpos.com:2222/CMD_DB?json=yes", ["form_params" => $body]);
             } catch (ClientException $e) {
                 Log::log("error", "Error changePhpVersion $e");
             }
@@ -949,7 +949,7 @@ class AdminCustomersController extends CBController
                 $client = new Client([
                     "http_errors" => false,
                     "headers" => [
-                        "Authorization" => "Basic " . base64_encode(config("app.mohasabeh_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.mohasabeh_settings.DIRECT_ADMIN_USER_PASSWORD")),
+                        "Authorization" => "Basic " . base64_encode(config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER") . ":" . config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD")),
                     ],
                 ]);
                 $body = [
@@ -957,7 +957,7 @@ class AdminCustomersController extends CBController
                     "domain" => $domain . '.cloudsellpos.com',
                     "action" => "php_selector",
                 ];
-                $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes", ["form_params" => $body]);
+                $result = $client->request("POST", "https://cloudsellpos.com:2222/CMD_API_DOMAIN?json=yes", ["form_params" => $body]);
                 return $result;
             } catch (ClientException $e) {
                 Log::log("error", "Error changePhpVersion $e");

@@ -25,7 +25,7 @@
                         <div class="col-md-12 col-lg-6">
                 @endif
                 <img class="img-fluid" src="{{ asset($sections['highlight']['image']) }}" 
-                    data-aos-delay="100" alt="Mohasabeh" loading="lazy">
+                    data-aos-delay="100" alt="CloudSellPOS" loading="lazy">
             </div>
         </div>
     </div>
@@ -146,7 +146,7 @@
             </div>
             <div class="row text-center justify-content-center">
                 <img width="600" src="{{ asset($sections['marketing']['image']) }}" 
-                    data-aos-delay="100" loading="lazy" alt="mohasabeh" />
+                    data-aos-delay="100" loading="lazy" alt="CloudSellPOS" />
             </div>
         </div>
     </div>
