@@ -15,5 +15,5 @@ yarn-error.log
 /storage/app
 /storage/framework
 /_backup
-/vendo
+/vendor
 /bootstrap
