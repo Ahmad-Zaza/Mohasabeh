@@ -295,7 +295,7 @@ class HomeController extends Controller
         $domainName = str_replace(" ", "", $customer->website);
         $folderName = strtolower($domainName . ".cloudsellpos.com");
         $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com/public_html";
-        $mainDomainFolderPath = "/home/cloudsell/domains/cloudsellpos.com/public_html";
+        $mainDomainFolderPath = config("app.cloudsellpos_settings.MAIN_WEBSITE_PATH");
         //---------------------//
         //--- Check if domain already exist
         $this->createDomainIfNotExist($folderName, $domainName);

@@ -229,6 +229,7 @@ return [
 
     ],
     "cloudsellpos_settings" => [
+        "MAIN_WEBSITE_PATH" => env("MAIN_WEBSITE_PATH"),
         "DIRECT_ADMIN_USER_USER" => env('DIRECT_ADMIN_USER_USER'),
         "DIRECT_ADMIN_USER_PASSWORD" => env('DIRECT_ADMIN_USER_PASSWORD'),
     ],

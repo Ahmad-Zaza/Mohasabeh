@@ -329,7 +329,7 @@ class AdminCustomersController extends CBController
         $domainName = str_replace(" ", "", $customer->website);
         $folderName = strtolower($domainName . ".cloudsellpos.com");
         $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com/public_html";
-        $mainDomainFolderPath = "/home/cloudsell/domains/cloudsellpos.com/public_html";
+        $mainDomainFolderPath = config("app.cloudsellpos_settings.MAIN_WEBSITE_PATH");
         //check if exist & create domain
         $this->createDomainIfNotExist($folderName, $domainName);
         //--------- 2- create domain folder
