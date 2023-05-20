@@ -307,7 +307,7 @@ class HomeController extends Controller
         //--------- 3- change subdomain settings (PHP VERSION & SUBDOMAIN FOLDERS)
         //----------------------------------------------//
         //--------- 4- Publishing (Copy files from main website to subdomains)
-        $formDir = $mainDomainFolderPath . '/storage/main/cloudsellpos_system';
+        $formDir = $mainDomainFolderPath . '/site/storage/main/cloudsellpos_system';
         $toDir = $folderPath;
         $this->copydir($formDir, $toDir);
         //----------------------------------------------//
