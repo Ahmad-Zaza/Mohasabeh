@@ -327,9 +327,9 @@ class AdminCustomersController extends CBController
         //----------------------------------------------//
         //--------- 1- create subdomain
         $domainName = str_replace(" ", "", $customer->website);
-        $folderName = strtolower($domainName . ".mohasabeh.com");
-        $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com/public_html";
-        $mainDomainFolderPath = "/home/mohasabeh/domains/mohasabeh.com/public_html";
+        $folderName = strtolower($domainName . ".cloudsellpos.com");
+        $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com/public_html";
+        $mainDomainFolderPath = "/home/cloudsell/domains/cloudsellpos.com/public_html";
         //check if exist & create domain
         $this->createDomainIfNotExist($folderName, $domainName);
         //--------- 2- create domain folder
@@ -341,7 +341,7 @@ class AdminCustomersController extends CBController
         }
         //----------------------------------------------//
         //--------- 3- change subdomain settings (PHP VERSION & SUBDOMAIN FOLDERS)
-        // $subdomainSettingFile = "/usr/local/directadmin/data/users/mohasabeh/domains/mohasabeh.com.subdomains.docroot.override";
+        // $subdomainSettingFile = "/usr/local/directadmin/data/users/cloudsell/domains/cloudsellpos.com.subdomains.docroot.override";
         // $fp = fopen($subdomainSettingFile, 'w');
         // $old_content = file_get_contents($subdomainSettingFile);
         //if (strpos($old_content, "$subdomainName=") === false) {
@@ -739,7 +739,7 @@ class AdminCustomersController extends CBController
             );
         }
 
-        $folderPath = "/home/mohasabeh/domains/$domainName.mohasabeh.com";
+        $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com";
         $customerDB = "mohasabeh_db-{$customer->website}";
 
         //--- Check if domain already exist
@@ -792,7 +792,7 @@ class AdminCustomersController extends CBController
         $exist = false;
         if (count($result) > 0) {
             foreach ($result as $domain) {
-                if ($domain . ".mohasabeh.com" == $folderName) {
+                if ($domain . ".cloudsellpos.com" == $folderName) {
                     $exist = true;
                 }
             }
@@ -867,7 +867,7 @@ class AdminCustomersController extends CBController
             $result = $da->query('CMD_API_DOMAIN',
                 array(
                     'action' => 'create',
-                    'domain' => $domainName . ".mohasabeh.com",
+                    'domain' => $domainName . ".cloudsellpos.com",
                     'php' => 'ON',
                     'ssl' => 'ON',
                     'bandwidth' => '1000',
@@ -892,7 +892,7 @@ class AdminCustomersController extends CBController
         $exist = false;
         if (count($result) > 0) {
             foreach ($result as $item) {
-                if ($item == $domainName . '.mohasabeh.com') {
+                if ($item == $domainName . '.cloudsellpos.com') {
                     $exist = true;
                 }
             }
@@ -905,7 +905,7 @@ class AdminCustomersController extends CBController
                 array(
                     'confirmed' => 'Confirm',
                     'delete' => 'yes',
-                    'select0 ' => $domainName . '.mohasabeh.com',
+                    'select0 ' => $domainName . '.cloudsellpos.com',
                 ));
             if ($da->error) {
                 throw new Exception("error");
@@ -954,7 +954,7 @@ class AdminCustomersController extends CBController
                 ]);
                 $body = [
                     "php1_select" => 2,
-                    "domain" => $domain . '.mohasabeh.com',
+                    "domain" => $domain . '.cloudsellpos.com',
                     "action" => "php_selector",
                 ];
                 $result = $client->request("POST", "https://mohasabeh.com:2222/CMD_API_DOMAIN?json=yes", ["form_params" => $body]);
