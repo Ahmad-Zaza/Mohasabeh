@@ -13,7 +13,7 @@
       1 => 'ar',
     ),
     'fallback_locale' => 'en',
-    'key' => 'base64:Cr5yOGbRp9upNSkANvf+UufEHBoiLWwkIwUDxuk8loA=',
+    'key' => 'base64:yJyhq/a+SklVjDg09Hlzs6A5rGtlNPeUQKgZobaYeZ4=',
     'cipher' => 'AES-256-CBC',
     'log' => 'daily',
     'log_level' => 'debug',
@@ -83,8 +83,9 @@
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Str' => 'Illuminate\\Support\\Str',
     ),
-    'mohasabeh_settings' => 
+    'cloudsellpos_settings' => 
     array (
+      'MAIN_WEBSITE_PATH' => NULL,
       'DIRECT_ADMIN_USER_USER' => NULL,
       'DIRECT_ADMIN_USER_PASSWORD' => NULL,
     ),
@@ -183,7 +184,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\framework/cache/data',
+        'path' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -233,7 +234,7 @@
     'DEFAULT_THUMBNAIL_WIDTH' => 0,
     'DEFAULT_UPLOAD_MAX_SIZE' => 1000,
     'IMAGE_EXTENSIONS' => 'jpg,png,jpeg,gif,bmp',
-    'MAIN_DB_DATABASE' => 'mohasabeh',
+    'MAIN_DB_DATABASE' => 'mohasabeh_new-cms',
     'MULTIPLE_DATABASE_MODULE' => 
     array (
     ),
@@ -270,7 +271,7 @@
       'sqlite' => 
       array (
         'driver' => 'sqlite',
-        'database' => 'mohasabeh',
+        'database' => 'mohasabeh_new-cms',
         'prefix' => '',
       ),
       'mysql' => 
@@ -278,7 +279,7 @@
         'driver' => 'mysql',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'mohasabeh',
+        'database' => 'mohasabeh_new-cms',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -302,7 +303,7 @@
         'driver' => 'pgsql',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'mohasabeh',
+        'database' => 'mohasabeh_new-cms',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -315,7 +316,7 @@
         'driver' => 'sqlsrv',
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'mohasabeh',
+        'database' => 'mohasabeh_new-cms',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -341,10 +342,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\fonts/',
-      'font_cache' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\M\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website',
+      'font_dir' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\fonts/',
+      'font_cache' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\Voila\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -367,12 +368,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\app',
+        'root' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\app/public',
+        'root' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -445,7 +446,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\resources\\views/vendor/mail',
+        0 => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -525,7 +526,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -545,9 +546,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\resources\\views',
+      0 => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\resources\\views',
     ),
-    'compiled' => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\storage\\framework\\views',
+    'compiled' => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\storage\\framework\\views',
   ),
   'image' => 
   array (
@@ -615,7 +616,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\Users\\M\\AppData\\Local\\Temp',
+      'local_path' => 'C:\\Users\\Voila\\AppData\\Local\\Temp',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
     ),
@@ -630,8 +631,8 @@
     'route' => NULL,
     'paths' => 
     array (
-      0 => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\public\\upload',
-      1 => 'C:\\wamp64\\www\\mohasabeh website\\mohasabeh-website\\public\\images',
+      0 => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\public\\upload',
+      1 => 'C:\\xampp\\htdocs\\xampp\\Mohasabeh\\mohasabeh-website\\public\\images',
     ),
     'templates' => 
     array (

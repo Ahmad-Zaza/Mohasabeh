@@ -23,6 +23,9 @@ Route::get('/clear/route', function () {
     \Artisan::call('view:clear');
     return "done";
 });
+Route::get('/test', function () {
+    return view('admin.index');
+});
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
@@ -40,7 +43,7 @@ Route::get('/setLang/{lang}', function ($lang) {
     if (!in_array($lang, ['en', 'ar'])) {
         abort(404);
     }
-    Session::put("locale",$lang);
+    Session::put("locale", $lang);
     return redirect()->back();
 });
 
@@ -93,4 +96,4 @@ Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100
 })->name('manage-image-crop')->where('img', '(.*)');
 ############ Added Routes ###########
 Route::post('modules/sort', "SortingModelController@sorting");
-Route::post('save-contact','HomeController@saveContact');
+Route::post('save-contact', 'HomeController@saveContact');
