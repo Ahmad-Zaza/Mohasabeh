@@ -4,7 +4,7 @@
     position: absolute;
     bottom: -64px;
     z-index: 1;
-    background-image: url(https://mohasabeh.com//images/Path_8854-svg.svg);
+    background-image: url(https://cloudsellpos.com//images/Path_8854-svg.svg);
     display: none;
 }
 
@@ -14,7 +14,7 @@
 
 @font-face {
     font-family: 'Poppins';
-    src: url('https://mohasabeh.com//fonts/Poppins/Poppins-Regular.ttf')
+    src: url('https://cloudsellpos.com//fonts/Poppins/Poppins-Regular.ttf')
 }
 
 body {
@@ -127,7 +127,7 @@ nav#main,
     position: absolute;
     top: -64px;
     z-index: 1;
-    background-image: url(https://mohasabeh.com//images/Path_8854new-svg.svg);
+    background-image: url(https://cloudsellpos.com//images/Path_8854new-svg.svg);
     display: none;
 }
 

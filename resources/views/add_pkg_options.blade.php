@@ -107,8 +107,7 @@
                         </div>
                         <script src="http://mohasabeh.voitest.com/vendor/crudbooster/assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js">
                         </script>
-                        <script
-                                                src="http://mohasabeh.voitest.com/vendor/crudbooster/assets/adminlte/plugins/datepicker/bootstrap-datepicker.js">
+                        <script src="http://mohasabeh.voitest.com/vendor/crudbooster/assets/adminlte/plugins/datepicker/bootstrap-datepicker.js">
                         </script>
                     </div>
                     <div class="box-footer" style="background: #F5F5F5">

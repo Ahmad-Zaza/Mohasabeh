@@ -13,7 +13,7 @@ return [
     |
      */
 
-    'name'            => env('APP_NAME', 'mohasabeh'),
+    'name'            => env('APP_NAME', 'CloudSellPOS'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
      */
 
-    'url'             => env('APP_URL', 'http://mohasabeh.com/'),
+    'url'             => env('APP_URL', 'http://cloudsellpos.com/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -228,7 +228,8 @@ return [
         'Str' => Illuminate\Support\Str::class,
 
     ],
-    "mohasabeh_settings" => [
+    "cloudsellpos_settings" => [
+        "MAIN_WEBSITE_PATH" => env("MAIN_WEBSITE_PATH"),
         "DIRECT_ADMIN_USER_USER" => env('DIRECT_ADMIN_USER_USER'),
         "DIRECT_ADMIN_USER_PASSWORD" => env('DIRECT_ADMIN_USER_PASSWORD'),
     ],
