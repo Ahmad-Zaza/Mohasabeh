@@ -218,7 +218,7 @@ class AdminPricePkgOptions27Controller extends CBController
         $data['page_title'] = "Add Data";
         $price_pkgs = \App\PricePkg::all();
         $reports = \App\PricingReport::all();
-        $this->cbView('add_pkg_options', compact('data', 'price_pkgs', 'reports'));
+        return view('add_pkg_options', compact('data', 'price_pkgs', 'reports'));
     }
 
     /*

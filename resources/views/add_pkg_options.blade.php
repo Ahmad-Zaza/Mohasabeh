@@ -23,7 +23,7 @@
                     <input type='hidden' name='ref_mainpath' value='' />
                     <input type='hidden' name='ref_parameter' value='' />
                     <div class="box-body" id="parent-form-area">
-                        {{-- <div class="form-group header-group-0 " id="form-group-title_ar" style="">
+                        <div class="form-group header-group-0 " id="form-group-title_ar" style="">
                             <label class="control-label col-sm-2">
                                 Price Packages
                                 <span class="text-danger" title="This field is required">*</span>
@@ -37,7 +37,7 @@
                                 <div class="text-danger"></div>
                                 <p class="help-block"></p>
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="form-group header-group-0 " id="form-group-title_ar" style="">
                             <label class="control-label col-sm-2">
                                 Option data Type
