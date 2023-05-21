@@ -16,16 +16,16 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::get('/clear/route', function () {
+// Route::get('/clear/route', function () {
 
-    \Artisan::call('cache:clear');
-    \Artisan::call('config:clear');
-    \Artisan::call('view:clear');
-    return "done";
-});
-Route::get('/test', function () {
-    return view('admin.index');
-});
+//     \Artisan::call('cache:clear');
+//     \Artisan::call('config:clear');
+//     \Artisan::call('view:clear');
+//     return "done";
+// });
+
+
+Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
@@ -39,13 +39,13 @@ Route::get('activate-customer/{id}', 'HomeController@customer_activate');
 Route::get('customers/{token}', 'HomeController@activationProgress');
 Route::get('customers/email/{email}', 'HomeController@checkEmailUnique');
 Route::get('pricing', 'HomeController@pricing');
-Route::get('/setLang/{lang}', function ($lang) {
-    if (!in_array($lang, ['en', 'ar'])) {
-        abort(404);
-    }
-    Session::put("locale", $lang);
-    return redirect()->back();
-});
+// Route::get('/setLang/{lang}', function ($lang) {
+//     if (!in_array($lang, ['en', 'ar'])) {
+//         abort(404);
+//     }
+//     Session::put("locale", $lang);
+//     return redirect()->back();
+// });
 
 
 Route::get('admin/customers/set-free-trial/{id}', 'AdminCustomersController@setFreeTrial');
@@ -87,13 +87,13 @@ Route::get('image/upload', 'ImageController@fileCreate')->name('images.upload');
 Route::post('image/upload/store/{fleet_id}', 'ImageController@fileStore');
 Route::get('/image/delete/{id}', 'ImageController@fileDestroy');
 Route::get('/image/showImageJson/{fleet_id?}', 'ImageController@showImageJson');
-Route::get('/manage-image/resize/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-    return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
-})->name('manage-image-resize')->where('img', '(.*)');
+// Route::get('/manage-image/resize/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
+//     return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
+// })->name('manage-image-resize')->where('img', '(.*)');
 
-Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-    return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
-})->name('manage-image-crop')->where('img', '(.*)');
+// Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
+//     return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
+// })->name('manage-image-crop')->where('img', '(.*)');
 ############ Added Routes ###########
 Route::post('modules/sort', "SortingModelController@sorting");
 Route::post('save-contact', 'HomeController@saveContact');
