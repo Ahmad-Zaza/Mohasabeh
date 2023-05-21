@@ -44,10 +44,10 @@ class AdminSiteStatusController extends CBController
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
         $this->col[] = ["label" => "Bills Count", "name" => "bills_count"];
         $this->col[] = ["label" => "Vorches Count", "name" => "vorches_count"];
-        $this->col[] = ["label" => "Maximum Users Number", "name" => "users_num"];
-        $this->col[] = ["label" => "Maximum Inventories Number", "name" => "inventories_num"];
-        $this->col[] = ["label" => "Maximum Currencies Number", "name" => "currencies_num"];
-        $this->col[] = ["label" => "Maximum Clients Number", "name" => "clients_num"];
+        $this->col[] = ["label" => "Maximum Users Number", "name" => "users_num", "callback_php" => '($row->users_num == -1 ? "unlimited" : $row->users_num)'];
+        $this->col[] = ["label" => "Maximum Inventories Number", "name" => "inventories_num", "callback_php" => '($row->inventories_num == -1 ? "unlimited" : $row->inventories_num)'];
+        $this->col[] = ["label" => "Maximum Currencies Number", "name" => "currencies_num", "callback_php" => '($row->currencies_num == -1 ? "unlimited" : $row->currencies_num)'];
+        $this->col[] = ["label" => "Maximum Clients Number", "name" => "clients_num", "callback_php" => '($row->clients_num == -1 ? "unlimited" : $row->clients_num)'];
         $this->col[] = ["label" => "Attachs Size", "name" => "attachs_size"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
@@ -79,6 +79,7 @@ class AdminSiteStatusController extends CBController
         | @parent_columns = Sparate with comma, e.g : name,created_at
         |
          */
+
         $this->sub_module = array();
 
         /*
@@ -209,7 +210,6 @@ class AdminSiteStatusController extends CBController
         $this->load_css = array();
 
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -408,10 +408,10 @@ class AdminSiteStatusController extends CBController
                     [
                         'bills_count' => $bills_count,
                         'vorches_count' => $vouchers_count,
-                        'users_num' => ($package_config_data['users_num'] == -1 ? '&infin;' : $package_config_data['users_num']),
-                        'inventories_num' => ($package_config_data['inventories_num'] == -1 ? '&infin;' : $package_config_data['inventories_num']),
-                        'currencies_num' => ($package_config_data['currencies_num'] == -1 ? '&infin;' : $package_config_data['currencies_num']),
-                        'clients_num' => ($package_config_data['clients_num'] == -1 ? '&infin;' : $package_config_data['clients_num']),
+                        'users_num' => ($package_config_data['users_num']),
+                        'inventories_num' => ($package_config_data['inventories_num']),
+                        'currencies_num' => ($package_config_data['currencies_num']),
+                        'clients_num' => ($package_config_data['clients_num']),
                         'attachs_size' => $attachment_size,
                         'subscription_start_date' => $start_date,
                         'subscription_end_date' => $end_date,
@@ -426,4 +426,5 @@ class AdminSiteStatusController extends CBController
         }
         return redirect()->back()->with(['message' => cbLang("successfully_generating_report"), 'message_type' => 'success']);
     }
+
 }
