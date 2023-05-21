@@ -6,6 +6,7 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use PDO;
+use PDOException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -43,10 +44,10 @@ class AdminSiteStatusController extends CBController
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
         $this->col[] = ["label" => "Bills Count", "name" => "bills_count"];
         $this->col[] = ["label" => "Vorches Count", "name" => "vorches_count"];
-        $this->col[] = ["label" => "Users Number", "name" => "users_num"];
-        $this->col[] = ["label" => "Inventories Number", "name" => "inventories_num"];
-        $this->col[] = ["label" => "Currencies Number", "name" => "currencies_num"];
-        $this->col[] = ["label" => "Clients Number", "name" => "clients_num"];
+        $this->col[] = ["label" => "Maximum Users Number", "name" => "users_num"];
+        $this->col[] = ["label" => "Maximum Inventories Number", "name" => "inventories_num"];
+        $this->col[] = ["label" => "Maximum Currencies Number", "name" => "currencies_num"];
+        $this->col[] = ["label" => "Maximum Clients Number", "name" => "clients_num"];
         $this->col[] = ["label" => "Attachs Size", "name" => "attachs_size"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
@@ -338,7 +339,11 @@ class AdminSiteStatusController extends CBController
                 $customerDBHost = "localhost";
                 $customerDBUser = "{$customer->database_name}";
                 $customerDBPassword = "{$customer->database_password}";
-                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+                try {
+                    $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+                } catch (PDOException $ex) {
+                    return redirect()->back()->with(['message' => cbLang("error_generating_report") . $ex->getMessage(), 'message_type' => 'danger']);
+                }
 
                 $bills_query = "SELECT COUNT(*) FROM `bills`";
                 $bills_stmt = $dbh->query($bills_query);
@@ -346,7 +351,12 @@ class AdminSiteStatusController extends CBController
 
                 $vouchers_query = "SELECT COUNT(*) FROM `vouchers`";
                 $vouchers_stmt = $dbh->query($vouchers_query);
-                $vouchers_count = $vouchers_stmt->fetchColumn();
+                if ($vouchers_stmt === false) {
+                    $errorInfo = $dbh->errorInfo();
+                    return redirect()->back()->with(['message' => "Error executing query: " . $errorInfo[2], 'message_type' => 'danger']);
+                } else {
+                    $vouchers_count = $vouchers_stmt->fetchColumn();
+                }
 
                 $package_config_query = "SELECT * FROM `package_config`";
                 $package_config_stmt = $dbh->query($package_config_query);
