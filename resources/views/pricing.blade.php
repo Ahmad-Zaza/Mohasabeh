@@ -36,7 +36,7 @@
 
                                         {{ $pkg["title_$lang"] }}
                                     </h3>
-                                    <input type="hidden" name="package_id" value={{$pk->id}} class="type">
+                                    <input type="hidden" name="package_id" value={{$pkg->id}} class="type">
 
 
                                     <div class="price-lockup">
