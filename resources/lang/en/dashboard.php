@@ -21,8 +21,22 @@ return [
     'Backup Storage Usage' => 'Backup Storage Usage',
     'Attached Storage Usage' => 'Attached Storage Usage',
     'Customers Count' => 'Customers Count',
-    'Login' => 'Login'
+    'Login' => 'Login',
 
+    'Change Personal Information' => 'Change Personal Information',
+    'First Name' => 'First Name',
+    'Last Name' => 'Last Name',
+    'Company' => 'Company',
+    'Phone' => 'Phone',
+    'Address' => 'Address',
+    'Save' => 'Save',
+    'Current Password' => 'Current Password',
+    'New Password' => 'New Password',
+    'Confirm Password' => 'Confirm Password',
+    'Change Password' => 'Change Password',
+    'Change Email' => 'Change Email',
+    'Email' => 'Email',
+    'Password' => 'Password'
 
 
 

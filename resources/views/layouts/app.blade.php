@@ -7,10 +7,7 @@
     <link rel="icon" href="{{ asset($settings['favicon']) }}" type="image/png" sizes="16x16">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="title" content="{{ $seo->title }}" />
-    <meta name="description" content="{{ $seo['description'] }}">
-    <meta name="keywords" content="{{ $seo['keywords'] }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
+   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" defer> <!-- Resource style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/ionicons.min.css') }}" defer> <!-- Resource style -->

@@ -11,4 +11,19 @@ class HomeController extends Controller
     {
         return view('dashboard.pages.index');
     }
+
+    public function change_email_view()
+    {
+        return view('dashboard.pages.change-email');
+    }
+
+    public function change_password_view()
+    {
+        return view('dashboard.pages.change-password');
+    }
+
+    public function change_personal_info_view()
+    {
+        return view('dashboard.pages.change-personal-info');
+    }
 }

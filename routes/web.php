@@ -25,8 +25,10 @@ use Illuminate\Support\Facades\Session;
 Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch');
 
 //Mini Dashboard
-Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
-
+Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard');
+Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
+Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
+Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
