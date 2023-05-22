@@ -55,7 +55,7 @@
         <nav id="main" class="navbar navbar-expand-md navbar-light bg-light fixed-top">
             <div class="container">
                 <a class="navbar-brand main" href="#">
-                    <img width="150" src="{{ asset($settings['logo']) }}" alt="CloudSellPOS" loading="lazy" />
+                    <img width="150" src="{{ asset('images/logo.png') }}" alt="CloudSellPOS" loading="lazy" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
