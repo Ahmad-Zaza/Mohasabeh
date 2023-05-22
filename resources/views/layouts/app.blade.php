@@ -11,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="title" content="{{ $seo->title }}" />
-    <meta name="description" content="{{ $settings['description'] }}">
     {{-- <meta name="keywords" content="{{ $settings['keywords'] }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" defer> <!-- Resource style -->
@@ -58,7 +57,7 @@
         <nav id="main" class="navbar navbar-expand-md navbar-light bg-light fixed-top">
             <div class="container">
                 <a class="navbar-brand main" href="#">
-                    <img width="150" src="{{ asset($settings['logo']) }}" alt="CloudSellPOS" loading="lazy" />
+                    <img width="150" src="{{ asset('images/logo.png') }}" alt="CloudSellPOS" loading="lazy" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"

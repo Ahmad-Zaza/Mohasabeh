@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html @if(app()->isLocale('en')) dir="ltr" @else dir="rtl" @endif>
 
 <head>
     @include('dashboard.includes.head')
 </head>
 
-<body>
+<body dir="{{(App::isLocale('ar') ? 'rtl' : 'ltr')}}">
     <header id="header" class="header fixed-top d-flex align-items-center">
         @include('dashboard.includes.header')
     </header>

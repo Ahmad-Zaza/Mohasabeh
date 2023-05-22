@@ -1,6 +1,5 @@
-
 <footer id="footer" class="footer">
     <div class="copyright">
-        All Rights Reserved
+        {{__('dashboard.All Rights Reserved')}}
     </div>
 </footer>

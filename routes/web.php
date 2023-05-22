@@ -24,8 +24,12 @@ use Illuminate\Support\Facades\Session;
 //     return "done";
 // });
 
+Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch');
 
+//Mini Dashboard
 Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
+
+
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
@@ -39,13 +43,6 @@ Route::get('activate-customer/{id}', 'HomeController@customer_activate');
 Route::get('customers/{token}', 'HomeController@activationProgress');
 Route::get('customers/email/{email}', 'HomeController@checkEmailUnique');
 Route::get('pricing', 'HomeController@pricing');
-// Route::get('/setLang/{lang}', function ($lang) {
-//     if (!in_array($lang, ['en', 'ar'])) {
-//         abort(404);
-//     }
-//     Session::put("locale", $lang);
-//     return redirect()->back();
-// });
 
 
 Route::get('admin/customers/set-free-trial/{id}', 'AdminCustomersController@setFreeTrial');

@@ -387,6 +387,11 @@
       ),
     ),
   ),
+  'languages' => 
+  array (
+    'en' => 'English',
+    'ar' => 'العربية',
+  ),
   'laravellocalization' => 
   array (
     'supportedLocales' => 
