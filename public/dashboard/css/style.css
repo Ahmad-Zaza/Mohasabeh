@@ -1221,11 +1221,11 @@ h6 {
 }
 
 .action-buttons {
-  color: white; 
-  padding: 10px 24px; 
-  cursor: pointer; 
-  width: 50%; 
-  display: block; 
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer;
+  width: 50%;
+  display: block;
   float: right;
 }
 
@@ -1243,6 +1243,10 @@ h6 {
   cursor: pointer;
   border-radius: 5px;
   width: 10em;
+}
+
+.box {
+  padding-left: 1rem;
 }
 
 .footer .copyright {

@@ -22,4 +22,8 @@
 <link href="{{asset('dashboard/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
 
 <!-- Template Main CSS File -->
+@if(app()->isLocale('ar'))
+<link href="{{ asset('dashboard/css/style-rtl.css')}}" rel="stylesheet">
+@else
 <link href="{{ asset('dashboard/css/style.css')}}" rel="stylesheet">
+@endif
