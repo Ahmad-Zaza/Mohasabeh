@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\CompanyInformation;
+use App\Seo;
 use App\SocialMedia;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +24,31 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         $social_media = SocialMedia::where('active', 1)->orderBy('sorting')->get();
         $company_information = CompanyInformation::where('active', 1)->first();
+
+        view()->composer('*', function ($view) {
+            $lang = config('app.locale');
+            if (Route::current()->uri == "/") {
+                $seo = Seo::where("page", "home")->where('language', $lang)->first();
+            } else if (strpos(Route::current()->uri, "{title}") === false) {
+                $seo = Seo::where("page", Route::current()->uri)->whereNull("page_id")->where('language', $lang)->first();
+            } else if (Route::current()->parameters) {
+                $temp = explode("/{title}", Route::current()->uri)[0];
+                $db_table = '';
+                if ($temp == 'blogs') {
+                    $db_table = 'articles';
+                } else {
+                    $db_table = $temp;
+                }
+                $modul_id = DB::table($db_table)->where('slug', Route::current()->parameters["title"])->whereNull('deleted_at')->first()->id;
+                $seo = Seo::where("page", $temp)->where("page_id", $modul_id)->where('language', $lang)->first();
+            }
+            //if page don't has seo show site SEO
+            if (!$seo) {
+                $seo = $seo = Seo::where("page", "home")->where('language', $lang)->first();
+            }
+            $view->with('seo', $seo);
+        });
+
         View::share(['social_media' => $social_media, 'company_information' => $company_information]);
     }
 

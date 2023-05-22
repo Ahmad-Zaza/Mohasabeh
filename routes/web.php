@@ -11,13 +11,10 @@
 |
  */
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 Route::get('/clear/route', function () {
-
     \Artisan::call('cache:clear');
     \Artisan::call('config:clear');
     \Artisan::call('view:clear');
@@ -55,13 +52,9 @@ Route::get('admin/customers/generateJson/{id}', 'AdminCustomersController@genera
 Route::get('admin/customers/activateCustomer/{id}', 'AdminCustomersController@activateCustomer');
 Route::get('admin/customers/renewalSubscriptionPage/{id}', 'AdminCustomersController@renewalSubscriptionPage');
 Route::get('admin/customers/deleteCustomer/{id}', 'AdminCustomersController@deleteCustomer');
-
-Route::get('admin/customers/send-link/{id}', 'AdminCustomersController@sendLink'); // yazan_edits
-
-Route::get('admin/customers/set-free-trial-link/{id}', 'AdminCustomersController@setFreeTrialLink'); // yazan_edits
-Route::post('admin/customers/saveLink', 'AdminCustomersController@saveLink'); // yazan_edits
-//Route::get('admin/PricingPackageOptions','crocodicstudio_voila\crudbooster\controllers\MenusClientController@getModulesItem');
-
+Route::get('admin/customers/send-link/{id}', 'AdminCustomersController@sendLink');
+Route::get('admin/customers/set-free-trial-link/{id}', 'AdminCustomersController@setFreeTrialLink');
+Route::post('admin/customers/saveLink', 'AdminCustomersController@saveLink');
 
 $base_url = config('crudbooster.ADMIN_PATH');
 Route::get($base_url . '/pages/{id}', "PageInfoController@viewpage");

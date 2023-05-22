@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\InfoPages;
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class PageInfoController extends Controller
 {
     public function get($model)
     {
-        if (!\CRUDBooster::myId()) {
+        if (!CRUDBooster::myId()) {
             return redirect('modules/login');
         }
 
@@ -45,19 +48,21 @@ class PageInfoController extends Controller
  
     public function viewpage($page_id)
     {
-        $page=\DB::table('landing_pages')->find($page_id);
+        $page=DB::table('landing_pages')->find($page_id);
         if($page==null){
             return null;
         }
-        $seo = \DB::table('seo')->where([
-            'model' => 'page',
-            'model_id' => $page_id,
+        $seo = DB::table('cms_seo')->where([
+            'page' => 'page',
+            'page_id' => $page_id,
+            'language' => App::getlocale()
         ])->first();
 
         if (!$seo) {
-            $seo = \DB::table('seo')->where([
-                'model' => 'home',
-                'model_id' => null,
+            $seo = DB::table('cms_seo')->where([
+                'page' => 'home',
+                'page_id' => null,
+                'language' => App::getlocale()
             ])->first();
         }
 
@@ -79,11 +84,11 @@ class PageInfoController extends Controller
 
     private function getForm($id)
     {
-        $form= \DB::table('forms')->find($id);
+        $form= DB::table('forms')->find($id);
         $elemnt_form="";
         if($form){
             $elemnt_form.="<form method='POST' action='/request/form/".$form->id."' class='".$form->row_type." well' style='background:#FFF' >";
-            $fileds=\DB::table('form_field')->select(
+            $fileds=DB::table('form_field')->select(
                 'form_field.*',
                 'fields.title',
                 'forms.*'

@@ -5,14 +5,12 @@
     <style>
         .footer-sm {
             bottom: 0;
-            /* position: fixed; */
             width: 100%;
         }
 
-        .footer-sm ul li a{
+        .footer-sm ul li a {
             padding: 17px;
         }
-
     </style>
     <div class="w-100 container hero pb-0 message-parent relative progress-parent flex align-items-center">
         <div class="w-100 text-center message-cont">
@@ -49,7 +47,7 @@
             activateCustomer(customerId);
         })
 
-        function activateCustomer(customerId){
+        function activateCustomer(customerId) {
             $.ajax({
                 type: "GET",
                 url: "{{ url('activate-customer') }}/" + customerId,
@@ -59,7 +57,6 @@
                     width = 100;
                     $("#progress-bar").width(width + "%");
                     $("#progress-bar").html(width + "%");
-                    //$(".progress-parent").addClass("hide");
                     $(".message-cont").html(res.message);
                 },
                 error: function(data) {

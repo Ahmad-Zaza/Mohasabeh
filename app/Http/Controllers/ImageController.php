@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ImageModel;
 use App\ImageUpload\ImageManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
 {
@@ -14,14 +15,12 @@ class ImageController extends Controller
     public function __construct()
     {
         $this->_imageManager = new ImageManager();
-
     }
     public function index($fleet_id = null)
     {
         $arr = $this->_imageManager->getAll($fleet_id);
         $arr = array("images" => $arr, "model_id" => $fleet_id);
         return view("image", $arr);
-
     }
 
     public function showImageJson($fleet_id = null)
@@ -29,7 +28,6 @@ class ImageController extends Controller
         $arr = $this->_imageManager->getAll($fleet_id);
         $arr = array("data" => $arr);
         return response()->json($arr);
-
     }
 
     public function fileCreate()
@@ -54,7 +52,7 @@ class ImageController extends Controller
         try {
             if ($request->isMethod('post')) {
                 $data = $request->get("data");
-                if(count(is_array($data["paths"])?:[])>1){
+                if (count(is_array($data["paths"]) ?: []) > 1) {
                     foreach ($data["paths"] as $item) {
                         $imageModel = new ImageModel();
                         $imageModel->model = $data['model'];
@@ -62,16 +60,15 @@ class ImageController extends Controller
                         $imageModel->path = $item;
                         $imageModel->save();
                     }
-                }
-                else{
+                } else {
                     $imageModel = new ImageModel();
                     $imageModel->model = $data['model'];
                     $imageModel->model_id = $data['model_id'];
                     $imageModel->path = $data["paths"];
                     $imageModel->save();
                 }
-                $images = \DB::table('image_model')->where([
-                    'model' => $data['model'],
+                $images = DB::table('model_images')->where([
+                    'model_type' => $data['model'],
                     'model_id' => $data['model_id'],
                 ])->get();
 
@@ -83,7 +80,7 @@ class ImageController extends Controller
 
     }
 
-    public function deleteImageModule(Request $request,$id)
+    public function deleteImageModule(Request $request, $id)
     {
         $imageModel = ImageModel::find($id);
         if ($imageModel) {
@@ -92,8 +89,8 @@ class ImageController extends Controller
 
         $data = $request->get("dataValue");
 
-        $images = \DB::table('image_model')->where([
-            'model' => $data['model'],
+        $images = DB::table('model_images')->where([
+            'model_type' => $data['model'],
             'model_id' => $data['model_id'],
         ])->get();
 

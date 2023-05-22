@@ -83,8 +83,9 @@
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Str' => 'Illuminate\\Support\\Str',
     ),
-    'mohasabeh_settings' => 
+    'cloudsellpos_settings' => 
     array (
+      'MAIN_WEBSITE_PATH' => NULL,
       'DIRECT_ADMIN_USER_USER' => NULL,
       'DIRECT_ADMIN_USER_PASSWORD' => NULL,
     ),

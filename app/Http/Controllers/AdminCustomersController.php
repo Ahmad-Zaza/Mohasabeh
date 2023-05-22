@@ -155,13 +155,6 @@ class AdminCustomersController extends CBController
             'url' => CRUDBooster::mainpath('delete-customer/[id]'),
         ];
 
-        // $this->addaction[] = [
-        //     'label' => 'Send Host Link',
-        //     'url'   => CRUDBooster::mainpath('send-link/[id]'),
-        //     'icon'  => 'fa fa-envelope',
-        //     'color' => 'info',
-        // ];
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -471,10 +464,6 @@ class AdminCustomersController extends CBController
         } catch (RequestException $e) {
             Log::log("error", "Error Clearing Cache $e");
         }
-        //$result = shell_exec("php /$folderPath/backend/artisan config:clear");
-        //$result = shell_exec("php /$folderPath/backend/artisan cache:clear");
-        //$result = shell_exec("php /$folderPath/backend/artisan view:clear");
-        //$result = shell_exec("php /$folderPath/backend/artisan route:clear");
         //-----------------------//
         // 8- send email to the customers
         CRUDBooster::sendEmail([

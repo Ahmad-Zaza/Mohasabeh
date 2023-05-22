@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class InfoPages extends Model
 {
     //
-    public $table="info_pages";
-    public $timestamps =false;
-    
+    public $table = "info_pages";
+    public $timestamps = false;
+
 }

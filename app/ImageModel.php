@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImageModel extends Model
 {
-    public $table="image_model";
-    public $timestamps =false;
+    public $table = "model_images";
+    public $timestamps = false;
 }

@@ -1,7 +1,6 @@
 @extends('crudbooster::admin_template')
 @section('content')
     <div>
-
         @if (CRUDBooster::getCurrentMethod() != 'getProfile')
             @if (g('return_url'))
                 <p><a title='Return' href='{{ g('return_url') }}'><i class='fa fa-chevron-circle-left '></i>
@@ -20,7 +19,6 @@
         <div class="panel-heading">
             <strong><i class='{{ CRUDBooster::getCurrentModule()->icon }}'></i> {!! 'Set Customer Host Link' !!}</strong>
         </div>
-
         <div class="panel-body" style="padding:20px 0px 0px 0px">
             <?php $action = CRUDBooster::mainpath('saveLink'); ?>
             <form class='form-horizontal was-validated' method='post' id="form" enctype="multipart/form-data"
@@ -35,7 +33,6 @@
                         <label class='control-label col-sm-2'>Host Link
                             <span class='text-danger' title='{!! trans('crudbooster.this_field_is_required') !!}'>*</span>
                         </label>
-
                         <div class="col-sm-4">
                             <input type='text' title="Host Link" required class='form-control notfocus' name="host_link"
                                 id="host_link" value='{{ $value }}' />
@@ -43,7 +40,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="box-footer" style="background: #F5F5F5">
                     <div class="form-group">
@@ -55,21 +51,8 @@
                                     class='fa fa-chevron-circle-left'></i> {{ trans('crudbooster.button_back') }}</a>
                         </div>
                     </div>
-
-
                 </div><!-- /.box-footer-->
-
             </form>
         </div>
     </div>
-    <script language="javascript" type="text/javascript">
-        //$("#form").submit(function(e) {
-        //     e.preventDefault();
-        //     var data = $("#form").serialize();
-        //     //$("#form").submit();
-        //     $("#form").validate();
-        // });
-
-    </script>
-
 @endsection

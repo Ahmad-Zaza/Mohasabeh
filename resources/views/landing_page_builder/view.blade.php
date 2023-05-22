@@ -5,24 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $landingPageSeo->title_en }}</title>
-
+    <title>{{ $landingPageSeo->title }}</title>
     <meta property="og:image" content="{{ $landingPageSeo->image }}" />
     <meta property="og:image:secure_url" content="{{ $landingPageSeo->image }}" />
-    <meta property="og:title" content="{{ $landingPageSeo->title_en }}" />
+    <meta property="og:title" content="{{ $landingPageSeo->title }}" />
     <meta property="og:site_name" content="Voila" />
     <meta property="og:url" content="{{ request()->url() }}" />
     <meta property="og:description" content="{{ $landingPageSeo->description }}" />
     <meta property="og:type" content="article" />
     <meta name="twitter:site" content="@Voila">
     <meta name="twitter:url" content="{{ request()->url() }}">
-    <meta name="twitter:title" content="{{ $landingPageSeo->title_en }}">
+    <meta name="twitter:title" content="{{ $landingPageSeo->title }}">
     <meta name="twitter:description" content="{{ $landingPageSeo->description }}">
     <meta name="twitter:image" content="{{ $landingPageSeo->image }}">
-    <title>{{ $landingPageSeo->title_en }}</title>
+    <title>{{ $landingPageSeo->title }}</title>
     <meta name="description" content="{{ $landingPageSeo->description }}">
     <meta name="keywords" content="{{ $landingPageSeo->keywords }}">
-    <meta name="DC.Title" content="{{ $landingPageSeo->title_en }}">
+    <meta name="DC.Title" content="{{ $landingPageSeo->title }}">
     <meta name="DC.Creator" content="Voila">
     <meta name="DC.Subject" content="Voila">
     <meta name="DC.Description" content="{{ $landingPageSeo->description }}">

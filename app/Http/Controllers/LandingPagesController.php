@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
-class LandingPagesController extends \crocodicstudio\crudbooster\controllers\CBController
+class LandingPagesController extends CBController
 {
     public function cbInit()
     {

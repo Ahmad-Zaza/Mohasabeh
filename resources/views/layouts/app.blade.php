@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ $lang }}">
-@php  $seo= \App\Seo::select('*')->first(); @endphp
-
-
 <head>
     <meta charset="utf-8">
     <title>{{ config('app.name', 'CloudSellPOS') }}</title>
@@ -11,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="title" content="{{ $seo->title }}" />
-    <meta name="description" content="{{ $settings['description'] }}">
-    {{-- <meta name="keywords" content="{{ $settings['keywords'] }}"> --}}
+    <meta name="description" content="{{ $seo['description'] }}">
+    <meta name="keywords" content="{{ $seo['keywords'] }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" defer> <!-- Resource style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" defer>
@@ -88,20 +85,6 @@
                                 href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a>
                         </li>
                         <li class="nav-item mobile login-color" onclick="openLoginModal()">{{ __('data.login') }}</li>
-
-                        {{-- <li class="nav-item"> --}}
-                        {{-- <a type="button" --}}
-                        {{-- class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a> --}}
-                        {{-- </li> --}}
-                        {{-- <li class="nav-item"> --}}
-                        {{-- <a type="button" href="" --}}
-                        {{-- class="text-orange login-button js-scroll-trigger mobile">{{ __('data.login') }}</a> --}}
-                        {{-- </li> --}}
-                        {{-- <li class="nav-item"> --}}
-                        {{-- <a class="languge-switch" --}}
-                        {{-- href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a> --}}
-                        {{-- </li> --}}
-
                     </ul>
                 </div>
                 <a type="button"
@@ -114,7 +97,6 @@
                 <a class="languge-switch"
                     href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a>
             </div>
-            {{-- @endif --}}
         </nav><!-- Navbar End -->
 
 
@@ -367,62 +349,6 @@
                                     </div>
                                 </div>
                             </section>
-
-                            <!-- SECTION color & photo -->
-                            {{-- <h2></h2>
-                            <section>
-                                <div class="inner">
-                                    <div class="form-content">
-                                        <div class="form-header">
-                                            <h3 class="text-blue">Subscribe</h3>
-                                        </div>
-                                        <p>{{ __('data.color_and_logo') }}</p>
-                                        <div class="form-row color-section">
-                                            <div class="label">
-                                                {{ __('data.choose_main_color') }}
-                                            </div>
-                                            <div class="form-holder w-100 flex">
-                                                <div class="input-group mb-1">
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">
-                                                            <input type="color" id="main-color" name="color"
-                                                                value="#fdffff"
-                                                                onchange="$('#main-color-value').val(this.value);"
-                                                                aria-label="Checkbox for following text input">
-                                                        </div>
-                                                    </div>
-                                                    <input type="text" id="main-color-value" name="color-value" disabled
-                                                        class="form-control" aria-label="Text input with checkbox">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-row logo-section">
-                                            <div class="label">
-                                                {{ __('data.choose_website_logo') }}
-                                            </div>
-                                            <div class="form-holder w-100">
-                                                <div class="mb-1">
-                                                    <div class="">
-                                                        <div class="input-group-text">
-                                                            <input type="file" id="logo" name="logo"
-                                                                onchange="$('#logo-path-value').val(this.value);"
-                                                                accept="image/png, .jpg, .jpeg">
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" name="logo_path" id="logo-path-value" readonly
-                                                        class="form-control" aria-label="Text input with checkbox">
-                                                </div>
-                                                <div class="img-container text-center">
-                                                    <img id="Preview" src="#" alt="your image" class="img-thumbnail"
-                                                        style="max-height: 100px; width: auto; margin:auto; display:none;"
-                                                        loading="lazy" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section> --}}
-
                         </form>
                     </div>
                 </div>
@@ -456,11 +382,6 @@
             <div class="footer-sm">
                 <div class="container-m">
                     <div class="row justify-content-center mt-4">
-                        {{-- <ul> --}}
-                        {{-- <li><a href="{{ $settings['facebook'] }}">Facebook</a></li> --}}
-                        {{-- <li><a href="{{ $settings['instagram'] }}">Instagram</a></li> --}}
-                        {{-- <li><a href="{{ $settings['linkedin'] }}"></a>Linkedin</li> --}}
-                        {{-- </ul> --}}
                         <ul class="social-links text-center">
                             @foreach ($social_media as $sm)
                                 <li><a href="{{ $sm->value }}" target="_blank"><i
@@ -497,12 +418,8 @@
 
     <!-- Jquery and Js Plugins -->
     <script src="{{ asset('js/bootstrap4-toggle.min.js') }}"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" --}}
-    {{-- integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"> --}}
-    {{-- </script> --}}
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sticky-sidebar.js') }}" defer></script>
-    {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script> --}}
     <script type="text/javascript" src="{{ asset('js/jquery.validate.min.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/plugins.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/jquery.steps.js') }}" defer></script>
@@ -524,19 +441,17 @@
                 filter: ':not(.request-a-demo)',
                 easing: 'swing',
                 begin: function() {
-                    //I get fired when the animation is starting
+                    //get fired when the animation is starting
                 },
                 end: function() {
                     //I get fired when the animation is ending
                 },
                 scrollChange: function($currentListItem) {
-                    //I get fired when you enter a section and I pass the list item of the section
+                    //get fired when you enter a section and I pass the list item of the section
                 }
             });
             //------------------------------------------//
             $('.request_now').click(function() {
-
-                console.log('sdsf');
                 //initialize phone number
                 if (typeof($(this).attr('package_id')) !== "undefined" && $(this).attr('package_id') !==
                     null) {
@@ -580,9 +495,6 @@
             $('.subscription_type,.module,.sys_lang,.users_count').change(function() {
                 calculateTotalPrice();
             })
-
-            // $('a[href="#finish"]').click(function(event) {
-            // });
         })
 
         function calculateTotalPrice() {
@@ -641,8 +553,6 @@
                             '</div>').addClass("isDisabled").attr("href", "").attr("type", "button");
                     },
                     contentType: false,
-                    // async: false,
-                    // cache: false,
                     data: form_data,
                     success: function(res) {
                         $('a.isDisabled').html("{{ __('data.submit') }}").removeClass("isDisabled").attr(
@@ -717,11 +627,6 @@
                     previous: "{{ __('data.previous') }}"
                 }
             });
-            // $('.wizard > .steps li a').click(function(){
-            //     $(this).parent().addClass('checked');
-            //     $(this).parent().prevAll().addClass('checked');
-            //     $(this).parent().nextAll().removeClass('checked');
-            // });
             // Custome Jquery Step Button
             $('.forward').click(function() {
                 $("#wizard").steps('next');
@@ -760,11 +665,6 @@
                     previous: "{{ __('data.previous') }}"
                 }
             });
-            // $('.wizard > .steps li a').click(function(){
-            // 	$(this).parent().addClass('checked');
-            // 	$(this).parent().prevAll().addClass('checked');
-            // 	$(this).parent().nextAll().removeClass('checked');
-            // });
             // Custome Jquery Step Button
             $('.forward').click(function() {
                 $("#wizard1").steps('next');
@@ -791,29 +691,12 @@
         $(document).ready(function() {
             $('.subscription_ttype').change(function() {
                 pack_id = $(this).attr('pack_id');
-                //  alert(pack_id);
                 option_value = $(this).val();
                 price_amount = option_value.split('-')[1];
                 pkg_sub_type = option_value.split('-')[0];
                 $('input[name=subscription_type]').val(pkg_sub_type);
-                // alert(price_amount+' '+pkg_sub_type);
                 $('#dy_amnt_pkg_' + pack_id).html('<strong>$' + price_amount + '</strong>');
             });
-            // logo.onchange = evt => {
-            //     const [file] = logo.files;
-            //     if (file) {
-            //         Preview.src = URL.createObjectURL(file)
-            //         $('#Preview').show();
-            //     }
-            // }
-
-            // logo2.onchange = evt => {
-            //     const [file] = logo2.files;
-            //     if (file) {
-            //         Preview2.src = URL.createObjectURL(file)
-            //         $('#Preview2').show();
-            //     }
-            // }
         });
 
         function loginSubmit(event) {
@@ -962,9 +845,6 @@
                 });
             }
         }
-        // $("#contact_form").submit(function(event) {
-        //     event.preventDefault();
-        // });
 
         function customToast2(value, msg) {
 
@@ -976,7 +856,6 @@
             // After 3 seconds, remove the show class from DIV
             setTimeout(function() {
                 $(".snackbar." + value).removeClass("show");
-                //   location.reload();
             }, 3000);
         }
 
@@ -1049,7 +928,6 @@
             });
             //end
 
-            //setup mobile phone
             //setup mobile phone
             var mobilePhone1 = document.getElementById('mobile_phone1');
             iti = window.intlTelInput(mobilePhone1, {

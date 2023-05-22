@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CBSeeder extends Seeder
 {
@@ -29,15 +31,15 @@ class CmsEmailTemplates extends Seeder
     public function run()
     {
         DB::table('cms_email_templates')->insert([
-                'created_at' => date('Y-m-d H:i:s'),
-                'name' => 'Email Template Forgot Password Backend',
-                'slug' => 'forgot_password_backend',
-                'content' => '<p>Hi,</p><p>Someone requested forgot password, here is your new password : </p><p>[password]</p><p><br></p><p>--</p><p>Regards,</p><p>Admin</p>',
-                'description' => '[password]',
-                'from_name' => 'System',
-                'from_email' => 'system@crudbooster.com',
-                'cc_email' => null,
-            ]);
+            'created_at' => date('Y-m-d H:i:s'),
+            'name' => 'Email Template Forgot Password Backend',
+            'slug' => 'forgot_password_backend',
+            'content' => '<p>Hi,</p><p>Someone requested forgot password, here is your new password : </p><p>[password]</p><p><br></p><p>--</p><p>Regards,</p><p>Admin</p>',
+            'description' => '[password]',
+            'from_name' => 'System',
+            'from_email' => 'system@crudbooster.com',
+            'cc_email' => null,
+        ]);
     }
 }
 
@@ -298,10 +300,10 @@ class Cms_modulsSeeder extends Seeder
     public function run()
     {
 
-        /* 
-            1 = Public
-            2 = Setting        
-        */
+        /*
+        1 = Public
+        2 = Setting
+         */
 
         $data = [
             [
@@ -443,7 +445,7 @@ class Cms_usersSeeder extends Seeder
     {
 
         if (DB::table('cms_users')->count() == 0) {
-            $password = \Hash::make('123456');
+            $password = Hash::make('123456');
             $cms_users = DB::table('cms_users')->insert([
                 'created_at' => date('Y-m-d H:i:s'),
                 'name' => 'Super Admin',
@@ -455,4 +457,3 @@ class Cms_usersSeeder extends Seeder
         }
     }
 }
-

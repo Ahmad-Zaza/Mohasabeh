@@ -177,7 +177,7 @@ class HomeController extends Controller
             ],
             'company' => 'required',
             'g-recaptcha-response' => [
-                'required', 
+                'required',
                 // new ReCaptcha
             ],
         ], [

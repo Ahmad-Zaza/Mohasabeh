@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SortingModelController extends Controller
 {
@@ -14,7 +14,7 @@ class SortingModelController extends Controller
         if ($request->isMethod('post')) {
 
             if ($request->input("data")) {
-                
+
                 $data_arr = $request->input("data");
                 $table_name = $request->input("table_name");
 
