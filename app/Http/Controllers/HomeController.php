@@ -13,6 +13,7 @@ use App\Http\Models\Section;
 use App\Http\Models\Solution;
 use App\PricePkg;
 use App\Rules\ReCaptcha;
+use App\Rules\WebsiteReCapcha;
 use Carbon\Carbon;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception as GlobalException;
@@ -175,7 +176,7 @@ class HomeController extends Controller
             'company' => 'required',
             'g-recaptcha-response' => [
                 'required',
-                new ReCaptcha,
+                new WebsiteReCapcha,
             ],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
