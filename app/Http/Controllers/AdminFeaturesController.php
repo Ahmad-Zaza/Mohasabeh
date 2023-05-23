@@ -34,8 +34,8 @@ class AdminFeaturesController extends CBController
         $this->col = [];
         $this->col[] = ["label" => "Name En", "name" => "name_en"];
         $this->col[] = ["label" => "Name Ar", "name" => "name_ar"];
-        $this->col[] = ["label" => "Description En", "name" => "description_en"];
-        $this->col[] = ["label" => "Description Ar", "name" => "description_ar"];
+        $this->col[] = ["label" => "Description En", "name" => "description_en", "str_limit" => 150];
+        $this->col[] = ["label" => "Description Ar", "name" => "description_ar", "str_limit" => 150];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
 

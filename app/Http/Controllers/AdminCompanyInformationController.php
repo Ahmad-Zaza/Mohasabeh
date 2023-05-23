@@ -33,7 +33,7 @@ class AdminCompanyInformationController extends CBController
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Company Name", "name" => "company_name"];
-        $this->col[] = ["label" => "Logo", "name" => "logo"];
+        $this->col[] = ["label" => "Logo", "name" => "logo", "image" => true];
         $this->col[] = ["label" => "Email", "name" => "email"];
         $this->col[] = ["label" => "Contact Phone", "name" => "contact_phone"];
         $this->col[] = ["label" => "Address", "name" => "address"];
@@ -43,7 +43,7 @@ class AdminCompanyInformationController extends CBController
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Company Name', 'name' => 'company_name', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Logo', 'name' => 'logo', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Logo', 'name' => 'logo', 'type' => 'filemanager', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Email', 'name' => 'email', 'type' => 'email', 'validation' => 'required|min:1|max:255|email|unique:company_information', 'width' => 'col-sm-10', 'placeholder' => 'Please enter a valid email address'];
         $this->form[] = ['label' => 'Contact Phone', 'name' => 'contact_phone', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Address', 'name' => 'address', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
