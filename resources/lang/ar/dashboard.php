@@ -23,7 +23,23 @@ return [
     'Backup Storage Usage' => 'استخدام تخزين النسخ الاحتياطي',
     'Attached Storage Usage' => 'استخدام التخزين المرفق',
     'Customers Count' => 'عدد الزبائن',
-    'Login' => 'تسجيل دخول'
+    'Login' => 'تسجيل دخول',
+
+
+    'Change Personal Information' => 'تغيير المعلومات الشخصية',
+    'First Name' => 'الاسم الأول',
+    'Last Name' => 'الاسم الأخير',
+    'Company' => 'الشركة',
+    'Phone' => 'رقم الموبايل',
+    'Address' => 'العنوان',
+    'Save' => 'حفظ',
+    'Current Password' => 'كلمة السر الحالية',
+    'New Password' => 'كلمة السر الجديدة',
+    'Confirm Password' => 'تأكيد كلمة السر',
+    'Change Password' => 'تغيير كلمة السر',
+    'Change Email' => 'تغيير البريد الالكتروني',
+    'Email' => 'البريد الالكتروني',
+    'Password' => 'كلمة السر'
 
 
 
