@@ -86,7 +86,7 @@ class AdminPricePkgsController extends CBController
         |
          */
         $this->sub_module = array();
-        $this->sub_module[] = ['label' => 'Options', 'path' => 'price_pkg_options27', 'foreign_key' => 'price_pkg_id', 'button_color' => 'success'];
+        $this->sub_module[] = ['label' => 'Options', 'path' => 'price_pkg_options27','parent_columns'=>'title_en', 'foreign_key' => 'price_pkg_id', 'button_color' => 'success'];
 
         /*
         | ----------------------------------------------------------------------
