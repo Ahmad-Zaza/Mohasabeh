@@ -15,7 +15,6 @@ class AdminSiteStatusController extends CBController
 
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "id";
         $this->limit = "20";
@@ -23,18 +22,18 @@ class AdminSiteStatusController extends CBController
         $this->sortable_table = false;
         $this->global_privilege = false;
         $this->button_table_action = true;
-        $this->button_bulk_action = false;
+        $this->button_bulk_action = true;
         $this->button_action_style = "button_icon";
         $this->record_seo = false;
         $this->button_add = false;
         $this->button_edit = false;
-        $this->button_delete = true;
+        $this->button_delete = false;
         $this->button_detail = true;
         $this->pdf_direction = "ltr";
         $this->button_show = true;
         $this->button_filter = true;
         $this->button_import = false;
-        $this->button_export = true;
+        $this->button_export = false;
         $this->page_seo = false;
         $this->table = "site_status";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
@@ -42,13 +41,19 @@ class AdminSiteStatusController extends CBController
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
-        $this->col[] = ["label" => "Bills Count", "name" => "bills_count"];
-        $this->col[] = ["label" => "Vorches Count", "name" => "vorches_count"];
-        $this->col[] = ["label" => "Maximum Users Number", "name" => "users_num", "callback_php" => '($row->users_num == -1 ? "unlimited" : $row->users_num)'];
-        $this->col[] = ["label" => "Maximum Inventories Number", "name" => "inventories_num", "callback_php" => '($row->inventories_num == -1 ? "unlimited" : $row->inventories_num)'];
-        $this->col[] = ["label" => "Maximum Currencies Number", "name" => "currencies_num", "callback_php" => '($row->currencies_num == -1 ? "unlimited" : $row->currencies_num)'];
-        $this->col[] = ["label" => "Maximum Clients Number", "name" => "clients_num", "callback_php" => '($row->clients_num == -1 ? "unlimited" : $row->clients_num)'];
-        $this->col[] = ["label" => "Attachs Size", "name" => "attachs_size"];
+        $this->col[] = ["label" => "Bills", "name" => "bills_count"];
+        $this->col[] = ["label" => "Vorches", "name" => "vorches_count"];
+        $this->col[] = ["label" => "Users", "name" => "allowed_users_num", "callback_php" => '($row->allowed_users_num == -1 ? $row->used_users_num  . "/unlimited" : $row->used_users_num . "/" . $row->allowed_users_num)'];
+        $this->col[] = ["label" => "Used Users", "name" => "used_users_num", "visible" => false];
+        $this->col[] = ["label" => "Inventories", "name" => "allowed_inventories_num", "callback_php" => '($row->allowed_inventories_num == -1 ? $row->used_inventories_num  . "/unlimited" : $row->used_inventories_num . "/" . $row->allowed_inventories_num)'];
+        $this->col[] = ["label" => "Used Inventories", "name" => "used_inventories_num", "visible" => false];
+        $this->col[] = ["label" => "Currencies", "name" => "allowed_currencies_num", "callback_php" => '($row->allowed_currencies_num == -1 ? $row->used_currencies_num . "/unlimited" : $row->used_currencies_num . "/" . $row->allowed_currencies_num)'];
+        $this->col[] = ["label" => "Used Currencies", "name" => "used_currencies_num", "visible" => false];
+        $this->col[] = ["label" => "Clients", "name" => "allowed_clients_num", "callback_php" => '($row->allowed_clients_num == -1 ? $row->used_clients_num .  "/unlimited" : $row->used_clients_num . "/" . $row->allowed_clients_num)'];
+        $this->col[] = ["label" => "Used Clients", "name" => "used_clients_num", "visible" => false];
+        $this->col[] = ["label" => "Used Attachs Size", "name" => "used_attachs_size", "visible" => false];
+        $this->col[] = ["label" => "Attachs Size", "name" => "allowed_attachs_size", "callback_php" => '($row->allowed_attachs_size == -1 ? $row->used_attachs_size .  "/unlimited" : $row->used_attachs_size . "/" . $row->allowed_attachs_size)'];
+        $this->col[] = ["label" => "Subscription Type", "name" => "subscription_type"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
         # END COLUMNS DO NOT REMOVE THIS LINE
@@ -58,6 +63,20 @@ class AdminSiteStatusController extends CBController
         $this->form[] = ['label' => 'Customer Id', 'name' => 'customer_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'customers,id'];
         $this->form[] = ['label' => 'Bills Count', 'name' => 'bills_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Vorches Count', 'name' => 'vorches_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Users', 'name' => 'allowed_users_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Users', 'name' => 'used_users_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Inventories', 'name' => 'allowed_inventories_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Inventories', 'name' => 'used_inventories_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Currencies', 'name' => 'allowed_currencies_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Currencies', 'name' => 'used_currencies_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Clients', 'name' => 'allowed_clients_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Clients', 'name' => 'used_clients_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Attachs Size', 'name' => 'allowed_attachs_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Attachs Size', 'name' => 'used_attachs_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Subscription Type', 'name' => 'subscription_type', 'type' => 'text', 'validation' => 'required', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Subscription Start Date', 'name' => 'subscription_start_date', 'type' => 'date', 'validation' => 'required', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Subscription End Date', 'name' => 'subscription_end_date', 'type' => 'date', 'validation' => 'required', 'width' => 'col-sm-10'];
+
         # END FORM DO NOT REMOVE THIS LINE
 
         # OLD START FORM
@@ -342,7 +361,8 @@ class AdminSiteStatusController extends CBController
                 try {
                     $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
                 } catch (PDOException $ex) {
-                    return redirect()->back()->with(['message' => cbLang("error_generating_report"), 'message_type' => 'danger']);
+                    continue;
+                    return redirect()->back()->with(['message' => trans("recaptcha.error_generating_report"), 'message_type' => 'danger']);
                 }
 
                 $bills_query = "SELECT COUNT(*) FROM `bills`";
@@ -381,8 +401,6 @@ class AdminSiteStatusController extends CBController
                 $currencies_count = $currencies_stmt->fetchColumn();
 
                 $storagePath = $customer->folder_location . '/site/storage/app';
-
-                $storagePath = $customer->folder_location;
                 if (file_exists($storagePath)) {
                     $attachment_size = 0;
                     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($storagePath)) as $file) {
@@ -391,8 +409,10 @@ class AdminSiteStatusController extends CBController
                     // calculate size im MB
                     $attachment_size = round($attachment_size / 1024 / 1024, 2);
                 }
+                $subscription_type = 'Free Trial';
                 if ($package_config_data['free_trial_start_date'] == null || $package_config_data['free_trial_start_date'] == '0000-00-00') {
                     $start_date = $package_config_data['subscription_start_date'];
+                    $subscription_type = 'Year';
                 } else {
                     $start_date = $package_config_data['free_trial_start_date'];
                 }
@@ -401,30 +421,35 @@ class AdminSiteStatusController extends CBController
                 } else {
                     $end_date = $package_config_data['free_trial_end_date'];
                 }
-
                 $site_status = DB::table('site_status')->where('customer_id', $customer->id)->get();
                 DB::table('site_status')->updateOrInsert(
                     ['customer_id' => $customer->id],
                     [
                         'bills_count' => $bills_count,
                         'vorches_count' => $vouchers_count,
-                        'users_num' => ($package_config_data['users_num']),
-                        'inventories_num' => ($package_config_data['inventories_num']),
-                        'currencies_num' => ($package_config_data['currencies_num']),
-                        'clients_num' => ($package_config_data['clients_num']),
-                        'attachs_size' => $attachment_size,
+                        'allowed_users_num' => ($package_config_data['users_num']),
+                        'used_users_num' => $users_count,
+                        'allowed_inventories_num' => ($package_config_data['inventories_num']),
+                        'used_inventories_num' => $inventories_count,
+                        'allowed_currencies_num' => ($package_config_data['currencies_num']),
+                        'used_currencies_num' => $currencies_count,
+                        'allowed_clients_num' => ($package_config_data['clients_num']),
+                        'used_clients_num' => $clients_count,
+                        'allowed_attachs_size' => ($package_config_data['attachs_size']),
+                        'used_attachs_size' => $attachment_size,
                         'subscription_start_date' => $start_date,
                         'subscription_end_date' => $end_date,
+                        'subscription_type' => $subscription_type,
                     ]
                 );
                 DB::commit();
             }
         } catch (Exception $ex) {
             DB::rollback();
-            return redirect()->back()->with(['message' => cbLang("error_generating_report"), 'message_type' => 'danger']);
+            return redirect()->back()->with(['message' => trans("recaptcha.error_generating_report"), 'message_type' => 'danger']);
             throw $ex;
         }
-        return redirect()->back()->with(['message' => cbLang("successfully_generating_report"), 'message_type' => 'success']);
+        return redirect()->back()->with(['message' => trans("recaptcha.successfully_generating_report"), 'message_type' => 'success']);
     }
 
 }

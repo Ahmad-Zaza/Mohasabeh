@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ $lang }}">
+
 <head>
     <meta charset="utf-8">
     <title>{{ config('app.name', 'CloudSellPOS') }}</title>
@@ -7,7 +8,7 @@
     <link rel="icon" href="{{ asset($settings['favicon']) }}" type="image/png" sizes="16x16">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}" defer> <!-- Resource style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" defer>
     <link rel="stylesheet" href="{{ asset('css/ionicons.min.css') }}" defer> <!-- Resource style -->
@@ -461,7 +462,7 @@
                     grecaptcha.getResponse(freeRecaptcha);
                 } catch (error) {
                     freeRecaptcha = grecaptcha.render('freeRecaptcha', {
-                        'sitekey': '{{ config('app.recaptcha_site_key') }}'
+                        'sitekey': '{{ CRUDBooster::getSetting('website_recaptcha_site_key') }}'
                     });
                 }
 
