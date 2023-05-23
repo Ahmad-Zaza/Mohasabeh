@@ -77,7 +77,6 @@ class ImageController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
-
     }
 
     public function deleteImageModule(Request $request, $id)
@@ -95,6 +94,15 @@ class ImageController extends Controller
         ])->get();
 
         return response()->json(array("data" => $images), 200);
+    }
+  
+    public function resizeImage($width = 100, $height = 100, $img)
+    {
+        return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
+    }
 
+    public function cropImage($width = 100, $height = 100, $img)
+    {
+        return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
     }
 }

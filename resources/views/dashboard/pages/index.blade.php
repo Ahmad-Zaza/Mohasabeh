@@ -2,7 +2,7 @@
 @section('content')
 
 
-
+{{auth()->user()->id}}
 <div class="pagetitle">
   <h1>{{__('dashboard.Dashboard')}}</h1>
   <nav>

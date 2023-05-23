@@ -11,8 +11,12 @@ use App\Http\Models\Module;
 use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
+use PDOException;
+use Illuminate\Support\Facades\Auth;
 use App\PricePkg;
 use App\Rules\ReCaptcha;
+use Illuminate\Support\Facades\Hash;
+use App\Rules\WebsiteReCapcha;
 use Carbon\Carbon;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception as GlobalException;
@@ -87,7 +91,6 @@ class HomeController extends Controller
         $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
         $modules = Module::where('active', 1)->get();
-        //  dd($modules);
         //------------------------//
         return view('pricing', compact(['lang', 'settings', 'section', 'usersOptions', 'modules', 'languagesOptions']));
     }
@@ -105,8 +108,6 @@ class HomeController extends Controller
         $packages = PricePkg::select('*')->get();
         $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
-        //  dd($packages);
-
         return view('pricing', compact(['lang', 'settings', 'section', 'packages', 'languagesOptions']));
     }
     public function activationProgress($token)
@@ -178,7 +179,7 @@ class HomeController extends Controller
             'company' => 'required',
             'g-recaptcha-response' => [
                 'required',
-                // new ReCaptcha
+                new WebsiteReCapcha,
             ],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
@@ -475,7 +476,6 @@ class HomeController extends Controller
             {
                 $this->copydir("$source/$file", "$destination/$file");
             }
-
         }
         closedir($dir_handle);
     }
@@ -544,10 +544,34 @@ class HomeController extends Controller
         $email = $request->email;
         $password = $request->password;
         $customer = Customer::where("email", $email)->first();
+
         if (!$customer) {
             return response()->json(["message" => __("data.email_wrong")], 500);
         }
-        return response()->json(["url" => $customer->host_link . "/modules/voila-login?email=" . urlencode($email) . "&password=" . urlencode($password)], 200);
+
+        $customerDB = "{$customer->database_name}";
+        $customerDBHost = "localhost";
+        $customerDBUser = "{$customer->database_name}";
+        $customerDBPassword = "{$customer->database_password}";
+        try {
+            $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+
+            $query = "select * from cms_users where email = '$email'";
+            $res = $dbh->query($query);
+            $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];
+
+
+            if (Hash::check($password, $user['password'])) {
+                Auth::guard('customer')->login($customer);
+
+                return response()->json(["url" => '/profile'], 200);
+            } else {
+
+                return response()->json(["message" => __("data.password_wrong")], 500);
+            }
+        } catch (PDOException $ex) {
+            return response()->json(["message" => __("data.unable_to_make_the_connection")], 500);
+        }
     }
 
     public function forgetPasswordCustomer(Request $request)
@@ -691,12 +715,14 @@ class HomeController extends Controller
         //---------------------//
         if (!$exist) {
             $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
-            $result = $da->query('CMD_API_SUBDOMAINS',
+            $result = $da->query(
+                'CMD_API_SUBDOMAINS',
                 array(
                     'action' => 'create',
                     'domain' => 'cloudsellpos.com',
                     'subdomain' => $subdomainName,
-                ));
+                )
+            );
             if ($da->error) {
                 throw new Exception("error");
             }
@@ -725,7 +751,8 @@ class HomeController extends Controller
         //---------------------//
         if (!$exist) {
             $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"), false);
-            $result = $da->query('CMD_API_DOMAIN',
+            $result = $da->query(
+                'CMD_API_DOMAIN',
                 array(
                     'action' => 'create',
                     'domain' => $domainName . ".cloudsellpos.com",
@@ -793,5 +820,4 @@ class HomeController extends Controller
             Log::log("error", "Error changePhpVersion $e");
         }
     }
-
 }

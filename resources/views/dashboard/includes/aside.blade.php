@@ -1,7 +1,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="/profile">
             <i class="bi bi-grid"></i>
             <span>{{__('dashboard.Dashboard')}}</span>
         </a>

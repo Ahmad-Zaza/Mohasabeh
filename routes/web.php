@@ -14,22 +14,16 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-// Route::get('/clear/route', function () {
-
-//     \Artisan::call('cache:clear');
-//     \Artisan::call('config:clear');
-//     \Artisan::call('view:clear');
-//     return "done";
-// });
 
 Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch');
 
 //Mini Dashboard
-Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard');
-Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
-Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
-Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
-
+Route::group(['middleware' => ['auth:customer']], function () {
+    Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
+    Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
+    Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
+    Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
+});
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
 
@@ -79,13 +73,10 @@ Route::get('image/upload', 'ImageController@fileCreate')->name('images.upload');
 Route::post('image/upload/store/{fleet_id}', 'ImageController@fileStore');
 Route::get('/image/delete/{id}', 'ImageController@fileDestroy');
 Route::get('/image/showImageJson/{fleet_id?}', 'ImageController@showImageJson');
-// Route::get('/manage-image/resize/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-//     return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
-// })->name('manage-image-resize')->where('img', '(.*)');
+Route::get('/manage-image/resize/{width?}/{height?}/{img}', 'ImageController@resizeImage')->name('manage-image-resize')->where('img', '(.*)');
+Route::get('/manage-image/crop/{width?}/{height?}/{img}', 'ImageController@cropImage')->name('manage-image-crop')->where('img', '(.*)');
 
-// Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-//     return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
-// })->name('manage-image-crop')->where('img', '(.*)');
-############ Added Routes ###########
+
+Route::get('/clear/route', 'HomeController@cleanCache');
 Route::post('modules/sort', "SortingModelController@sorting");
 Route::post('save-contact', 'HomeController@saveContact');
