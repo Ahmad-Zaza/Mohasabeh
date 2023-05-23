@@ -43,7 +43,7 @@ class AdminSocialMediaController extends CBController
         $this->form = [];
         $this->form[] = ['label' => 'Title En', 'name' => 'title_en', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Title Ar', 'name' => 'title_ar', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'icon', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Value', 'name' => 'value', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         # END FORM DO NOT REMOVE THIS LINE
 

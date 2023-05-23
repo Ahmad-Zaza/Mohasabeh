@@ -35,7 +35,7 @@ class AdminSectionsController extends CBController
         $this->col[] = ["label" => "Code", "name" => "code"];
         $this->col[] = ["label" => "Title En", "name" => "title_en"];
         $this->col[] = ["label" => "Sub Title En", "name" => "sub_title_en"];
-        $this->col[] = ["label" => "Description En", "name" => "description_en"];
+        $this->col[] = ["label" => "Description En", "name" => "description_en", "str_limit" => 150];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -45,10 +45,10 @@ class AdminSectionsController extends CBController
         $this->form[] = ['label' => 'Title En', 'name' => 'title_en', 'type' => 'text', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Title Ar', 'name' => 'title_ar', 'type' => 'text', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Sub Title En', 'name' => 'sub_title_en', 'type' => 'text', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Sub Title Ar', 'name' => 'sub_title_ar', 'type' => 'text', 'width' => 'col-sm-9', 'help' => 'File types support : JPG, JPEG, PNG, GIF, BMP'];
+        $this->form[] = ['label' => 'Sub Title Ar', 'name' => 'sub_title_ar', 'type' => 'text', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Description En', 'name' => 'description_en', 'type' => 'wysiwyg', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Description Ar', 'name' => 'description_ar', 'type' => 'wysiwyg', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Image', 'name' => 'image', 'type' => 'filemanager', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Image', 'name' => 'image', 'type' => 'filemanager', 'width' => 'col-sm-10', 'help' => 'File types support : JPG, JPEG, PNG, GIF, BMP'];
         $this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'switch', 'width' => 'col-sm-9'];
         # END FORM DO NOT REMOVE THIS LINE
 

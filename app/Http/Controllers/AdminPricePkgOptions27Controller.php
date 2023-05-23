@@ -7,7 +7,6 @@ class AdminPricePkgOptions27Controller extends CBController
 
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "name_ar";
         $this->limit = "20";
@@ -33,7 +32,7 @@ class AdminPricePkgOptions27Controller extends CBController
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Price Pkg Id", "name" => "price_pkg_id", "join" => "price_pkgs,id"];
-        $this->col[] = ["label" => "Type", "name" => "type"];
+        $this->col[] = ["label" => "Type", "name" => "type", "callback_php" => '$row->type == 1 ? "Text" : "Select"'];
         $this->col[] = ["label" => "Code", "name" => "code"];
         $this->col[] = ["label" => "Value", "name" => "value"];
         $this->col[] = ["label" => "Name Ar", "name" => "name_ar"];
@@ -71,7 +70,8 @@ class AdminPricePkgOptions27Controller extends CBController
         | @foreign_key       = foreign key of sub table/module
         | @button_color   = Bootstrap Class (primary,success,warning,danger)
         | @button_icon    = Font Awesome Class
-        | @parent_columns = Sparate with comma, e.g : name,created_at
+        | @
+         = Sparate with comma, e.g : name,created_at
         |
          */
         $this->sub_module = array();
