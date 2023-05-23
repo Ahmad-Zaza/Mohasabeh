@@ -342,7 +342,7 @@ class AdminSiteStatusController extends CBController
                 try {
                     $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
                 } catch (PDOException $ex) {
-                    return redirect()->back()->with(['message' => cbLang("error_generating_report") . $ex->getMessage(), 'message_type' => 'danger']);
+                    return redirect()->back()->with(['message' => cbLang("error_generating_report"), 'message_type' => 'danger']);
                 }
 
                 $bills_query = "SELECT COUNT(*) FROM `bills`";
@@ -421,7 +421,7 @@ class AdminSiteStatusController extends CBController
             }
         } catch (Exception $ex) {
             DB::rollback();
-            return redirect()->back()->with(['message' => cbLang("error_generating_report") . $ex->getMessage(), 'message_type' => 'danger']);
+            return redirect()->back()->with(['message' => cbLang("error_generating_report"), 'message_type' => 'danger']);
             throw $ex;
         }
         return redirect()->back()->with(['message' => cbLang("successfully_generating_report"), 'message_type' => 'success']);

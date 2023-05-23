@@ -87,7 +87,6 @@ class HomeController extends Controller
         $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
         $modules = Module::where('active', 1)->get();
-        //  dd($modules);
         //------------------------//
         return view('pricing', compact(['lang', 'settings', 'section', 'usersOptions', 'modules', 'languagesOptions']));
     }
@@ -105,8 +104,6 @@ class HomeController extends Controller
         $packages = PricePkg::select('*')->get();
         $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
-        //  dd($packages);
-
         return view('pricing', compact(['lang', 'settings', 'section', 'packages', 'languagesOptions']));
     }
     public function activationProgress($token)
@@ -178,7 +175,7 @@ class HomeController extends Controller
             'company' => 'required',
             'g-recaptcha-response' => [
                 'required',
-                // new ReCaptcha
+                new ReCaptcha,
             ],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
