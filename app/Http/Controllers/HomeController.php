@@ -43,7 +43,7 @@ class HomeController extends Controller
     {
         $lang = App::getLocale();
         //---------------------//
-        $sections = Section::where('active', '1')->get();
+        $sections = Section::where('active', '1')->orderby("sorting")->get();
         $temp = [];
         foreach ($sections as $item) {
             $temp[$item->code] = $item;
@@ -54,12 +54,12 @@ class HomeController extends Controller
         //---------------------//
         $settings = DB::table('cms_settings')->whereIn('group_setting', ['Application Setting', 'SEO Setting'])->pluck('content', 'name'); // pluck('value', 'key') => the data is look like: 'key' => 'value'
         //---------------------//
-        $features = Feature::where('active', '1')->get();
-        $advantages = Advantages::where('active', '1')->get();
-        $solutions = Solution::with(['modules'])->where('active', '1')->get();
+        $features = Feature::where('active', '1')->orderby("sorting")->get();
+        $advantages = Advantages::where('active', '1')->orderby("sorting")->get();
+        $solutions = Solution::with(['modules'])->where('active', '1')->orderby("sorting")->get();
         //---------------------//
-        $usersOptions = PriceOption::where('code', 'users')->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->get();
+        $usersOptions = PriceOption::where('code', 'users')->orderby("sorting")->get();
+        $languagesOptions = PriceOption::where('code', 'languages')->orderby("sorting")->get();
         //---------------------//
         return view('home', compact(['solutions', 'sections', 'lang', 'features', 'advantages', 'settings', 'modules', 'usersOptions', 'languagesOptions']));
         //---------------------//
@@ -69,9 +69,9 @@ class HomeController extends Controller
     {
         $lang = App::getLocale();
         //------------------------//
-        $settings = DB::table('cms_settings')->whereIn('group_setting', ['Application Setting', 'SEO Setting'])->pluck('content', 'name'); // pluck('value', 'key') => the data is look like: 'key' => 'value'
+        $settings = DB::table('cms_settings')->whereIn('أخةgroup_setting', ['Application Setting', 'SEO Setting'])->pluck('content', 'name'); // pluck('value', 'key') => the data is look like: 'key' => 'value'
         //------------------------//
-        $solution = Solution::with(['modules'])->where('id', $id)->where('active', '1')->first();
+        $solution = Solution::with(['modules'])->where('id', $id)->orderby("sorting")->where('active', '1')->first();
         //------------------------//
         return view('solution', compact(['lang', 'settings', 'solution']));
     }
