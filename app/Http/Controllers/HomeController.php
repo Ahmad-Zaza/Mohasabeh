@@ -820,4 +820,12 @@ class HomeController extends Controller
             Log::log("error", "Error changePhpVersion $e");
         }
     }
+
+    public function cleanCache()
+    {
+        \Artisan::call('cache:clear');
+        \Artisan::call('config:clear');
+        \Artisan::call('view:clear');
+        return "done";
+    }
 }

@@ -23,7 +23,10 @@ Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
     Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
     Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
+
+    Route::get('logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
 });
+
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
 Route::post('forget-password-customer', "HomeController@forgetPasswordCustomer")->name("forget-password-customer");
 
