@@ -42,17 +42,17 @@ class AdminSiteStatusController extends CBController
         $this->col = [];
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
         $this->col[] = ["label" => "Bills", "name" => "bills_count"];
-        $this->col[] = ["label" => "Vorches", "name" => "vorches_count"];
-        $this->col[] = ["label" => "Users", "name" => "allowed_users_num", "callback_php" => '($row->allowed_users_num == -1 ? $row->used_users_num  . "/unlimited" : $row->used_users_num . "/" . $row->allowed_users_num)'];
-        $this->col[] = ["label" => "Used Users", "name" => "used_users_num", "visible" => false];
-        $this->col[] = ["label" => "Inventories", "name" => "allowed_inventories_num", "callback_php" => '($row->allowed_inventories_num == -1 ? $row->used_inventories_num  . "/unlimited" : $row->used_inventories_num . "/" . $row->allowed_inventories_num)'];
-        $this->col[] = ["label" => "Used Inventories", "name" => "used_inventories_num", "visible" => false];
-        $this->col[] = ["label" => "Currencies", "name" => "allowed_currencies_num", "callback_php" => '($row->allowed_currencies_num == -1 ? $row->used_currencies_num . "/unlimited" : $row->used_currencies_num . "/" . $row->allowed_currencies_num)'];
-        $this->col[] = ["label" => "Used Currencies", "name" => "used_currencies_num", "visible" => false];
-        $this->col[] = ["label" => "Clients", "name" => "allowed_clients_num", "callback_php" => '($row->allowed_clients_num == -1 ? $row->used_clients_num .  "/unlimited" : $row->used_clients_num . "/" . $row->allowed_clients_num)'];
-        $this->col[] = ["label" => "Used Clients", "name" => "used_clients_num", "visible" => false];
+        $this->col[] = ["label" => "Vouches", "name" => "vouches_count"];
+        $this->col[] = ["label" => "Users", "name" => "allowed_users_count", "callback_php" => '($row->allowed_users_count == -1 ? $row->used_users_count  . "/unlimited" : $row->used_users_count . "/" . $row->allowed_users_count)'];
+        $this->col[] = ["label" => "Used Users", "name" => "used_users_count", "visible" => false];
+        $this->col[] = ["label" => "Inventories", "name" => "allowed_inventories_count", "callback_php" => '($row->allowed_inventories_count == -1 ? $row->used_inventories_count  . "/unlimited" : $row->used_inventories_count . "/" . $row->allowed_inventories_count)'];
+        $this->col[] = ["label" => "Used Inventories", "name" => "used_inventories_count", "visible" => false];
+        $this->col[] = ["label" => "Currencies", "name" => "allowed_currencies_count", "callback_php" => '($row->allowed_currencies_count == -1 ? $row->used_currencies_count . "/unlimited" : $row->used_currencies_count . "/" . $row->allowed_currencies_count)'];
+        $this->col[] = ["label" => "Used Currencies", "name" => "used_currencies_count", "visible" => false];
+        $this->col[] = ["label" => "Clients", "name" => "allowed_clients_count", "callback_php" => '($row->allowed_clients_count == -1 ? $row->used_clients_count .  "/unlimited" : $row->used_clients_count . "/" . $row->allowed_clients_count)'];
+        $this->col[] = ["label" => "Used Clients", "name" => "used_clients_count", "visible" => false];
         $this->col[] = ["label" => "Used Attachs Size", "name" => "used_attachs_size", "visible" => false];
-        $this->col[] = ["label" => "Attachs Size", "name" => "allowed_attachs_size", "callback_php" => '($row->allowed_attachs_size == -1 ? $row->used_attachs_size .  "/unlimited" : $row->used_attachs_size . "/" . $row->allowed_attachs_size)'];
+        $this->col[] = ["label" => "Attachs Size", "name" => "allowed_attachs_size", "callback_php" => '($row->allowed_attachs_size == -1 ? $row->used_attachs_size .  "MB/unlimited" : $row->used_attachs_size . "MB/" . $row->allowed_attachs_size . "MB")'];
         $this->col[] = ["label" => "Subscription Type", "name" => "subscription_type"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
@@ -62,15 +62,15 @@ class AdminSiteStatusController extends CBController
         $this->form = [];
         $this->form[] = ['label' => 'Customer Id', 'name' => 'customer_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'customers,id'];
         $this->form[] = ['label' => 'Bills Count', 'name' => 'bills_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Vorches Count', 'name' => 'vorches_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Allowed Users', 'name' => 'allowed_users_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Used Users', 'name' => 'used_users_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Allowed Inventories', 'name' => 'allowed_inventories_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Used Inventories', 'name' => 'used_inventories_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Allowed Currencies', 'name' => 'allowed_currencies_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Used Currencies', 'name' => 'used_currencies_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Allowed Clients', 'name' => 'allowed_clients_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Used Clients', 'name' => 'used_clients_num', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Vouches Count', 'name' => 'vouches_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Users', 'name' => 'allowed_users_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Users', 'name' => 'used_users_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Inventories', 'name' => 'allowed_inventories_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Inventories', 'name' => 'used_inventories_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Currencies', 'name' => 'allowed_currencies_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Currencies', 'name' => 'used_currencies_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Allowed Clients', 'name' => 'allowed_clients_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Used Clients', 'name' => 'used_clients_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Allowed Attachs Size', 'name' => 'allowed_attachs_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Used Attachs Size', 'name' => 'used_attachs_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Subscription Type', 'name' => 'subscription_type', 'type' => 'text', 'validation' => 'required', 'width' => 'col-sm-10'];
@@ -83,7 +83,7 @@ class AdminSiteStatusController extends CBController
         //$this->form = [];
         //$this->form[] = ["label"=>"Customer Id","name"=>"customer_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"customer,id"];
         //$this->form[] = ["label"=>"Bills Count","name"=>"bills_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
-        //$this->form[] = ["label"=>"Vorches Count","name"=>"vorches_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+        //$this->form[] = ["label"=>"Vouches Count","name"=>"vouches_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         # OLD END FORM
 
         /*
@@ -114,6 +114,7 @@ class AdminSiteStatusController extends CBController
          */
         $this->addaction = array();
         //    $this->addaction[] = ['label' => 'Get Last Reports', 'url' => CRUDBooster::mainpath('generate-report'), 'icon' => 'fa fa-history', 'color' => 'success'];
+        $this->addaction[] = ['label' => 'Users Info', 'url' => CRUDBooster::mainpath('generate-users-info/[customer_id]'), 'icon' => 'fa fa-users', 'color' => 'success'];
 
         /*
         | ----------------------------------------------------------------------
@@ -375,7 +376,7 @@ class AdminSiteStatusController extends CBController
                     $errorInfo = $dbh->errorInfo();
                     return redirect()->back()->with(['message' => "Error executing query: " . $errorInfo[2], 'message_type' => 'danger']);
                 } else {
-                    $vouchers_count = $vouchers_stmt->fetchColumn();
+                    $vouches_count = $vouchers_stmt->fetchColumn();
                 }
 
                 $package_config_query = "SELECT * FROM `package_config`";
@@ -426,15 +427,15 @@ class AdminSiteStatusController extends CBController
                     ['customer_id' => $customer->id],
                     [
                         'bills_count' => $bills_count,
-                        'vorches_count' => $vouchers_count,
-                        'allowed_users_num' => ($package_config_data['users_num']),
-                        'used_users_num' => $users_count,
-                        'allowed_inventories_num' => ($package_config_data['inventories_num']),
-                        'used_inventories_num' => $inventories_count,
-                        'allowed_currencies_num' => ($package_config_data['currencies_num']),
-                        'used_currencies_num' => $currencies_count,
-                        'allowed_clients_num' => ($package_config_data['clients_num']),
-                        'used_clients_num' => $clients_count,
+                        'vouches_count' => $vouches_count,
+                        'allowed_users_count' => ($package_config_data['users_num']),
+                        'used_users_count' => $users_count,
+                        'allowed_inventories_count' => ($package_config_data['inventories_num']),
+                        'used_inventories_count' => $inventories_count,
+                        'allowed_currencies_count' => ($package_config_data['currencies_num']),
+                        'used_currencies_count' => $currencies_count,
+                        'allowed_clients_count' => ($package_config_data['clients_num']),
+                        'used_clients_count' => $clients_count,
                         'allowed_attachs_size' => ($package_config_data['attachs_size']),
                         'used_attachs_size' => $attachment_size,
                         'subscription_start_date' => $start_date,
@@ -452,4 +453,36 @@ class AdminSiteStatusController extends CBController
         return redirect()->back()->with(['message' => trans("recaptcha.successfully_generating_report"), 'message_type' => 'success']);
     }
 
+    public function getGenerateUsersInfo($id)
+    {
+        header('Content-Type: text/html; charset=utf-8');
+        $customer = DB::table('customers')->where('id', $id)->first();
+        $cols = [];
+        $cols[] = ['name' => 'Name', 'label' => 'Name'];
+        $cols[] = ['name' => 'Email', 'label' => 'Email'];
+        $cols[] = ['name' => 'Last Login Date', 'label' => 'Last Login Date'];
+        $cols[] = ['name' => 'Privileges Name', 'label' => 'Privilege'];
+        try {
+            $customerDB = "{$customer->database_name}";
+            $customerDBHost = "localhost";
+            $customerDBUser = "{$customer->database_name}";
+            $customerDBPassword = "{$customer->database_password}";
+            try {
+                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+                $dbh->exec("SET NAMES 'utf8mb4'");
+            } catch (PDOException $ex) {
+                return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
+            }
+
+            $user_query = "SELECT `cms_users`.`name`, `cms_users`.`email`, `cms_users`.`last_login_date`, `cms_privileges`.`name` as `privileges_name`
+                FROM `cms_users`
+                INNER JOIN `cms_privileges` ON `cms_users`.`id_cms_privileges` = `cms_privileges`.`id`";
+
+            $user_stmt = $dbh->query($user_query);
+            $users = $user_stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $ex) {
+            return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
+        }
+        return view('cms_reports.users_info', compact('users', 'cols'));
+    }
 }
