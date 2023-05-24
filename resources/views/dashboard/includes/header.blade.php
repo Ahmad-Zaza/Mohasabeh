@@ -30,7 +30,7 @@
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                <a class="dropdown-item d-flex align-items-center" href="{{ route('dashboard.logout') }}">
                     <i class="bi bi-box-arrow-right"></i>
                     <span>{{ __('dashboard.Sign Out')}}</span>
                 </a>
