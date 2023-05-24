@@ -1,4 +1,4 @@
-aa@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
     @php $_right = ($lang=="ar"?"left":"right")@endphp
