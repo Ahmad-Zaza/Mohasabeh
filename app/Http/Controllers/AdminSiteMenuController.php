@@ -24,6 +24,9 @@ class AdminSiteMenuController extends CBController
         $this->button_filter = true;
         $this->button_import = false;
         $this->button_export = false;
+        $this->sortable_table = true;
+        $this->page_seo = false;
+        $this->record_seo = false;
         $this->table = "site_menu";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
 

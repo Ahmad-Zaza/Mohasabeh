@@ -33,8 +33,8 @@ class AdminAdvantagesController extends CBController
         $this->col = [];
         $this->col[] = ["label" => "Title En", "name" => "title_en"];
         $this->col[] = ["label" => "Title Ar", "name" => "title_ar"];
-        $this->col[] = ["label" => "Description En", "name" => "description_en"];
-        $this->col[] = ["label" => "Description Ar", "name" => "description_ar"];
+        $this->col[] = ["label" => "Description En", "name" => "description_en", "str_limit" => 150];
+        $this->col[] = ["label" => "Description Ar", "name" => "description_ar", "str_limit" => 150];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
 

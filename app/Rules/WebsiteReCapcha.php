@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Illuminate\Contracts\Validation\Rule;
 
 class WebsiteReCapcha implements Rule
@@ -12,7 +13,7 @@ class WebsiteReCapcha implements Rule
     }
     public function passes($attribute, $token)
     {
-        $secretKey = config('app.recaptcha_secret_key');
+        $secretKey = CRUDBooster::getSetting('website_recaptcha_secret_key');
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $data = array(
             'secret' => $secretKey,
