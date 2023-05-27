@@ -32,9 +32,9 @@
                   <h6>{{auth()->user()->host_link}} </h6>
                 </a>
                 @if(auth()->user()->is_free_trial)
-                <span class="text-muted small pt-2 ps-1">free trail ends at {{auth()->user()->free_trial_end_date}}</span>
+                <span class="text-muted small pt-2 ps-1">Free Trail ends at {{auth()->user()->free_trial_end_date}}</span>
                 @else
-                <span class="text-muted small pt-2 ps-1">subscription ends at {{auth()->user()->subscription_end_date}}</span>
+                <span class="text-muted small pt-2 ps-1">Subscription ends at {{auth()->user()->subscription_end_date}}</span>
                 @endif
               </div>
 
@@ -45,9 +45,6 @@
           <div class="action-buttons">
             <a class="card-link">
               {{__('dashboard.Upgrade')}}
-            </a>
-            <a class="card-link">
-              {{__('dashboard.Login')}}
             </a>
             <a class="card-link">
               {{__('dashboard.Delete Account')}}
