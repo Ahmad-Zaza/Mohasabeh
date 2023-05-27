@@ -69,7 +69,7 @@
                   <i class="bi bi-cart"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count /unlimited : auth()->user()->site_status->used_clients_count / auth()->user()->site_status->allowed_clients_count}}</h6>
+                  <h6>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/unlimited" : auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</h6>
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@
                   <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count /unlimited : auth()->user()->site_status->used_inventories_count / auth()->user()->site_status->allowed_inventories_count}}</h6>
+                  <h6>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/unlimited" : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</h6>
                 </div>
               </div>
             </div>
@@ -109,7 +109,7 @@
                   <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count /unlimited : auth()->user()->site_status->used_currencies_count / auth()->user()->site_status->allowed_currencies_count}}</h6>
+                  <h6>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/unlimited" : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</h6>
 
                 </div>
               </div>
@@ -117,24 +117,6 @@
 
           </div>
         </div>
-
-        <!-- <div class="col-md-3 col-md-4">
-          <div class="card info-card revenue-card">
-            <div class="card-body">
-              <h5 class="card-title">{{__('dashboard.Backup Storage Usage')}} </h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-currency-dollar"></i>
-                </div>
-                <div class="box">
-                  <h6>264M</h6>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div> -->
 
         <div class="col-md-3 col-md-4">
           <div class="card info-card revenue-card">
@@ -145,7 +127,7 @@
                   <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size MB/unlimited : auth()->user()->site_status->used_attachs_size MB/ auth()->user()->site_status->allowed_attachs_size MB}}</h6>
+                  <h6>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/unlimited" : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</h6>
                 </div>
               </div>
             </div>
