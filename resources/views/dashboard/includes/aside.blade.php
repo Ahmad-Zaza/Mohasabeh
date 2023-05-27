@@ -13,17 +13,17 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{route('dashboard.change_email_view')}}" class="{{ (\Request::route()->getName() == 'dashboard.change_email_view') ? 'active' : '' }}">
+                <a href="{{route('dashboard.change_email_view')}}" target="_blank" class="{{ (\Request::route()->getName() == 'dashboard.change_email_view') ? 'active' : '' }}">
                     <i class="bi bi-circle"></i><span>{{__('dashboard.Change Email Address')}}</span>
                 </a>
             </li>
             <li>
-                <a href="{{route('dashboard.change_password_view')}}" class="{{ (\Request::route()->getName() == 'dashboard.change_password_view') ? 'active' : '' }}">
+                <a href="{{route('dashboard.change_password_view')}}" target="_blank" class="{{ (\Request::route()->getName() == 'dashboard.change_password_view') ? 'active' : '' }}">
                     <i class="bi bi-circle"></i><span>{{__('dashboard.Change Password')}}</span>
                 </a>
             </li>
             <li>
-                <a href="{{route('dashboard.change_personal_info_view')}}" class=" {{ (\Request::route()->getName() == 'dashboard.change_personal_info_view') ? 'active' : '' }}">
+                <a href="{{route('dashboard.change_personal_info_view')}}" target="_blank" class=" {{ (\Request::route()->getName() == 'dashboard.change_personal_info_view') ? 'active' : '' }}">
                     <i class="bi bi-circle"></i><span>{{__('dashboard.Change Profile Info')}}</span>
                 </a>
             </li>

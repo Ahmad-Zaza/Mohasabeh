@@ -457,7 +457,7 @@ class AdminCustomersController extends CBController
                 $client = new Client([
                     "http_errors" => false,
                 ]);
-                $client->request("GET", 'https:/' . env("HOST_LINK") . $folderName . "/clear-cache");
+                $client->request("GET", 'http:/' . env("HOST_LINK") . $folderName . "/clear-cache");
             } catch (ClientException $e) {
                 Log::log("error", "Error Clearing Cache $e");
             }
@@ -470,7 +470,7 @@ class AdminCustomersController extends CBController
             'to' => $customer->email,
             'data' => [
                 'full_name' => $customer->first_name . ' ' . $customer->last_name,
-                'site_link' => 'https://' . env("HOST_LINK") . $folderName,
+                'site_link' => 'http://' . env("HOST_LINK") . $folderName,
                 'email' => $customer->email,
                 'password' => $customerEmailPassword,
             ],

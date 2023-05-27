@@ -28,12 +28,12 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDO;
 use PHPUnit\Exception;
-use Storage;
 
 // use Validator;
 
@@ -227,7 +227,7 @@ class HomeController extends Controller
         $customer->website = $website;
         // $customer->logo_path = env("APP_URL") . 'images/customers/' . $filename;
         // $customer->color = $request->color;
-        $customer->host_link = 'https:/' . env("HOST_LINK") . strtolower(str_replace(' ', '', $request->domain)) . '.cloudsellpos.com';
+        $customer->host_link = 'http:/' . env("HOST_LINK") . strtolower(str_replace(' ', '', $request->domain)) . '.cloudsellpos.com';
         if (!$request->package_id) {
             $customer->is_free_trial = 1;
         }
@@ -442,7 +442,7 @@ class HomeController extends Controller
             'to' => $customer->email,
             'data' => [
                 'full_name' => $customer->first_name . ' ' . $customer->last_name,
-                'site_link' => 'https://' . env("HOST_LINK") . $folderName,
+                'site_link' => 'http://' . env("HOST_LINK") . $folderName,
                 'host' => env("HOST_LINK") . $folderName,
                 'email' => $customer->email,
                 'password' => $customerEmailPassword,
@@ -819,5 +819,13 @@ class HomeController extends Controller
         } catch (RequestException $e) {
             Log::log("error", "Error changePhpVersion $e");
         }
+    }
+
+    public function cleanCache()
+    {
+        \Artisan::call('cache:clear');
+        \Artisan::call('config:clear');
+        \Artisan::call('view:clear');
+        return "done";
     }
 }
