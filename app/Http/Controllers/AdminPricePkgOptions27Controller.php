@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class AdminPricePkgOptions27Controller extends CBController
 {
@@ -71,7 +73,7 @@ class AdminPricePkgOptions27Controller extends CBController
         | @button_color   = Bootstrap Class (primary,success,warning,danger)
         | @button_icon    = Font Awesome Class
         | @
-         = Sparate with comma, e.g : name,created_at
+        = Sparate with comma, e.g : name,created_at
         |
          */
         $this->sub_module = array();
@@ -215,12 +217,24 @@ class AdminPricePkgOptions27Controller extends CBController
     }
     public function getAdd()
     {
+        $return_url = request('return_url');
         $data['page_title'] = "Add Data";
+        $data['action'] = 'Add';
         $price_pkgs = \App\PricePkg::all();
         $reports = \App\PricingReport::all();
-        return view('add_pkg_options', compact('data', 'price_pkgs', 'reports'));
+        return view('add_pkg_options', compact('data', 'price_pkgs', 'reports', 'return_url'));
     }
 
+    public function getEdit($id)
+    {
+        $return_url = request('return_url');
+        $data['page_title'] = "Edit Data";
+        $data['action'] = 'Edit';
+        $price_pkgs = \App\PricePkg::all();
+        $reports = \App\PricingReport::all();
+        $pricingOption = DB::table('price_pkg_options')->where('id', $id)->first();
+        return view('add_pkg_options', compact('id', 'data', 'pricingOption', 'price_pkgs', 'reports', 'return_url'));
+    }
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -350,5 +364,17 @@ class AdminPricePkgOptions27Controller extends CBController
     }
 
     //By the way, you can still create your own method in here... :)
+    public function postAddSave()
+    {
+        DB::table('price_pkg_options')->insert([
+            'price_pkg_id' => Request::input('price_pkg_id'),
+            'type' => Request::input('type'),
+            'code' => Request::input('code'),
+            'value' => Request::input('value'),
+            'name_ar' => Request::input('name_ar'),
+            'name_en' => Request::input('name_en'),
+        ]);
+        return redirect(Request::input('return_url'))->with(['message' => cbLang("alert_add_data_success"), 'message_type' => 'success']);
+    }
 
 }

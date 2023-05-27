@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use crocodicstudio\crudbooster\controllers\CBController;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use PDOException;
@@ -42,7 +45,7 @@ class AdminSiteStatusController extends CBController
         $this->col = [];
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
         $this->col[] = ["label" => "Bills", "name" => "bills_count"];
-        $this->col[] = ["label" => "Vouches", "name" => "vouches_count"];
+        $this->col[] = ["label" => "Vouchers", "name" => "vouchers_count"];
         $this->col[] = ["label" => "Users", "name" => "allowed_users_count", "callback_php" => '($row->allowed_users_count == -1 ? $row->used_users_count  . "/unlimited" : $row->used_users_count . "/" . $row->allowed_users_count)'];
         $this->col[] = ["label" => "Used Users", "name" => "used_users_count", "visible" => false];
         $this->col[] = ["label" => "Inventories", "name" => "allowed_inventories_count", "callback_php" => '($row->allowed_inventories_count == -1 ? $row->used_inventories_count  . "/unlimited" : $row->used_inventories_count . "/" . $row->allowed_inventories_count)'];
@@ -62,7 +65,7 @@ class AdminSiteStatusController extends CBController
         $this->form = [];
         $this->form[] = ['label' => 'Customer Id', 'name' => 'customer_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'customers,id'];
         $this->form[] = ['label' => 'Bills Count', 'name' => 'bills_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
-        $this->form[] = ['label' => 'Vouches Count', 'name' => 'vouches_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
+        $this->form[] = ['label' => 'Vouchers Count', 'name' => 'vouchers_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Allowed Users', 'name' => 'allowed_users_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Used Users', 'name' => 'used_users_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Allowed Inventories', 'name' => 'allowed_inventories_count', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
@@ -83,7 +86,7 @@ class AdminSiteStatusController extends CBController
         //$this->form = [];
         //$this->form[] = ["label"=>"Customer Id","name"=>"customer_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"customer,id"];
         //$this->form[] = ["label"=>"Bills Count","name"=>"bills_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
-        //$this->form[] = ["label"=>"Vouches Count","name"=>"vouches_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+        //$this->form[] = ["label"=>"Vouchers Count","name"=>"vouchers_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         # OLD END FORM
 
         /*
@@ -115,6 +118,8 @@ class AdminSiteStatusController extends CBController
         $this->addaction = array();
         //    $this->addaction[] = ['label' => 'Get Last Reports', 'url' => CRUDBooster::mainpath('generate-report'), 'icon' => 'fa fa-history', 'color' => 'success'];
         $this->addaction[] = ['label' => 'Users Info', 'url' => CRUDBooster::mainpath('generate-users-info/[customer_id]'), 'icon' => 'fa fa-users', 'color' => 'success'];
+        $this->addaction[] = ['label' => 'Currencies', 'url' => CRUDBooster::mainpath('generate-currencies-info/[customer_id]'), 'icon' => 'fa fa-dollar', 'color' => 'success'];
+        $this->addaction[] = ['label' => 'Bills & Vouchers', 'url' => CRUDBooster::mainpath('generate-bills-info/[customer_id]'), 'icon' => 'fa fa-money', 'color' => 'success'];
 
         /*
         | ----------------------------------------------------------------------
@@ -228,7 +233,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->load_css = array();
-
     }
     /*
     | ----------------------------------------------------------------------
@@ -376,7 +380,7 @@ class AdminSiteStatusController extends CBController
                     $errorInfo = $dbh->errorInfo();
                     return redirect()->back()->with(['message' => "Error executing query: " . $errorInfo[2], 'message_type' => 'danger']);
                 } else {
-                    $vouches_count = $vouchers_stmt->fetchColumn();
+                    $vouchers_count = $vouchers_stmt->fetchColumn();
                 }
 
                 $package_config_query = "SELECT * FROM `package_config`";
@@ -427,7 +431,7 @@ class AdminSiteStatusController extends CBController
                     ['customer_id' => $customer->id],
                     [
                         'bills_count' => $bills_count,
-                        'vouches_count' => $vouches_count,
+                        'vouchers_count' => $vouchers_count,
                         'allowed_users_count' => ($package_config_data['users_num']),
                         'used_users_count' => $users_count,
                         'allowed_inventories_count' => ($package_config_data['inventories_num']),
@@ -474,6 +478,9 @@ class AdminSiteStatusController extends CBController
                 return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
             }
 
+            $customer_name = $customer->first_name . " " . $customer->last_name;
+            $customer_email = $customer->email;
+
             $user_query = "SELECT `cms_users`.`name`, `cms_users`.`email`, `cms_users`.`last_login_date`, `cms_privileges`.`name` as `privileges_name`
                 FROM `cms_users`
                 INNER JOIN `cms_privileges` ON `cms_users`.`id_cms_privileges` = `cms_privileges`.`id`";
@@ -483,6 +490,100 @@ class AdminSiteStatusController extends CBController
         } catch (Exception $ex) {
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
         }
-        return view('cms_reports.users_info', compact('users', 'cols'));
+        return view('cms_reports.users_info_details', compact('users','customer_name', 'customer_email', 'cols'));
+    }
+
+    public function getGenerateCurrenciesInfo($id)
+    {
+        header('Content-Type: text/html; charset=utf-8');
+        $customer = DB::table('customers')->where('id', $id)->first();
+        $cols = [];
+        $cols[] = ['name' => 'Name En', 'label' => 'Name En'];
+        $cols[] = ['name' => 'Name Ar', 'label' => 'Name Ar'];
+        $cols[] = ['name' => 'Code', 'label' => 'Code'];
+        $cols[] = ['name' => 'Default', 'label' => 'Default'];
+        $cols[] = ['name' => 'Active', 'label' => 'Active'];
+        try {
+            $customerDB = "{$customer->database_name}";
+            $customerDBHost = "localhost";
+            $customerDBUser = "{$customer->database_name}";
+            $customerDBPassword = "{$customer->database_password}";
+            try {
+                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+                $dbh->exec("SET NAMES 'utf8mb4'");
+            } catch (PDOException $ex) {
+                return redirect()->back()->with(['message' => trans("recaptcha.error_generating_currencies_info_report"), 'message_type' => 'danger']);
+            }
+
+            $customer_name = $customer->first_name . " " . $customer->last_name;
+            $customer_email = $customer->email;
+
+            $currencies_query = "SELECT `currencies`.`name_en`, `currencies`.`name_ar`,`currencies`.`code`,`currencies`.`is_major`,`currencies`.`active`
+                                     FROM `currencies`";
+            $currencies_stmt = $dbh->query($currencies_query);
+            $currencies = $currencies_stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $ex) {
+            return redirect()->back()->with(['message' => trans("recaptcha.error_generating_currencies_info_report"), 'message_type' => 'danger']);
+        }
+        return view('cms_reports.currencies_details', compact('currencies','customer_name', 'customer_email', 'cols'));
+    }
+
+    public function getGenerateBillsInfo(Request $request, $id){
+        header('Content-Type: text/html; charset=utf-8');
+        $customer = DB::table('customers')->where('id', $id)->first();
+        $cols = [];
+        $cols[] = ['name' => 'Month', 'label' => 'Month'];
+        $cols[] = ['name' => 'Bills Count', 'label' => 'Bills Count'];
+        $cols[] = ['name' => 'Vouchers Count', 'label' => 'Vouchers Count'];
+        try {
+            $customerDB = "{$customer->database_name}";
+            $customerDBHost = "localhost";
+            $customerDBUser = "{$customer->database_name}";
+            $customerDBPassword = "{$customer->database_password}";
+            try {
+                $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
+                $dbh->exec("SET NAMES 'utf8mb4'");
+            } catch (PDOException $ex) {
+                return redirect()->back()->with(['message' => trans("recaptcha.error_generating_bills_info_report"), 'message_type' => 'danger']);
+            }
+            $customer_name = $customer->first_name . " " . $customer->last_name;
+            $customer_email = $customer->email;
+            $subscription_year = $request->year ?? null;
+            $totalBills = [];
+            $totalVouchers = [];
+            if($subscription_year){
+                for($month = 1; $month<=12;$month++){
+                    $bills_query = "SELECT COUNT(*) AS count FROM `bills` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
+                    $bills_stmt = $dbh->query($bills_query);
+                    $bills = $bills_stmt->fetchColumn();
+                   
+                    $vouchers_query = "SELECT COUNT(*) AS count FROM `vouchers` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
+                    $vouchers_stmt = $dbh->query($vouchers_query);
+                    $vouchers = $vouchers_stmt->fetchColumn();
+
+                    $totalBills[] = $bills == false ? '0' : $bills;
+                    $totalVouchers[] = $vouchers == false ? '0' : $vouchers;
+                }
+            }
+
+            $startSubscriptionDate = $customer->created_at;
+            $endSubscriptionDate =  $customer->subscription_end_date ?? $customer->free_trial_end_date;
+            if(!$endSubscriptionDate)
+            $endSubscriptionDate = $customer->created_at;
+            $startYear = null;
+            $endYear = null;
+            if ($startSubscriptionDate)
+                $startYear = intval(date('Y', strtotime($startSubscriptionDate)));
+            if ($endSubscriptionDate)
+                $endYear = intval(date('Y', strtotime($endSubscriptionDate)));
+
+            $currentYear = intval(date('Y'));
+            if($endYear > $currentYear)
+                $endYear = $currentYear;
+                
+        } catch (Exception $ex) {
+            return redirect()->back()->with(['message' => trans("recaptcha.error_generating_bills_info_report"), 'message_type' => 'danger']);
+        }
+        return view('cms_reports.vouchers_bills_details', compact('totalBills','totalVouchers','customer_name', 'customer_email', 'cols','subscription_year', 'startYear', 'endYear', 'id'));
     }
 }
