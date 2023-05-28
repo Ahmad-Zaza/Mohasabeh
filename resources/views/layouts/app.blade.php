@@ -88,10 +88,13 @@
                 <a type="button"
                     class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a>
 
-                <a type="button" data-toggle="modal" data-target="#loginModal"
-                    class="text-orange p-4 login-button desktop"><img width="20" height="auto"
-                        src="{{ asset('images/Login.svg') }}" alt="MyAccount" loading="lazy"></a>
-
+                @if(!Auth::guard('customer')->check())
+                <a type="button" data-toggle="modal" data-target="#loginModal" class="text-orange p-4 login-button desktop">
+                    <img width="20" height="auto" src="{{ asset('images/Login.svg') }}" alt="MyAccount" loading="lazy">
+                </a>
+                @else
+                <a type="button" href="{{URL('/profile')}}"  class=" text-orange p-4 login-button desktop"><i class="fa fa-user"></i></a>
+                @endif
                 <a class="languge-switch"
                     href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a>
             </div>

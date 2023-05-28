@@ -66,8 +66,13 @@
 
                         <div class="">
                             <div class="form-floating">
-                                <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password">
+                                <input type="password" name="password_confirmation" class="form-control  @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password">
                                 <label>{{__('dashboard.Confirm Password')}}</label>
+                                @error('password_confirmation')
+                                <span class="invalid-feedback">
+                                    {{ $errors->first('password_confirmation') }}
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
