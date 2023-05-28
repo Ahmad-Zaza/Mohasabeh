@@ -14,7 +14,8 @@ class PricePkg extends Model
     }
     public function price_pkg_main_options()
     {
-        return $this->hasMany('\App\PricePkgOption', 'price_pkg_id')->where('type', 1);
+        return $this->hasMany('\App\PricePkgOption', 'price_pkg_id')
+            ->where(['type' => 1, 'deleted_at' => null]);
     }
     public function price_pkg_mult_options()
     {
