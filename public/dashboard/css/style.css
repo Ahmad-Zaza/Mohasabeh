@@ -809,6 +809,8 @@ h6 {
   font-weight: 700;
   margin: 0;
   padding: 0;
+ word-break: break-all;
+
 }
 
 .dashboard .card-icon {
@@ -819,10 +821,9 @@ h6 {
   flex-shrink: 0;
   flex-grow: 0;
 }
-
 .dashboard .host-card .card-icon {
-  color: #f9eb02;
-  background: #fbf89d69;
+      color: #f9eb02;
+    background: #fbf89d69;
 }
 
 .dashboard .inventories-card .card-icon {
@@ -831,8 +832,8 @@ h6 {
 }
 
 .dashboard .currencies-card .card-icon {
-  color: #f141dd;
-  background: #e9a6dd59;
+ color: #f141dd;
+    background: #e9a6dd59;
 }
 
 .dashboard .storage-card .card-icon {

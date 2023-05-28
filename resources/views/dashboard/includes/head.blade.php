@@ -22,6 +22,7 @@
 
 <!-- Template Main CSS File -->
 @if(app()->isLocale('ar'))
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,900%7COpen+Sans:400|Baloo Bhaijaan 2" rel="stylesheet" defer>
 <link href="{{ asset('dashboard/css/style-rtl.css')}}" rel="stylesheet">
 @else
 <link href="{{ asset('dashboard/css/style.css')}}" rel="stylesheet">
