@@ -719,7 +719,7 @@
                         $('#loginModal input').val("");
                         //-------------------------------------------//
                         if (res.url) {
-                            window.open(res.url, '_blank');
+                            window.location.href = res.url;
                         }
                         //-------------------------------------------//
                     },
