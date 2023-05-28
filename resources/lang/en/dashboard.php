@@ -36,7 +36,14 @@ return [
     'Change Password' => 'Change Password',
     'Change Email' => 'Change Email',
     'Email' => 'Email',
-    'Password' => 'Password'
+    'Password' => 'Password',
+    'Unable to make the connection' => 'Unable to make the connection.',
+
+    'The current password is incorrect' => 'The current password is incorrect.',
+
+    'The password updated successfully' => 'The password updated successfully.',
+    'The personal inforamtion updated successfully' => 'The personal inforamtion updated successfully'
+
 
 
 
