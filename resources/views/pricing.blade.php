@@ -86,10 +86,12 @@
                                             <div class="product-ctas">
 
 
-                                                <a type="button"
-                                                    class="request_now text-white js-product-buy-now button button-medium button-primary button-default"
-                                                    style="width:100%;">{{ __('data.free_trial') }}</a>
+                                        @if(!Auth::guard('customer')->check())
+                                        <a type="button" class="request_now text-white js-product-buy-now button button-medium button-primary button-default" style="width:100%;">{{ __('data.free_trial') }}</a>
+                                        @else
+                                        <a href="javascript:void(0)" class="js-product-buy-now button button-medium button-primary button-default subscribe_now" data-product="Suite" target="" style="width:100%;" package_id="{{ $pkg->id }}" package_name="{{ $pkg["title_$lang"] }}">{{ __('data.subscribe_now') }}</a>
 
+                                        @endif
                                             </div>
 
                                         </div>
