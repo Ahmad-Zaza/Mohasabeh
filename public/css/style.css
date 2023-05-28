@@ -2529,7 +2529,7 @@ html[lang="en"] h2 * {
 
 .feature-list img,
 .feature-card img {
-    filter: hue-rotate(154deg);
+    /* filter: hue-rotate(154deg); */
 }
 
 @font-face {

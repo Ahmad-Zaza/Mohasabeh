@@ -181,6 +181,7 @@ class HomeController extends Controller
                 'required',
                 new WebsiteReCapcha,
             ],
+     
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
