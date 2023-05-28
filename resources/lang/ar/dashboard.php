@@ -39,7 +39,11 @@ return [
     'Change Password' => 'تغيير كلمة السر',
     'Change Email' => 'تغيير البريد الالكتروني',
     'Email' => 'البريد الالكتروني',
-    'Password' => 'كلمة السر'
+    'Password' => 'كلمة السر',
+    'Unable to make the connection' => 'الاتصال الآن غير متاح.',
+    'The current password is incorrect' => 'كلمة السر الحالية غير صحيحة',
+    'The password updated successfully' => 'كلمة السر تحدثت بنجاح.',
+    'The personal inforamtion updated successfully' => 'المعلومات الشخصة تحدثت بنجاح'
 
 
 

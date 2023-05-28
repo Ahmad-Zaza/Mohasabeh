@@ -804,7 +804,7 @@ h6 {
 }
 
 .dashboard .info-card h6 {
-  font-size: 28px;
+  font-size: 22px;
   color: #012970;
   font-weight: 700;
   margin: 0;
@@ -820,12 +820,22 @@ h6 {
   flex-grow: 0;
 }
 
-.dashboard .sales-card .card-icon {
+.dashboard .host-card .card-icon {
+  color: #f9eb02;
+  background: #fbf89d69;
+}
+
+.dashboard .inventories-card .card-icon {
   color: #4154f1;
   background: #f6f6fe;
 }
 
-.dashboard .revenue-card .card-icon {
+.dashboard .currencies-card .card-icon {
+  color: #f141dd;
+  background: #e9a6dd59;
+}
+
+.dashboard .storage-card .card-icon {
   color: #2eca6a;
   background: #e0f8e9;
 }

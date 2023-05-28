@@ -12,19 +12,24 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 
 Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch');
 
 //Mini Dashboard
+
 Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
     Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
-    Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
-    Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
+    Route::post('/profile/change-email', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_email'])->name('dashboard.change_email');
 
-    Route::get('logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
+    Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
+    Route::post('/profile/change-password', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_password'])->name('dashboard.change_password');
+
+    Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
+    Route::post('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_personal_info'])->name('dashboard.change_personal_info');
+
+    Route::get('/logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
 });
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
@@ -39,7 +44,6 @@ Route::get('activate-customer/{id}', 'HomeController@customer_activate');
 Route::get('customers/{token}', 'HomeController@activationProgress');
 Route::get('customers/email/{email}', 'HomeController@checkEmailUnique');
 Route::get('pricing', 'HomeController@pricing');
-
 
 Route::get('admin/customers/set-free-trial/{id}', 'AdminCustomersController@setFreeTrial');
 Route::post('admin/customers/saveFreeTrial', 'AdminCustomersController@saveFreeTrial');

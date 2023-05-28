@@ -17,7 +17,7 @@
     <div class="">
       <div class="col-md-8">
 
-        <div class="card info-card customers-card">
+        <div class="card info-card host-card">
 
           <div class="card-body">
 
@@ -25,10 +25,10 @@
 
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-link"></i>
               </div>
               <div class="box">
-                <a href="{{auth()->user()->host_link}}">
+                <a href="{{auth()->user()->host_link}}" target="_blank">
                   <h6>{{auth()->user()->host_link}} </h6>
                 </a>
                 @if(auth()->user()->is_free_trial)
@@ -51,77 +51,66 @@
             </a>
           </div>
         </div>
-
       </div>
+
+
       <div class="row">
-
         <div class="col-md-3 col-md-4">
-          <div class="card info-card sales-card">
-
+          <div class="card info-card customers-card">
             <div class="card-body">
               <h5 class="card-title">{{__('dashboard.Customers Count')}}<span></span></h5>
-
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-cart"></i>
+                  <i class="bi bi-people"></i>
                 </div>
                 <div class="box">
                   <h6>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/unlimited" : auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</h6>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
         <div class="col-md-3 col-md-4">
-          <div class="card info-card revenue-card">
-
-
+          <div class="card info-card inventories-card">
             <div class="card-body">
               <h5 class="card-title">{{__('dashboard.Inventories Count')}} <span></span></h5>
-
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-currency-dollar"></i>
+                  <i class="bi bi-list-ol "></i>
                 </div>
                 <div class="box">
                   <h6>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/unlimited" : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</h6>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
         <div class="col-md-3 col-md-4">
-          <div class="card info-card revenue-card">
-
-
+          <div class="card info-card currencies-card">
             <div class="card-body">
               <h5 class="card-title">{{__('dashboard.Currencies Count')}} <span></span></h5>
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-currency-dollar"></i>
+                  <i class="bi bi-currency-exchange"></i>
                 </div>
                 <div class="box">
                   <h6>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/unlimited" : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</h6>
-
                 </div>
               </div>
             </div>
-
           </div>
         </div>
 
         <div class="col-md-3 col-md-4">
-          <div class="card info-card revenue-card">
+          <div class="card info-card storage-card">
             <div class="card-body">
               <h5 class="card-title">{{__('dashboard.Attached Storage Usage')}} </h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-currency-dollar"></i>
+                  <i class="bi bi-sd-card"></i>
                 </div>
                 <div class="box">
                   <h6>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/unlimited" : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</h6>

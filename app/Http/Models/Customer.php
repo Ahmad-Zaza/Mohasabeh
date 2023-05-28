@@ -15,7 +15,7 @@ class Customer extends Authenticatable
     protected $guard = 'customer';
     protected $fillable = [
         'first_name', 'last_name', 'phone', 'email', 'subscription_type', 'company',
-        'users_count', 'sys_lang', 'notes', 'custom_token'
+        'users_count', 'sys_lang', 'notes', 'custom_token','address'
     ];
 
     public function site_status()

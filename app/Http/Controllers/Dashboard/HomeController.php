@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -24,7 +26,8 @@ class HomeController extends Controller
 
     public function change_personal_info_view()
     {
-        return view('dashboard.pages.change-personal-info');
+        $user = Auth::user();
+        return view('dashboard.pages.change-personal-info',compact('user'));
     }
 
     public function logout()
