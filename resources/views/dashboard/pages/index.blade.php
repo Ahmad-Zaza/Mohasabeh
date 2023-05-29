@@ -27,7 +27,7 @@
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                 <i class="bi bi-link"></i>
               </div>
-              <div class="box">
+              <div class="">
                 <a href="{{auth()->user()->host_link}}" target="_blank">
                   <h6>{{auth()->user()->host_link}} </h6>
                 </a>
@@ -43,7 +43,7 @@
 
           </div>
           <div class="action-buttons">
-            <a class="card-link">
+            <a class="card-link" href="{{URL('pricing')}}">
               {{__('dashboard.Upgrade')}}
             </a>
             <a class="card-link">
@@ -64,7 +64,7 @@
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/unlimited" : auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</h6>
+                  <p>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/".__('dashboard.unlimited'): auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</p>
                 </div>
               </div>
             </div>
@@ -80,7 +80,7 @@
                   <i class="bi bi-list-ol "></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/unlimited" : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</h6>
+                  <p>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</p>
                 </div>
               </div>
             </div>
@@ -97,7 +97,7 @@
                   <i class="bi bi-currency-exchange"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/unlimited" : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</h6>
+                  <p>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</p>
                 </div>
               </div>
             </div>
@@ -113,7 +113,7 @@
                   <i class="bi bi-sd-card"></i>
                 </div>
                 <div class="box">
-                  <h6>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/unlimited" : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</h6>
+                  <p>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/".__('dashboard.unlimited') : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</p>
                 </div>
               </div>
             </div>

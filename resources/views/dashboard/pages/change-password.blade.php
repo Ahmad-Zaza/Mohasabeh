@@ -37,7 +37,7 @@
                         <div class="">
                             <div class="form-floating">
                                 <input type="password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" placeholder="Current Password">
-                                <label>{{__('dashboard.Current Password')}}</label>
+                                <label class="transition">{{__('dashboard.Current Password')}}</label>
 
                                 @error('current_password')
                                 <span class="invalid-feedback">
@@ -52,22 +52,20 @@
                         <div class="">
                             <div class="form-floating">
                                 <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="New Password">
-                                <label>{{__('dashboard.New Password')}}</label>
+                                <label class="transition">{{__('dashboard.New Password')}}</label>
                                 @error('password')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('password') }}
                                 </span>
                                 @enderror
                             </div>
-
-
                         </div>
 
 
                         <div class="">
                             <div class="form-floating">
-                                <input type="password" name="password_confirmation" class="form-control  @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password">
-                                <label>{{__('dashboard.Confirm Password')}}</label>
+                                <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password">
+                                <label class="transition">{{__('dashboard.Confirm Password')}}</label>
                                 @error('password_confirmation')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('password_confirmation') }}

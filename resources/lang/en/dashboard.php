@@ -2,6 +2,10 @@
 
 
 
+
+
+
+
 return [
 
     'Sign Out' => 'Sign Out',
@@ -22,7 +26,6 @@ return [
     'Attached Storage Usage' => 'Attached Storage Usage',
     'Customers Count' => 'Customers Count',
     'Login' => 'Login',
-
     'Change Personal Information' => 'Change Personal Information',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
@@ -42,7 +45,8 @@ return [
     'The current password is incorrect' => 'The current password is incorrect.',
 
     'The password updated successfully' => 'The password updated successfully.',
-    'The personal inforamtion updated successfully' => 'The personal inforamtion updated successfully'
+    'The personal inforamtion updated successfully' => 'The personal inforamtion updated successfully',
+    'unlimited' => 'unlimited'
 
 
 

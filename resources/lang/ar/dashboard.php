@@ -6,7 +6,6 @@ return [
 
     'Sign Out' => 'تسجيل خروج',
     'All Rights Reserved' => 'جميع الحقوق محفوظة',
-
     'Dashboard' => 'لوحة التحكم',
     'Profile' => 'ملف شخصي',
     'Change Email Address' => 'تغيير عنوان البريد الالكتروني',
@@ -43,7 +42,8 @@ return [
     'Unable to make the connection' => 'الاتصال الآن غير متاح.',
     'The current password is incorrect' => 'كلمة السر الحالية غير صحيحة',
     'The password updated successfully' => 'كلمة السر تحدثت بنجاح.',
-    'The personal inforamtion updated successfully' => 'المعلومات الشخصة تحدثت بنجاح'
+    'The personal inforamtion updated successfully' => 'المعلومات الشخصة تحدثت بنجاح',
+    'unlimited' => 'غير محدود'
 
 
 
