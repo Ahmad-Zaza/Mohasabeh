@@ -11,11 +11,9 @@ use App\Http\Models\Module;
 use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
-use PDOException;
-use Illuminate\Support\Facades\Auth;
 use App\PricePkg;
+use App\Rules\NotGlobalDomain;
 use App\Rules\ReCaptcha;
-use Illuminate\Support\Facades\Hash;
 use App\Rules\WebsiteReCapcha;
 use Carbon\Carbon;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
@@ -25,7 +23,9 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use PDO;
+use PDOException;
 use PHPUnit\Exception;
 
 // use Validator;
@@ -181,7 +182,10 @@ class HomeController extends Controller
                 'required',
                 new WebsiteReCapcha,
             ],
-     
+            'domain' => [
+                'required',
+                new NotGlobalDomain,
+            ],
         ], [
             'phone.numeric' => __("data.phone_numeric", [], Lang::getLocale()),
             'email.email' => __("data.email_valid", [], Lang::getLocale()),
@@ -393,6 +397,7 @@ class HomeController extends Controller
             $query = str_replace('$$users_num$$', $package->users_count, $query);
             $query = str_replace('$$inventories_num$$', $package->warehouses, $query);
             $query = str_replace('$$currencies_num$$', $package->currency, $query);
+            $query = str_replace('$$attachs_size$$', $package->storage_attached_size, $query);
         }
         $query = str_replace('$$free_trial_start_date$$', $customer->free_trial_start_date ?: 'null', $query);
         $query = str_replace('$$free_trial_end_date$$', $customer->free_trial_end_date ?: 'null', $query);
@@ -560,7 +565,6 @@ class HomeController extends Controller
             $query = "select * from cms_users where email = '$email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];
-
 
             if (Hash::check($password, $user['password'])) {
                 Auth::guard('customer')->login($customer);

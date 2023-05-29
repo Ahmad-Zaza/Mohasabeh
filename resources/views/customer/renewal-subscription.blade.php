@@ -31,9 +31,7 @@
                 <input type='hidden' name='ref_mainpath' value='{{ CRUDBooster::mainpath() }}' />
                 <input type='hidden' name='ref_parameter' value='{{ urldecode(http_build_query(@$_GET)) }}' />
                 <div class="box-body" id="parent-form-area">
-                    @include(
-                        'crudbooster::default.type_components.date.asset'
-                    )
+                    @include('crudbooster::default.type_components.date.asset')
                     <div class='form-group form-datepicker' id='form-group-subscription-end-date'
                         style="{{ @$form['style'] }}">
                         <label class='control-label col-sm-2'>Old Subscription Start Date
@@ -137,14 +135,17 @@
                         <select name="package_id" id="package_id" class="form-control">
                             @foreach ($packages as $package)
                                 @if ($package->id == $customer->package_id)
-                                    <option selected value="{{ $package->id }}" data-users_count="{{ $package->users_count }}"
+                                    <option selected value="{{ $package->id }}"
+                                        data-users_count="{{ $package->users_count }}"
                                         data-currency="{{ $package->currency }}"
-                                        data-warehouses="{{ $package->warehouses }}">
+                                        data-warehouses="{{ $package->warehouses }}"
+                                        data-storage="{{ $package->storage_attached_size }}">
                                         {{ $package->title_en }}</option>
                                 @else
                                     <option value="{{ $package->id }}" data-users_count="{{ $package->users_count }}"
                                         data-currency="{{ $package->currency }}"
-                                        data-warehouses="{{ $package->warehouses }}">
+                                        data-warehouses="{{ $package->warehouses }}"
+                                        data-storage="{{ $package->storage_attached_size }}">
                                         {{ $package->title_en }}</option>
                                 @endif
                             @endforeach
@@ -171,8 +172,8 @@
 
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <input type='number' title="Warehouses Count" required class='form-control' name="warehouses"
-                                id="warehouses" />
+                            <input type='number' title="Warehouses Count" required class='form-control'
+                                name="warehouses" id="warehouses" />
                         </div>
                     </div>
                 </div>
@@ -185,6 +186,19 @@
                         <div class="input-group">
                             <input type='number' title="Currencies Count" required class='form-control' name="currency"
                                 id="currency" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class='form-group' id='form-group-currency' style="{{ @$form['style'] }}">
+                    <label class='control-label col-sm-2'>
+                        Storage Size
+                    </label>
+
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <input type='number' title="Storage Size" required class='form-control'
+                                name="storage_attached_size" id="storage" />
                         </div>
                     </div>
                 </div>
@@ -243,6 +257,7 @@
                 $("#users_count").val(selectedOption.attr("data-users_count"));
                 $("#warehouses").val(selectedOption.attr("data-warehouses"));
                 $("#currency").val(selectedOption.attr("data-currency"));
+                $("#storage").val(selectedOption.attr("data-storage"));
             }).change();
         })
     </script>
@@ -268,6 +283,5 @@
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
             color: #fff !important;
         }
-
     </style>
 @endpush
