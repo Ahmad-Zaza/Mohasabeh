@@ -34,7 +34,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" name="first_name" class="form-control  @error('first_name') is-invalid @enderror" id="first_name" value="{{$user->first_name}}" placeholder="{{__('dashboard.First Name')}}">
-                                <label for="first_name">{{__('dashboard.First Name')}}</label>
+                                <label class="transition" for="first_name">{{__('dashboard.First Name')}}</label>
 
                                 @error('first_name')
                                 <span class="invalid-feedback">
@@ -46,7 +46,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" name="last_name" class="form-control  @error('last_name') is-invalid @enderror" id="last_name" value="{{$user->last_name}}" placeholder="{{__('dashboard.Last Name')}}">
-                                <label for="last_name">{{__('dashboard.Last Name')}}</label>
+                                <label class="transition" for="last_name">{{__('dashboard.Last Name')}}</label>
 
                                 @error('last_name')
                                 <span class="invalid-feedback">
@@ -58,7 +58,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" name="company" class="form-control  @error('company') is-invalid @enderror" id="company" value="{{$user->company}}" placeholder="{{__('dashboard.Company')}}">
-                                <label for="company">{{__('dashboard.Company')}}</label>
+                                <label class="transition" for="company">{{__('dashboard.Company')}}</label>
                                 @error('company')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('company') }}
@@ -70,7 +70,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="tel" name="phone" class="form-control  @error('phone') is-invalid @enderror" id="phone" value="{{$user->phone}}" placeholder="{{__('dashboard.Phone')}}">
-                                <label for="phone">{{__('dashboard.Phone')}}</label>
+                                <label class="transition" for="phone">{{__('dashboard.Phone')}}</label>
 
                                 @error('phone')
                                 <span class="invalid-feedback">
@@ -83,7 +83,7 @@
                         <div class="mb-3">
                             <div class="form-floating">
                                 <input type="text" name="address" class="form-control  @error('address') is-invalid @enderror" id="address" value="{{$user->address}}" placeholder="{{__('dashboard.Address')}}">
-                                <label for="address">{{__('dashboard.Address')}}</label>
+                                <label class="transition" for="address">{{__('dashboard.Address')}}</label>
 
                                 @error('address')
                                 <span class="invalid-feedback">

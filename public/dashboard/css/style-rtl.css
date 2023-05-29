@@ -1303,12 +1303,17 @@ h6 {
     color: #012970;
 }
 
-.form-floating>.form-control-plaintext~label,
+/* .form-floating>.form-control-plaintext~label,
 .form-floating>.form-control:focus~label,
 .form-floating>.form-control:not(:placeholder-shown)~label,
 .form-floating>.form-select~label {
     left: 108px;
+} */
+
+.transition {
+    transition: none !important;
 }
+
 
 .footer .credits {
     padding-top: 5px;
