@@ -1,8 +1,5 @@
 <div class="d-flex align-items-center justify-content-between">
     <a href="{{URL('/')}}" class="navbar-brand main">
-        @php
-        $settings = DB::table('cms_settings')->whereIn('group_setting', ['Application Setting', 'SEO Setting'])->pluck('content', 'name');
-        @endphp
         <img  width="150" src="{{ asset($settings['logo']) }}" alt="CloudSellPOS" loading="lazy">
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -33,7 +30,7 @@
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <a class="dropdown-item d-flex align-items-center" href="{{ URL('logout') }}">
                     <i class="bi bi-box-arrow-right"></i>
-                    <span>{{ __('dashboard.Sign Out')}}</span>
+                    <span>{{ __('dashboard.sign_out')}}</span>
                 </a>
             </ul>
         </li>

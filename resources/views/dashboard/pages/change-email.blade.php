@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>{{__('dashboard.Change Email Address')}}</h1>
+    <h1>{{__('dashboard.change_email_address')}}</h1>
 </div>
 
 <section class="section">

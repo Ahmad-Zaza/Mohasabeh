@@ -1,5 +1,5 @@
 <footer id="footer" class="footer">
     <div class="copyright">
-        {{__('dashboard.All Rights Reserved')}}
+        {{__('dashboard.all_rights_reserved')}}
     </div>
 </footer>

@@ -1326,6 +1326,9 @@ h6 {
     color: #012970;
 }
 
+.deleteAccount {
+    margin-right: 1em;
+}
 
 .form-floating>label {
     position: absolute;
@@ -1340,6 +1343,10 @@ h6 {
 }
 
 
+.modal-header .btn-close {
+    margin: 0 !important;
+    padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
+}
 
 .footer .credits {
     padding-top: 5px;

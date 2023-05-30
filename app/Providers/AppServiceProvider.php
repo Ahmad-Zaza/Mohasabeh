@@ -22,12 +22,14 @@ class AppServiceProvider extends ServiceProvider
     {
         $lang = config('app.locale');
         Schema::defaultStringLength(191);
-  
+
         view()->composer('*', function ($view) {
             $lang = config('app.locale');
             $social_media = SocialMedia::where('active', 1)->orderBy('sorting')->get();
+            $settings = DB::table('cms_settings')->whereIn('group_setting', ['Application Setting', 'SEO Setting'])->pluck('content', 'name');
+
             $company_information = CompanyInformation::where('active', 1)->first();
-    
+
             if (Route::current()->uri == "/") {
                 $seo = Seo::where("page", "home")->where('language', $lang)->first();
             } else if (strpos(Route::current()->uri, "{title}") === false) {
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
                 $seo = $seo = Seo::where("page", "home")->where('language', $lang)->first();
             }
             $view->with('seo', $seo);
+            $view->with('settings', $settings);
             $view->with('social_media', $social_media);
             $view->with('company_information', $company_information);
         });

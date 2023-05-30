@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>{{__('dashboard.Change Password')}}</h1>
+    <h1>{{__('dashboard.change_password')}}</h1>
 
 
 </div>
@@ -37,7 +37,7 @@
                         <div class="">
                             <div class="form-floating">
                                 <input type="password" name="current_password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" placeholder="Current Password">
-                                <label class="transition">{{__('dashboard.Current Password')}}</label>
+                                <label class="transition">{{__('dashboard.current_password')}}</label>
 
                                 @error('current_password')
                                 <span class="invalid-feedback">
@@ -52,7 +52,7 @@
                         <div class="">
                             <div class="form-floating">
                                 <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="New Password">
-                                <label class="transition">{{__('dashboard.New Password')}}</label>
+                                <label class="transition">{{__('dashboard.new_password')}}</label>
                                 @error('password')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('password') }}
@@ -65,7 +65,7 @@
                         <div class="">
                             <div class="form-floating">
                                 <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password">
-                                <label class="transition">{{__('dashboard.Confirm Password')}}</label>
+                                <label class="transition">{{__('dashboard.confirm_password')}}</label>
                                 @error('password_confirmation')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('password_confirmation') }}
@@ -77,7 +77,7 @@
 
 
                         <div class="">
-                            <button type="submit" class="button">{{__('dashboard.Change Password')}}</button>
+                            <button type="submit" class="button">{{__('dashboard.change_password')}}</button>
                         </div>
                     </form>
 

@@ -4,7 +4,7 @@
 
 
 <div class="pagetitle">
-  <h1>{{__('dashboard.Dashboard')}}</h1>
+  <h1>{{__('dashboard.dashboard')}}</h1>
   <nav>
     <ol class="breadcrumb">
     </ol>
@@ -32,9 +32,9 @@
                   <h6>{{auth()->user()->host_link}} </h6>
                 </a>
                 @if(auth()->user()->is_free_trial)
-                <span class="text-muted small pt-2 ps-1">Free Trail ends at {{auth()->user()->free_trial_end_date}}</span>
+                <span class="text-muted small pt-2 ps-1">{{__('dashboard.free_trail_ends_at')}} {{auth()->user()->free_trial_end_date}}</span>
                 @else
-                <span class="text-muted small pt-2 ps-1">Subscription ends at {{auth()->user()->subscription_end_date}}</span>
+                <span class="text-muted small pt-2 ps-1">{{__('dashboard.subscription_ends_at')}} {{auth()->user()->subscription_end_date}}</span>
                 @endif
               </div>
 
@@ -44,11 +44,11 @@
           </div>
           <div class="action-buttons">
             <a class="card-link" href="{{URL('pricing')}}">
-              {{__('dashboard.Upgrade')}}
+              {{__('dashboard.upgrade')}}
             </a>
 
             <a class="card-link deleteAccount" data-target="#deleteAccountModel" data-toggle="modal" id="deleteAccount" href="">
-              {{__('dashboard.Delete Account')}}
+              {{__('dashboard.delete_account')}}
             </a>
           </div>
         </div>
@@ -63,10 +63,9 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              Are you sure you want to delete this account permanently?!
-              you won't be able to retrive your old account again. </div>
+              {{__('dashboard.are_you_sure')}} </div>
             <div class="modal-footer">
-              <button type="button" class="button">Delete account</button>
+              <button type="button" class="button">{{__('dashboard.delete_account')}}</button>
             </div>
           </div>
         </div>
@@ -77,7 +76,7 @@
         <div class="col-md-3 col-md-4">
           <div class="card info-card customers-card">
             <div class="card-body">
-              <h5 class="card-title">{{__('dashboard.Customers Count')}}<span></span></h5>
+              <h5 class="card-title">{{__('dashboard.customers_count')}}<span></span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-people"></i>
@@ -93,7 +92,7 @@
         <div class="col-md-3 col-md-4">
           <div class="card info-card inventories-card">
             <div class="card-body">
-              <h5 class="card-title">{{__('dashboard.Inventories Count')}} <span></span></h5>
+              <h5 class="card-title">{{__('dashboard.inventories_count')}} <span></span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-list-ol "></i>
@@ -109,7 +108,7 @@
         <div class="col-md-3 col-md-4">
           <div class="card info-card currencies-card">
             <div class="card-body">
-              <h5 class="card-title">{{__('dashboard.Currencies Count')}} <span></span></h5>
+              <h5 class="card-title">{{__('dashboard.currencies_count')}} <span></span></h5>
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -126,7 +125,7 @@
         <div class="col-md-3 col-md-4">
           <div class="card info-card storage-card">
             <div class="card-body">
-              <h5 class="card-title">{{__('dashboard.Attached Storage Usage')}} </h5>
+              <h5 class="card-title">{{__('dashboard.attached_storage_usage')}} </h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-sd-card"></i>
@@ -145,8 +144,6 @@
 @stop
 
 @push('js')
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
 <script type="text/javascript">
   $(document).ready(function() {
     $(".deleteAccount").on("click", function(e) {

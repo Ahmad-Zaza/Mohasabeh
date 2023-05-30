@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="pagetitle">
-    <h1>{{__('dashboard.Change Personal Information')}}</h1>
+    <h1>{{__('dashboard.change_personal_information')}}</h1>
 </div>
 <section class="section">
     <div class="row">
@@ -33,8 +33,8 @@
                         {{ csrf_field() }}
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="text" name="first_name" class="form-control  @error('first_name') is-invalid @enderror" id="first_name" value="{{$user->first_name}}" placeholder="{{__('dashboard.First Name')}}">
-                                <label class="transition" for="first_name">{{__('dashboard.First Name')}}</label>
+                                <input type="text" name="first_name" class="form-control  @error('first_name') is-invalid @enderror" id="first_name" value="{{$user->first_name}}" placeholder="{{__('dashboard.first_name')}}">
+                                <label class="transition" for="first_name">{{__('dashboard.first_name')}}</label>
 
                                 @error('first_name')
                                 <span class="invalid-feedback">
@@ -45,8 +45,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="text" name="last_name" class="form-control  @error('last_name') is-invalid @enderror" id="last_name" value="{{$user->last_name}}" placeholder="{{__('dashboard.Last Name')}}">
-                                <label class="transition" for="last_name">{{__('dashboard.Last Name')}}</label>
+                                <input type="text" name="last_name" class="form-control  @error('last_name') is-invalid @enderror" id="last_name" value="{{$user->last_name}}" placeholder="{{__('dashboard.last_name')}}">
+                                <label class="transition" for="last_name">{{__('dashboard.last_name')}}</label>
 
                                 @error('last_name')
                                 <span class="invalid-feedback">
@@ -57,8 +57,8 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="text" name="company" class="form-control  @error('company') is-invalid @enderror" id="company" value="{{$user->company}}" placeholder="{{__('dashboard.Company')}}">
-                                <label class="transition" for="company">{{__('dashboard.Company')}}</label>
+                                <input type="text" name="company" class="form-control  @error('company') is-invalid @enderror" id="company" value="{{$user->company}}" placeholder="{{__('dashboard.company')}}">
+                                <label class="transition" for="company">{{__('dashboard.company')}}</label>
                                 @error('company')
                                 <span class="invalid-feedback">
                                     {{ $errors->first('company') }}
@@ -69,8 +69,8 @@
 
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="tel" name="phone" class="form-control  @error('phone') is-invalid @enderror" id="phone" value="{{$user->phone}}" placeholder="{{__('dashboard.Phone')}}">
-                                <label class="transition" for="phone">{{__('dashboard.Phone')}}</label>
+                                <input type="tel" name="phone" class="form-control  @error('phone') is-invalid @enderror" id="phone" value="{{$user->phone}}" placeholder="{{__('dashboard.phone')}}">
+                                <label class="transition" for="phone">{{__('dashboard.phone')}}</label>
 
                                 @error('phone')
                                 <span class="invalid-feedback">
@@ -82,8 +82,8 @@
 
                         <div class="mb-3">
                             <div class="form-floating">
-                                <input type="text" name="address" class="form-control  @error('address') is-invalid @enderror" id="address" value="{{$user->address}}" placeholder="{{__('dashboard.Address')}}">
-                                <label class="transition" for="address">{{__('dashboard.Address')}}</label>
+                                <input type="text" name="address" class="form-control  @error('address') is-invalid @enderror" id="address" value="{{$user->address}}" placeholder="{{__('dashboard.address')}}">
+                                <label class="transition" for="address">{{__('dashboard.address')}}</label>
 
                                 @error('address')
                                 <span class="invalid-feedback">
@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="">
-                            <button type="submit" class="button">{{__('dashboard.Save')}}</button>
+                            <button type="submit" class="button">{{__('dashboard.save')}}</button>
                         </div>
                     </form>
 
