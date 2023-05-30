@@ -809,7 +809,7 @@ h6 {
   font-weight: 700;
   margin: 0;
   padding: 0;
- word-break: break-all;
+  word-break: break-all;
 
 }
 
@@ -821,9 +821,10 @@ h6 {
   flex-shrink: 0;
   flex-grow: 0;
 }
+
 .dashboard .host-card .card-icon {
-      color: #f9eb02;
-    background: #fbf89d69;
+  color: #f9eb02;
+  background: #fbf89d69;
 }
 
 .dashboard .inventories-card .card-icon {
@@ -832,8 +833,8 @@ h6 {
 }
 
 .dashboard .currencies-card .card-icon {
- color: #f141dd;
-    background: #e9a6dd59;
+  color: #f141dd;
+  background: #e9a6dd59;
 }
 
 .dashboard .storage-card .card-icon {
@@ -987,6 +988,16 @@ h6 {
   color: #012970;
   padding: 15px 0;
 }
+
+.card-box {
+  font-size: 22px;
+  color: #012970;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  word-break: break-all;
+}
+
 
 .iconslist i {
   margin: 0.25rem;
@@ -1240,6 +1251,30 @@ h6 {
   float: right;
 }
 
+.in-one-line {
+  display: inline-block;
+  color: green;
+  border: 2px solid red;
+  margin: 10px 20px;
+  width: 120px;
+  font-size: 40px;
+}
+
+.checkout-button {
+  background-color: #4154f1;
+
+  border: none;
+  color: white;
+  font-size: 10px;
+  padding: 10px 11px;
+  text-decoration: none;
+  text-align: center !important;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 19em;
+}
+
 .button {
   background-color: #012970;
 
@@ -1254,6 +1289,14 @@ h6 {
   cursor: pointer;
   border-radius: 5px;
   width: 10em;
+}
+
+.info {
+  display: flex;
+  gap: 26px;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: baseline;
 }
 
 .box {

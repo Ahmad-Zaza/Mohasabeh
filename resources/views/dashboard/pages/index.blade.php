@@ -27,7 +27,7 @@
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                 <i class="bi bi-link"></i>
               </div>
-              <div class="">
+              <div class="box">
                 <a href="{{auth()->user()->host_link}}" target="_blank">
                   <h6>{{auth()->user()->host_link}} </h6>
                 </a>
@@ -46,9 +46,28 @@
             <a class="card-link" href="{{URL('pricing')}}">
               {{__('dashboard.Upgrade')}}
             </a>
-            <a class="card-link">
+
+            <a class="card-link deleteAccount" data-target="#deleteAccountModel" data-toggle="modal" id="deleteAccount" href="">
               {{__('dashboard.Delete Account')}}
             </a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="deleteAccountModel" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Are you sure ?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this account permanently?!
+              you won't be able to retrive your old account again. </div>
+            <div class="modal-footer">
+              <button type="button" class="button">Delete account</button>
+            </div>
           </div>
         </div>
       </div>
@@ -63,7 +82,7 @@
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-people"></i>
                 </div>
-                <div class="box">
+                <div class="box card-box ">
                   <p>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/".__('dashboard.unlimited'): auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</p>
                 </div>
               </div>
@@ -79,7 +98,7 @@
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-list-ol "></i>
                 </div>
-                <div class="box">
+                <div class="box card-box ">
                   <p>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</p>
                 </div>
               </div>
@@ -96,7 +115,7 @@
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-currency-exchange"></i>
                 </div>
-                <div class="box">
+                <div class="box card-box ">
                   <p>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</p>
                 </div>
               </div>
@@ -112,7 +131,7 @@
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-sd-card"></i>
                 </div>
-                <div class="box">
+                <div class="box card-box ">
                   <p>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/".__('dashboard.unlimited') : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</p>
                 </div>
               </div>
@@ -124,3 +143,18 @@
   </div>
 </section>
 @stop
+
+@push('js')
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".deleteAccount").on("click", function(e) {
+      e.preventDefault();
+      $('#deleteAccountModel').modal('hide');
+      $('#deleteAccountModel').modal('show');
+    });
+  });
+</script>
+
+@endpush
