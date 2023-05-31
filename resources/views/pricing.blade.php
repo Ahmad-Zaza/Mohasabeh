@@ -186,8 +186,7 @@
 
                 subscribedRecaptcha = grecaptcha.render('subscribedRecaptcha', {
 
-                    'sitekey': '{{ CRUDBooster::getSetting('
-                    website_recaptcha_site_key ') }}'
+                    'sitekey': '{{ CRUDBooster::getSetting('website_recaptcha_site_key') }}'
 
                 });
 
