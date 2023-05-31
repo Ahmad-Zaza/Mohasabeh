@@ -695,7 +695,7 @@
                 option_value = $(this).val();
                 price_amount = option_value.split('-')[1];
                 pkg_sub_type = option_value.split('-')[0];
-                $('input[name=subscription_type]').val(pkg_sub_type);
+                $('input[name=subscription_type_' +pack_id+']').val(pkg_sub_type);
                 $('#dy_amnt_pkg_' + pack_id).html('<strong>$' + price_amount + '</strong>');
             });
         });

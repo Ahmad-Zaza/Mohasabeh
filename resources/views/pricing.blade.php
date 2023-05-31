@@ -49,7 +49,7 @@
 
                                         <div class="form-group">
 
-                                            <input type="hidden" id="subscription_type" class="subscription_type" name="subscription_type" value="month" />
+                                            <input type="hidden" id="subscription_type_{{ $pkg->id }}" class="subscription_type" name="subscription_type_{{ $pkg->id }}" value="month" />                                       
                                             <input type="hidden" id="pkgg_id" class="pkgg_id" name="pkgg_id" value="{{ $pkg->id }}" />
 
                                             <input type="hidden" name="sys_lang" value="ar">
@@ -224,8 +224,8 @@
 <script>
     $(function() {
         $('.sub_now').click(function(e) {
-            var sub_type = $('#subscription_type').val();
             var pkgg_id = $(this).data('packageId');
+                var sub_type = $('#subscription_type_' + pkgg_id).val();
             $.ajax({
                 type: 'GET',
                 data: {
