@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -12,7 +13,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-
+        Artisan::call('report:generate', ['customer' => auth()->user()->id]);
         return view('dashboard.pages.index');
     }
 

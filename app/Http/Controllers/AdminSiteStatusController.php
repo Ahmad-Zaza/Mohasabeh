@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use crocodicstudio\crudbooster\controllers\CBController;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use PDO;
 use PDOException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class AdminSiteStatusController extends CBController
 {
@@ -355,106 +355,13 @@ class AdminSiteStatusController extends CBController
 
     public function getGenerateReport()
     {
-        $customers = DB::table('customers')->get();
-        DB::beginTransaction();
         try {
-            foreach ($customers as $customer) {
-                $customerDB = "{$customer->database_name}";
-                $customerDBHost = "localhost";
-                $customerDBUser = "{$customer->database_name}";
-                $customerDBPassword = "{$customer->database_password}";
-                try {
-                    $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
-                } catch (PDOException $ex) {
-                    continue;
-                    return redirect()->back()->with(['message' => trans("recaptcha.error_generating_report"), 'message_type' => 'danger']);
-                }
-
-                $bills_query = "SELECT COUNT(*) FROM `bills`";
-                $bills_stmt = $dbh->query($bills_query);
-                $bills_count = $bills_stmt->fetchColumn();
-
-                $vouchers_query = "SELECT COUNT(*) FROM `vouchers`";
-                $vouchers_stmt = $dbh->query($vouchers_query);
-                if ($vouchers_stmt === false) {
-                    $errorInfo = $dbh->errorInfo();
-                    return redirect()->back()->with(['message' => "Error executing query: " . $errorInfo[2], 'message_type' => 'danger']);
-                } else {
-                    $vouchers_count = $vouchers_stmt->fetchColumn();
-                }
-
-                $package_config_query = "SELECT * FROM `package_config`";
-                $package_config_stmt = $dbh->query($package_config_query);
-                $package_config_data = $package_config_stmt->fetchAll(PDO::FETCH_ASSOC)[0];
-
-                $clients_query = "SELECT count(*) FROM `persons`";
-                $client_stmt = $dbh->query($clients_query);
-                $clients_count = $client_stmt->fetchColumn();
-
-                $users_query = "SELECT count(*) FROM `cms_users`
-						INNER JOIN `cms_privileges` ON cms_privileges.id = cms_users.id_cms_privileges
-						WHERE cms_privileges.is_superadmin != 1";
-                $users_stmt = $dbh->query($users_query);
-                $users_count = $users_stmt->fetchColumn();
-
-                $inventories_query = "SELECT count(*) FROM `inventories`";
-                $inventories_stmt = $dbh->query($inventories_query);
-                $inventories_count = $inventories_stmt->fetchColumn();
-
-                $currencies_query = "SELECT count(*) FROM `currencies`";
-                $currencies_stmt = $dbh->query($currencies_query);
-                $currencies_count = $currencies_stmt->fetchColumn();
-
-                $storagePath = $customer->folder_location . '/site/storage/app';
-                if (file_exists($storagePath)) {
-                    $attachment_size = 0;
-                    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($storagePath)) as $file) {
-                        $attachment_size += $file->getSize();
-                    }
-                    // calculate size im MB
-                    $attachment_size = round($attachment_size / 1024 / 1024, 2);
-                }
-                $subscription_type = 'Free Trial';
-                if ($package_config_data['free_trial_start_date'] == null || $package_config_data['free_trial_start_date'] == '0000-00-00') {
-                    $start_date = $package_config_data['subscription_start_date'];
-                    $subscription_type = 'Year';
-                } else {
-                    $start_date = $package_config_data['free_trial_start_date'];
-                }
-                if ($package_config_data['free_trial_end_date'] == null || $package_config_data['free_trial_end_date'] == '0000-00-00') {
-                    $end_date = $package_config_data['subscription_end_date'];
-                } else {
-                    $end_date = $package_config_data['free_trial_end_date'];
-                }
-                $site_status = DB::table('site_status')->where('customer_id', $customer->id)->get();
-                DB::table('site_status')->updateOrInsert(
-                    ['customer_id' => $customer->id],
-                    [
-                        'bills_count' => $bills_count,
-                        'vouchers_count' => $vouchers_count,
-                        'allowed_users_count' => ($package_config_data['users_num']),
-                        'used_users_count' => $users_count,
-                        'allowed_inventories_count' => ($package_config_data['inventories_num']),
-                        'used_inventories_count' => $inventories_count,
-                        'allowed_currencies_count' => ($package_config_data['currencies_num']),
-                        'used_currencies_count' => $currencies_count,
-                        'allowed_clients_count' => ($package_config_data['clients_num']),
-                        'used_clients_count' => $clients_count,
-                        'allowed_attachs_size' => ($package_config_data['attachs_size']),
-                        'used_attachs_size' => $attachment_size,
-                        'subscription_start_date' => $start_date,
-                        'subscription_end_date' => $end_date,
-                        'subscription_type' => $subscription_type,
-                    ]
-                );
-                DB::commit();
-            }
+            Artisan::call('report:generate', ['customer_id' => null]);
+            $output = Artisan::output();
+            return redirect()->back()->with(['message' => trans("recaptcha.successfully_generating_report"), 'message_type' => 'success']);
         } catch (Exception $ex) {
-            DB::rollback();
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_report"), 'message_type' => 'danger']);
-            throw $ex;
         }
-        return redirect()->back()->with(['message' => trans("recaptcha.successfully_generating_report"), 'message_type' => 'success']);
     }
 
     public function getGenerateUsersInfo($id)
@@ -490,7 +397,7 @@ class AdminSiteStatusController extends CBController
         } catch (Exception $ex) {
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
         }
-        return view('cms_reports.users_info_details', compact('users','customer_name', 'customer_email', 'cols'));
+        return view('cms_reports.users_info_details', compact('users', 'customer_name', 'customer_email', 'cols'));
     }
 
     public function getGenerateCurrenciesInfo($id)
@@ -525,10 +432,11 @@ class AdminSiteStatusController extends CBController
         } catch (Exception $ex) {
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_currencies_info_report"), 'message_type' => 'danger']);
         }
-        return view('cms_reports.currencies_details', compact('currencies','customer_name', 'customer_email', 'cols'));
+        return view('cms_reports.currencies_details', compact('currencies', 'customer_name', 'customer_email', 'cols'));
     }
 
-    public function getGenerateBillsInfo(Request $request, $id){
+    public function getGenerateBillsInfo(Request $request, $id)
+    {
         header('Content-Type: text/html; charset=utf-8');
         $customer = DB::table('customers')->where('id', $id)->first();
         $cols = [];
@@ -551,12 +459,12 @@ class AdminSiteStatusController extends CBController
             $subscription_year = $request->year ?? null;
             $totalBills = [];
             $totalVouchers = [];
-            if($subscription_year){
-                for($month = 1; $month<=12;$month++){
+            if ($subscription_year) {
+                for ($month = 1; $month <= 12; $month++) {
                     $bills_query = "SELECT COUNT(*) AS count FROM `bills` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
                     $bills_stmt = $dbh->query($bills_query);
                     $bills = $bills_stmt->fetchColumn();
-                   
+
                     $vouchers_query = "SELECT COUNT(*) AS count FROM `vouchers` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
                     $vouchers_stmt = $dbh->query($vouchers_query);
                     $vouchers = $vouchers_stmt->fetchColumn();
@@ -567,23 +475,58 @@ class AdminSiteStatusController extends CBController
             }
 
             $startSubscriptionDate = $customer->created_at;
-            $endSubscriptionDate =  $customer->subscription_end_date ?? $customer->free_trial_end_date;
-            if(!$endSubscriptionDate)
-            $endSubscriptionDate = $customer->created_at;
+            $endSubscriptionDate = $customer->subscription_end_date ?? $customer->free_trial_end_date;
+            if (!$endSubscriptionDate) {
+                $endSubscriptionDate = $customer->created_at;
+            }
+
             $startYear = null;
             $endYear = null;
-            if ($startSubscriptionDate)
+            if ($startSubscriptionDate) {
                 $startYear = intval(date('Y', strtotime($startSubscriptionDate)));
-            if ($endSubscriptionDate)
+            }
+
+            if ($endSubscriptionDate) {
                 $endYear = intval(date('Y', strtotime($endSubscriptionDate)));
+            }
 
             $currentYear = intval(date('Y'));
-            if($endYear > $currentYear)
+            if ($endYear > $currentYear) {
                 $endYear = $currentYear;
-                
+            }
+
         } catch (Exception $ex) {
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_bills_info_report"), 'message_type' => 'danger']);
         }
-        return view('cms_reports.vouchers_bills_details', compact('totalBills','totalVouchers','customer_name', 'customer_email', 'cols','subscription_year', 'startYear', 'endYear', 'id'));
+        return view('cms_reports.vouchers_bills_details', compact('totalBills', 'totalVouchers', 'customer_name', 'customer_email', 'cols', 'subscription_year', 'startYear', 'endYear', 'id'));
+    }
+
+    public function getDetail($id)
+    {
+        $this->cbLoader();
+        $row = DB::table($this->table)->where($this->primary_key, $id)->first();
+
+        if (!CRUDBooster::isRead() && $this->global_privilege == false || $this->button_detail == false) {
+            CRUDBooster::insertLog(cbLang("log_try_view", [
+                'name' => $row->{$this->title_field},
+                'module' => CRUDBooster::getCurrentModule()->name,
+            ]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+        }
+
+        $module = CRUDBooster::getCurrentModule();
+
+        $page_menu = Route::getCurrentRoute()->getActionName();
+        $page_title = cbLang("detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
+        $command = 'detail';
+
+        Session::put('current_row_id', $id);
+        $manualView = null;
+        if (view()->exists(CRUDBooster::getCurrentModule()->path . '.form')) {
+            $manualView = view(CRUDBooster::getCurrentModule()->path . '.form', compact('row', 'page_menu', 'page_title', 'command', 'id'));
+        }
+
+        $view = $manualView ?: view('cms_reports.show_site_status', compact('row', 'page_menu', 'page_title', 'command', 'id'));
+        return $view;
     }
 }
