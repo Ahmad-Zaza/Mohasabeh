@@ -28,7 +28,6 @@ class NotGlobalDomain implements Rule
     public function passes($attribute, $value)
     {
         $globalDomains = explode(", ", CRUDBooster::getSetting('not_allowed_domains'));
-        dd($globalDomains);
         foreach ($globalDomains as $globalDomain) {
             if ($value == $globalDomain) {
                 return false;
