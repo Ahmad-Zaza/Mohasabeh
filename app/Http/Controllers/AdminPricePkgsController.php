@@ -41,6 +41,7 @@ class AdminPricePkgsController extends CBController
         $this->col[] = ["label" => "Six Month_price", "name" => "six_month_price"];
         $this->col[] = ["label" => "Year Price", "name" => "year_price"];
         $this->col[] = ["label" => "Storage", "name" => "storage_attached_size", 'callback_php' => '($row->storage_attached_size ? $row->storage_attached_size . " GB" : "")'];
+        $this->col[] = ["label" => "Backup Size", "name" => "backups_size", 'callback_php' => '($row->backups_size ? $row->backups_size . " GB" : "")'];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -59,6 +60,7 @@ class AdminPricePkgsController extends CBController
         $this->form[] = ['label' => 'Warehouses', 'name' => 'warehouses', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Currency', 'name' => 'currency', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Storage', 'name' => 'storage_attached_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9', 'help' => 'Size in GB'];
+        $this->form[] = ['label' => 'Backup Size', 'name' => 'backups_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9', 'help' => 'Size in GB'];
 
         # END FORM DO NOT REMOVE THIS LINE
 
