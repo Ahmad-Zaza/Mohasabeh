@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 use Illuminate\Support\Facades\DB;
@@ -6,7 +8,6 @@ use Illuminate\Support\Facades\Request;
 
 class AdminPricePkgOptions27Controller extends CBController
 {
-
     public function cbInit()
     {
         # START CONFIGURATION DO NOT REMOVE THIS LINE
@@ -30,7 +31,6 @@ class AdminPricePkgOptions27Controller extends CBController
         $this->page_seo = false;
         $this->table = "price_pkg_options";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Price Pkg Id", "name" => "price_pkg_id", "join" => "price_pkgs,id"];
@@ -41,7 +41,6 @@ class AdminPricePkgOptions27Controller extends CBController
         $this->col[] = ["label" => "Name En", "name" => "name_en"];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Price Pkg Id', 'name' => 'price_pkg_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'price_pkgs,id'];
@@ -51,7 +50,6 @@ class AdminPricePkgOptions27Controller extends CBController
         $this->form[] = ['label' => 'Name Ar', 'name' => 'name_ar', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Name En', 'name' => 'name_en', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ['label'=>'Price Pkg Id','name'=>'price_pkg_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'price_pkgs,id'];
@@ -62,7 +60,6 @@ class AdminPricePkgOptions27Controller extends CBController
         //$this->form[] = ['label'=>'Name En','name'=>'name_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
         //$this->form[] = ['label'=>'Sorting','name'=>'sorting','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -77,7 +74,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -90,7 +86,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -102,7 +97,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -112,7 +106,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -123,7 +116,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -133,7 +125,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -141,10 +132,8 @@ class AdminPricePkgOptions27Controller extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -153,7 +142,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -163,7 +151,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -173,7 +160,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -183,7 +169,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -193,7 +178,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -203,7 +187,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -213,7 +196,6 @@ class AdminPricePkgOptions27Controller extends CBController
         |
          */
         $this->load_css = array();
-
     }
     public function getAdd()
     {
@@ -224,7 +206,6 @@ class AdminPricePkgOptions27Controller extends CBController
         $reports = \App\PricingReport::all();
         return view('add_pkg_options', compact('data', 'price_pkgs', 'reports', 'return_url'));
     }
-
     public function getEdit($id)
     {
         $return_url = request('return_url');
@@ -246,9 +227,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -259,9 +238,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -272,7 +249,6 @@ class AdminPricePkgOptions27Controller extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -290,13 +266,11 @@ class AdminPricePkgOptions27Controller extends CBController
                 if ($col_m_t != '') {
                     $col_m_t .= ',';
                 }
-
                 $col_m_t .= $col_m;
             }
         }
         $postdata['value'] = $col_m_t;
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -307,9 +281,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -321,9 +293,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -334,9 +304,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -347,9 +315,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -360,9 +326,7 @@ class AdminPricePkgOptions27Controller extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
     public function postAddSave()
     {
@@ -376,5 +340,4 @@ class AdminPricePkgOptions27Controller extends CBController
         ]);
         return redirect(Request::input('return_url'))->with(['message' => cbLang("alert_add_data_success"), 'message_type' => 'success']);
     }
-
 }

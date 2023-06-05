@@ -1,13 +1,13 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
 class AdminPricingReportsController extends CBController
 {
-
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "title_ar";
         $this->limit = "20";
@@ -29,21 +29,18 @@ class AdminPricingReportsController extends CBController
         $this->record_seo = false;
         $this->table = "pricing_reports";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Title Ar", "name" => "title_ar"];
         $this->col[] = ["label" => "Title En", "name" => "title_en"];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Title Ar', 'name' => 'title_ar', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Title En', 'name' => 'title_en', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         // $this->form[] = ['label'=>'Sorting','name'=>'sorting','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ["label"=>"Title Ar","name"=>"title_ar","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
@@ -51,7 +48,6 @@ class AdminPricingReportsController extends CBController
         //$this->form[] = ["label"=>"Active","name"=>"active","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         //$this->form[] = ["label"=>"Sorting","name"=>"sorting","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -65,7 +61,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -78,7 +73,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -90,7 +84,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -100,7 +93,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -111,7 +103,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -121,7 +112,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -129,10 +119,8 @@ class AdminPricingReportsController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -141,7 +129,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -151,7 +138,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -161,7 +147,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -171,7 +156,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -181,7 +165,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -191,7 +174,6 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -201,9 +183,7 @@ class AdminPricingReportsController extends CBController
         |
          */
         $this->load_css = array();
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -215,9 +195,7 @@ class AdminPricingReportsController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -228,9 +206,7 @@ class AdminPricingReportsController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -241,7 +217,6 @@ class AdminPricingReportsController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -252,9 +227,7 @@ class AdminPricingReportsController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -265,9 +238,7 @@ class AdminPricingReportsController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -279,9 +250,7 @@ class AdminPricingReportsController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -292,9 +261,7 @@ class AdminPricingReportsController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -305,9 +272,7 @@ class AdminPricingReportsController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -318,9 +283,6 @@ class AdminPricingReportsController extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
-
 }

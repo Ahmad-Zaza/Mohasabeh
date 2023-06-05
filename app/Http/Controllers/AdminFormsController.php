@@ -1,13 +1,13 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
 class AdminFormsController extends CBController
 {
-
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "name";
         $this->limit = "20";
@@ -26,32 +26,26 @@ class AdminFormsController extends CBController
         $this->button_export = false;
         $this->table = "forms";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Name", "name" => "name"];
         $this->col[] = ["label" => "Send To", "name" => "send_to"];
         $this->col[] = ["label" => "Response", "name" => "response"];
         $this->col[] = ["label" => "active", "name" => "active"];
-
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Name', 'name' => 'name', 'type' => 'text', 'validation' => 'required|string|max:70', 'width' => 'col-sm-10', 'placeholder' => 'You can only enter the letter only'];
         $this->form[] = ['label' => 'Send To', 'name' => 'send_to', 'type' => 'email', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Row Type', 'name' => 'row_type', 'type' => 'select', 'width' => 'col-sm-10', 'dataenum' => 'col-lg-12|col 1 ;col-lg-6|col 2;col-lg-9|col 3'];
         $this->form[] = ['label' => 'Response', 'name' => 'response', 'type' => 'textarea', 'validation' => 'required|string|min:5|max:5000', 'width' => 'col-sm-10'];
-
         $columns[] = ['label' => 'Fileds', 'name' => 'field_id', 'type' => 'datamodal', 'datamodal_table' => 'fields', 'datamodal_columns' => 'title', 'datamodal_select_to' => 'title'];
         $columns[] = ['label' => 'label', 'name' => 'label_filed', 'type' => 'text', 'formula' => "[label_filed]", 'required' => true];
         $columns[] = ['label' => 'required', 'name' => 'required_filed', "type" => "radio", 'formula' => "[required_filed]", 'dataenum' => 'Yes;No', 'required' => true];
         $columns[] = ['label' => 'values', 'name' => 'values', 'formula' => "[values]", "type" => "text"];
         $this->form[] = ['label' => 'Fileds', 'name' => 'form_field', 'type' => 'child', 'columns' => $columns, 'table' => 'form_field', 'foreign_key' => 'form_id'];
         $this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'radio', 'width' => 'col-sm-9', 'dataenum' => '1|Yes;0|No'];
-
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
@@ -59,7 +53,6 @@ class AdminFormsController extends CBController
         //$this->form[] = ['label'=>'Row Type','name'=>'row_type','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
         //$this->form[] = ['label'=>'Response','name'=>'response','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -73,7 +66,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -86,7 +78,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -98,7 +89,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -108,7 +98,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -119,7 +108,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -129,7 +117,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -137,10 +124,8 @@ class AdminFormsController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -149,7 +134,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -159,12 +143,10 @@ class AdminFormsController extends CBController
         |
          */
         $this->script_js = "
-
 				$(document).ready(function(){
 					$('.child-form-area').append(`
 					<div class='form-group'>
 					<div class='col-lg-2'>
-
 					</div>
 					<div class='col-lg-10'>
 					<a class='btn btn-info add-key' ><span class='fa fa-plus'></span></a><input type='text' id='text-key' style='padding: 5px;margin-left: 16px;'>
@@ -172,11 +154,7 @@ class AdminFormsController extends CBController
 					</div>
 					`);
 				})
-
-
 				$('body').on('click','.add-key',function(){
-
-
 					var oldVal=$('#filedsvalues').val();
 					var newVal=$('#text-key').val();
 					if(oldVal==='')
@@ -187,14 +165,8 @@ class AdminFormsController extends CBController
 						$('#filedsvalues').val(oldVal +' , '+newVal);
 					}
 					$('#text-key').val('');
-
-
-
 					});
-
-
 			";
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -204,7 +176,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -214,7 +185,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -224,7 +194,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -234,7 +203,6 @@ class AdminFormsController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -244,12 +212,9 @@ class AdminFormsController extends CBController
         |
          */
         $this->load_css = array();
-
         $this->addaction[] = ['label' => 'Show', 'title' => 'Show', 'target' => '_blank', 'url' => '/modules/style/form/[id]', 'icon' => 'fa fa-web', 'color' => 'success', 'showIf' => "true"];
-
         $this->addaction[] = ['label' => 'applications', 'title' => 'applications', 'target' => '_blank', 'url' => '/modules/response/form/[id]', 'icon' => 'fa fa-web', 'color' => 'info', 'showIf' => "true"];
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -261,9 +226,7 @@ class AdminFormsController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -274,9 +237,7 @@ class AdminFormsController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -287,7 +248,6 @@ class AdminFormsController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -298,9 +258,7 @@ class AdminFormsController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -311,9 +269,7 @@ class AdminFormsController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -325,9 +281,7 @@ class AdminFormsController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -338,9 +292,7 @@ class AdminFormsController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -351,9 +303,7 @@ class AdminFormsController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -364,9 +314,6 @@ class AdminFormsController extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
-
 }

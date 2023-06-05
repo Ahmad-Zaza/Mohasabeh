@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ImageController extends Controller
 {
-
     public $_imageManager;
-
     public function __construct()
     {
         $this->_imageManager = new ImageManager();
@@ -22,31 +20,26 @@ class ImageController extends Controller
         $arr = array("images" => $arr, "model_id" => $fleet_id);
         return view("image", $arr);
     }
-
     public function showImageJson($fleet_id = null)
     {
         $arr = $this->_imageManager->getAll($fleet_id);
         $arr = array("data" => $arr);
         return response()->json($arr);
     }
-
     public function fileCreate()
     {
         return view('image.imageupload');
     }
-
     public function fileStore(Request $request, $fleet_id)
     {
         $imageName = $this->_imageManager->store($request, $fleet_id);
         return response()->json(['success' => $imageName]);
     }
-
     public function fileDestroy($id)
     {
         $data = $this->_imageManager->delete($id);
         return response()->json($data);
     }
-
     public function saveImagesModule(Request $request)
     {
         try {
@@ -71,36 +64,30 @@ class ImageController extends Controller
                     'model_type' => $data['model'],
                     'model_id' => $data['model_id'],
                 ])->get();
-
                 return response()->json(array("data" => $images), 200);
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
-
     public function deleteImageModule(Request $request, $id)
     {
         $imageModel = ImageModel::find($id);
         if ($imageModel) {
             $imageModel->delete();
         }
-
         $data = $request->get("dataValue");
-
         $images = DB::table('model_images')->where([
             'model_type' => $data['model'],
             'model_id' => $data['model_id'],
         ])->get();
-
         return response()->json(array("data" => $images), 200);
     }
-  
+
     public function resizeImage($width = 100, $height = 100, $img)
     {
         return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
     }
-
     public function cropImage($width = 100, $height = 100, $img)
     {
         return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');

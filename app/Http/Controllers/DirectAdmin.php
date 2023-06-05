@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-
 class DirectAdmin
 {
     public $handle;
-
     public $list_result = true;
-
     public $host = "";
     public $username = "";
     public $password = "";
     public $login_as = false;
-
     public $login = false;
     public $error = false;
-
     public function __construct($host = null, $username = null, $password = null, $ssl = true)
     {
         $this->handle = curl_init();
@@ -32,21 +27,18 @@ class DirectAdmin
         }
         $this->connect($host)->login($username, $password);
     }
-
     private function set_auth($auth)
     {
         $header = $auth ? array("Authorization: Basic " . base64_encode($auth)) : array();
         curl_setopt($this->handle, CURLOPT_HTTPHEADER, $header);
         return $this;
     }
-
     public function connect($host)
     {
         $this->host = rtrim(strval($host), "/");
         $this->login = $this->host == "" || $this->username == "" || $this->password == "" ? false : true;
         return $this;
     }
-
     public function login($username, $password)
     {
         $this->username = strval($username);
@@ -56,14 +48,12 @@ class DirectAdmin
         $this->set_auth($this->username . ":" . $this->password);
         return $this;
     }
-
     public function login_as($username)
     {
         $this->login_as = strval($username);
         $this->set_auth($this->username . "|" . $this->login_as . ":" . $this->password);
         return $this;
     }
-
     public function logout($all = false)
     {
         if ($all || !$this->login_as) {
@@ -77,7 +67,6 @@ class DirectAdmin
         }
         return $this;
     }
-
     public function query($command, $form = null, $method = "GET")
     {
         if ($this->host == "" || $this->username == "" || $this->password == "") {
@@ -100,7 +89,6 @@ class DirectAdmin
             return $response;
         }
     }
-
     public function parse($response, $force = true, $command = "CMD_API_")
     {
         if ($force || substr($command, 0, 8) === "CMD_API_") {

@@ -1,13 +1,13 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
 class AdminSocialMediaController extends CBController
 {
-
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "title_en";
         $this->limit = "20";
@@ -29,7 +29,6 @@ class AdminSocialMediaController extends CBController
         $this->record_seo = false;
         $this->table = "social_media";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Title En", "name" => "title_en"];
@@ -38,7 +37,6 @@ class AdminSocialMediaController extends CBController
         $this->col[] = ["label" => "Value", "name" => "value"];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Title En', 'name' => 'title_en', 'type' => 'text', 'validation' => 'min:1|max:255', 'width' => 'col-sm-10'];
@@ -46,7 +44,6 @@ class AdminSocialMediaController extends CBController
         $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'icon', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Value', 'name' => 'value', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ["label"=>"Title En","name"=>"title_en","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
@@ -56,7 +53,6 @@ class AdminSocialMediaController extends CBController
         //$this->form[] = ["label"=>"Sorting","name"=>"sorting","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         //$this->form[] = ["label"=>"Active","name"=>"active","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -70,7 +66,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -83,7 +78,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -95,7 +89,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -105,7 +98,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -116,7 +108,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -126,7 +117,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -134,10 +124,8 @@ class AdminSocialMediaController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -146,7 +134,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -156,7 +143,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -166,7 +152,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -176,7 +161,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -186,7 +170,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -196,7 +179,6 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -206,9 +188,7 @@ class AdminSocialMediaController extends CBController
         |
          */
         $this->load_css = array();
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -220,9 +200,7 @@ class AdminSocialMediaController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -233,9 +211,7 @@ class AdminSocialMediaController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -246,7 +222,6 @@ class AdminSocialMediaController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -257,9 +232,7 @@ class AdminSocialMediaController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -270,9 +243,7 @@ class AdminSocialMediaController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -284,9 +255,7 @@ class AdminSocialMediaController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -297,9 +266,7 @@ class AdminSocialMediaController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -310,9 +277,7 @@ class AdminSocialMediaController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -323,9 +288,6 @@ class AdminSocialMediaController extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
-
 }

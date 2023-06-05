@@ -1,13 +1,13 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
 class AdminLandingPagesController extends CBController
 {
-
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "title";
         $this->limit = "20";
@@ -26,13 +26,11 @@ class AdminLandingPagesController extends CBController
         $this->button_export = false;
         $this->table = "landing_pages";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Title", "name" => "title"];
         $this->col[] = ["label" => "active", "name" => "active"];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Title', 'name' => 'title', 'type' => 'text', 'width' => 'col-sm-10', 'placeholder' => 'You can only enter the letter only'];
@@ -46,7 +44,6 @@ class AdminLandingPagesController extends CBController
         $this->form[] = ['label' => 'Sorting', 'name' => 'sorting', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ["label"=>"Title","name"=>"title","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"You can only enter the letter only"];
@@ -60,7 +57,6 @@ class AdminLandingPagesController extends CBController
         //$this->form[] = ["label"=>"Sorting","name"=>"sorting","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         //$this->form[] = ["label"=>"Active","name"=>"active","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -74,7 +70,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -87,7 +82,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -99,7 +93,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -109,7 +102,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -120,7 +112,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -130,7 +121,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -138,10 +128,8 @@ class AdminLandingPagesController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -150,7 +138,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -160,7 +147,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -170,7 +156,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -180,7 +165,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -190,7 +174,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -200,7 +183,6 @@ class AdminLandingPagesController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -211,12 +193,9 @@ class AdminLandingPagesController extends CBController
          */
         $this->load_css = array();
         $this->index_button[] = ['label' => 'Add New Page', 'title' => 'seo', 'url' => '/modules/fromscratch', "icon" => "fa fa-plus"];
-
         $this->addaction[] = ['label' => '', 'title' => 'Edit', 'target' => '_blank', 'url' => '/modules/fromscratch/edit/[id]', 'icon' => 'fa fa-edit', 'color' => 'success', 'showIf' => "true"];
         $this->addaction[] = ['label' => 'show', 'title' => 'show', 'target' => '_blank', 'url' => '/pages/[id]', 'icon' => 'fa fa-show', 'color' => 'success', 'showIf' => "true"];
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -228,9 +207,7 @@ class AdminLandingPagesController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -241,9 +218,7 @@ class AdminLandingPagesController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -254,7 +229,6 @@ class AdminLandingPagesController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -265,9 +239,7 @@ class AdminLandingPagesController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -278,9 +250,7 @@ class AdminLandingPagesController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -292,9 +262,7 @@ class AdminLandingPagesController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -305,9 +273,7 @@ class AdminLandingPagesController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -318,9 +284,7 @@ class AdminLandingPagesController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -332,7 +296,5 @@ class AdminLandingPagesController extends CBController
     {
         //Your code here
     }
-
     //By the way, you can still create your own method in here... :)
-
 }
