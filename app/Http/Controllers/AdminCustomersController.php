@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Customer;
 use App\PricePkg;
+use App\SiteStatus;
 use Carbon\Carbon;
 use crocodicstudio\crudbooster\controllers\CBController;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
@@ -660,6 +661,8 @@ class AdminCustomersController extends CBController
         }
         return implode($pass) . "&L123"; //turn the array into a string
     }
+
+
     public function getDeleteCustomer($id)
     {
         $customer = Customer::find($id);
@@ -672,6 +675,7 @@ class AdminCustomersController extends CBController
                 "danger"
             );
         }
+
         $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com";
         $customerDB = "cloudsell_db-{$customer->website}";
         //--- Check if domain already exist
@@ -681,13 +685,13 @@ class AdminCustomersController extends CBController
             rrmdir($folderPath);
         }
         //-----------------------------//
+
         //--- 3- delete customer database
         $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
         $result = $da->query("CMD_API_DATABASES");
         if ($da->error) {
             return new Exception("error");
         }
-        print_r($result);
         foreach ($result as $database) {
             if ($database == $customerDB) {
                 $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
@@ -701,6 +705,8 @@ class AdminCustomersController extends CBController
             }
         }
         //-----------------------------//
+        //--- Delete Site Status
+        SiteStatus::where("customer_id", $customer->id)->delete();
         $customer->delete();
         //-----------------------------//
         return CRUDBooster::redirect(
@@ -708,6 +714,7 @@ class AdminCustomersController extends CBController
             "customer {$customer->first_name} {$customer->last_name} Deleted!",
             "success"
         );
+        //-----------------------------//
     }
     private function createSubdomainIfNotExist($folderName, $subdomainName)
     {
