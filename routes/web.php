@@ -11,8 +11,8 @@
 |
  */
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch');
 
@@ -31,8 +31,25 @@ Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('/profile/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
     Route::get('/profile/upgrade-account', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_view'])->name('dashboard.upgrade_account_view');
 
-
     Route::get('/logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
+
+    ## Payment
+    Route::get('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+    Route::prefix('/payment')->group(function () {
+        Route::get('/success', [PaymentController::class, 'successPage'])->name('success-payment-page');
+        Route::get('/error', [PaymentController::class, 'errorPage'])->name('error-payment-page');
+    });
+
+    Route::prefix('/transaction')->group(function () {
+        // Inline (Website) PayPal Payment Routes
+        Route::get('/process', [PaymentController::class, 'processTransaction'])->name('process-transaction');
+        Route::get('/success', [PaymentController::class, 'successTransaction'])->name('success-transaction');
+        Route::get('/cancel', [PaymentController::class, 'cancelTransaction'])->name('cancel-transaction');
+        // Api PayPal Payment Routes
+        Route::post('/', [PaymentController::class, 'createTransaction'])->name('create-transaction');
+        Route::post('/{id}/capture', [PaymentController::class, 'captureTransaction'])->name('capture-transaction');
+    });
+
 });
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
@@ -42,11 +59,11 @@ Route::get('/', "HomeController@index")->name("home");
 Route::post('save-customer', 'HomeController@saveCustomer')->name('save-customer');
 Route::get('solution/{id}', 'HomeController@solutions');
 Route::get('solution/{id}', 'HomeController@solutions');
-Route::get('pricing', 'HomeController@pricing');
+Route::get('pricing', 'HomeController@pricing')->name('pricing');
 Route::get('activate-customer/{id}', 'HomeController@customer_activate');
 Route::get('customers/{token}', 'HomeController@activationProgress');
 Route::get('customers/email/{email}', 'HomeController@checkEmailUnique');
-Route::get('pricing', 'HomeController@pricing');
+// Route::get('pricing', 'HomeController@pricing');
 
 Route::get('admin/customers/set-free-trial/{id}', 'AdminCustomersController@setFreeTrial');
 Route::post('admin/customers/saveFreeTrial', 'AdminCustomersController@saveFreeTrial');
@@ -85,7 +102,6 @@ Route::get('/image/delete/{id}', 'ImageController@fileDestroy');
 Route::get('/image/showImageJson/{fleet_id?}', 'ImageController@showImageJson');
 Route::get('/manage-image/resize/{width?}/{height?}/{img}', 'ImageController@resizeImage')->name('manage-image-resize')->where('img', '(.*)');
 Route::get('/manage-image/crop/{width?}/{height?}/{img}', 'ImageController@cropImage')->name('manage-image-crop')->where('img', '(.*)');
-
 
 Route::get('/clear/route', 'HomeController@cleanCache');
 Route::post('modules/sort', "SortingModelController@sorting");

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -50,8 +49,15 @@ class HomeController extends Controller
     {
         $sub_type = $request->session()->get('sub_type');
         $pkgg_id = $request->session()->get('pkgg_id');
-        $package = DB::table('price_pkgs')->where('id', '=', $pkgg_id)->get();
-        $package = json_decode($package);
+        $package = DB::table('price_pkgs')->where('id', '=', $pkgg_id)->first();
+        if ($sub_type == 'month') {
+            $request->session()->put('price', $package->monthly_price);
+        } else if ($sub_type == 'year') {
+            $request->session()->put('price', $package->year_price);
+        } else {
+            $request->session()->put('price', $package->six_month_price);
+        }
         return view('dashboard.pages.upgrade-account', compact('sub_type', 'pkgg_id', 'package'));
     }
+
 }

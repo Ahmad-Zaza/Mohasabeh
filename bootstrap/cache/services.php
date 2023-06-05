@@ -31,10 +31,11 @@
     27 => 'Mcamara\\LaravelLocalization\\LaravelLocalizationServiceProvider',
     28 => 'Carbon\\Laravel\\ServiceProvider',
     29 => 'crocodicstudio\\crudbooster\\CRUDBoosterServiceProvider',
-    30 => 'App\\Providers\\AppServiceProvider',
-    31 => 'App\\Providers\\AuthServiceProvider',
-    32 => 'App\\Providers\\EventServiceProvider',
-    33 => 'App\\Providers\\RouteServiceProvider',
+    30 => 'Srmklive\\PayPal\\Providers\\PayPalServiceProvider',
+    31 => 'App\\Providers\\AppServiceProvider',
+    32 => 'App\\Providers\\AuthServiceProvider',
+    33 => 'App\\Providers\\EventServiceProvider',
+    34 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -55,10 +56,11 @@
     14 => 'Mcamara\\LaravelLocalization\\LaravelLocalizationServiceProvider',
     15 => 'Carbon\\Laravel\\ServiceProvider',
     16 => 'crocodicstudio\\crudbooster\\CRUDBoosterServiceProvider',
-    17 => 'App\\Providers\\AppServiceProvider',
-    18 => 'App\\Providers\\AuthServiceProvider',
-    19 => 'App\\Providers\\EventServiceProvider',
-    20 => 'App\\Providers\\RouteServiceProvider',
+    17 => 'Srmklive\\PayPal\\Providers\\PayPalServiceProvider',
+    18 => 'App\\Providers\\AppServiceProvider',
+    19 => 'App\\Providers\\AuthServiceProvider',
+    20 => 'App\\Providers\\EventServiceProvider',
+    21 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (
