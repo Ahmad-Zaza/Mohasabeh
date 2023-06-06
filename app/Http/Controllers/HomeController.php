@@ -8,7 +8,6 @@ use App\Http\Models\Customer;
 use App\Http\Models\CustomerModule;
 use App\Http\Models\Feature;
 use App\Http\Models\Module;
-use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
 use App\PricePkg;
@@ -58,10 +57,10 @@ class HomeController extends Controller
         $advantages = Advantages::where('active', '1')->orderby("sorting")->get();
         $solutions = Solution::with(['modules'])->where('active', '1')->orderby("sorting")->get();
         //---------------------//
-        $usersOptions = PriceOption::where('code', 'users')->orderby("sorting")->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->orderby("sorting")->get();
+        // $usersOptions = PriceOption::where('code', 'users')->orderby("sorting")->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->orderby("sorting")->get();
         //---------------------//
-        return view('home', compact(['solutions', 'sections', 'lang', 'features', 'advantages', 'settings', 'modules', 'usersOptions', 'languagesOptions']));
+        return view('home', compact(['solutions', 'sections', 'lang', 'features', 'advantages', 'settings', 'modules']));
         //---------------------//
     }
     public function solutions($id)
@@ -85,12 +84,12 @@ class HomeController extends Controller
             'code' => 'pricing',
         ])->first();
         //------------------------//
-        $usersOptions = PriceOption::where('code', 'users')->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->get();
+        // $usersOptions = PriceOption::where('code', 'users')->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
         $modules = Module::where('active', 1)->get();
         //------------------------//
-        return view('pricing', compact(['lang', 'settings', 'section', 'usersOptions', 'modules', 'languagesOptions']));
+        return view('pricing', compact(['lang', 'settings', 'section', 'modules']));
     }
     public function pricing()
     {
@@ -104,9 +103,9 @@ class HomeController extends Controller
         ])->first();
         //------------------------//
         $packages = PricePkg::select('*')->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
-        return view('pricing', compact(['lang', 'settings', 'section', 'packages', 'languagesOptions']));
+        return view('pricing', compact(['lang', 'settings', 'section', 'packages']));
     }
     public function activationProgress($token)
     {
@@ -160,6 +159,7 @@ class HomeController extends Controller
     }
     public function saveCustomer(Request $request)
     {
+        dd($request->all());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -221,7 +221,7 @@ class HomeController extends Controller
             $customer->users_count = $pac->users_count;
         }
         $customer->company = $request->company;
-        $customer->subscription_type = $request->sub_type;
+        $customer->subscription_type = $request->sub_type == "undefined" ? "free_trail" : $request->sub_type;
         $customer->sys_lang = "ar";
         $customer->notes = $request->notes;
         $customer->website = $website;
@@ -536,8 +536,8 @@ class HomeController extends Controller
         $customerDBUser = "{$customer->database_name}";
         $customerDBPassword = "{$customer->database_password}";
         try {
-            $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            // $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            //$dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $query = "select * from cms_users where email = '$email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];
