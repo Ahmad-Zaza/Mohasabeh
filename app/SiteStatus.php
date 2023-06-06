@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SiteStatus extends Model
 {
-    protected $table   = 'site_status';
+    protected $table   = 'customer_report';
 
     protected $fillable = [
         'customer_id', 'bills_count', 'vouches_count', 'allowed_users_count', 'used_users_count', 'allowed_inventories_count',

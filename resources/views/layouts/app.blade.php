@@ -88,12 +88,15 @@
                 <a type="button"
                     class="request-a-demo request_now text-white m-0 js-scroll-trigger">{{ __('data.free_trial') }}</a>
 
-                @if(!Auth::guard('customer')->check())
-                <a type="button" data-toggle="modal" data-target="#loginModal" class="text-orange p-4 login-button desktop">
-                    <img width="20" height="auto" src="{{ asset('images/Login.svg') }}" alt="MyAccount" loading="lazy">
-                </a>
+                @if (!Auth::guard('customer')->check())
+                    <a type="button" data-toggle="modal" data-target="#loginModal"
+                        class="text-orange p-4 login-button desktop">
+                        <img width="20" height="auto" src="{{ asset('images/Login.svg') }}" alt="MyAccount"
+                            loading="lazy">
+                    </a>
                 @else
-                <a type="button" href="{{URL('/profile')}}"  class=" text-orange p-4 login-button desktop"><i class="fa fa-user"></i></a>
+                    <a type="button" href="{{ URL('/profile') }}" class=" text-orange p-4 login-button desktop"><i
+                            class="fa fa-user"></i></a>
                 @endif
                 <a class="languge-switch"
                     href="{{ url('setLang/' . ($lang == 'ar' ? 'en' : 'ar')) }}">{{ $lang == 'ar' ? 'English' : 'العربية' }}</a>
@@ -493,7 +496,7 @@
                 parent.find('.cut-desc').removeClass('hide');
             })
             calculateTotalPrice();
-            $('.subscription_type,.module,.sys_lang,.users_count').change(function() {
+            $('.subscription_type,.module,.users_count').change(function() {
                 calculateTotalPrice();
             })
         })
@@ -502,7 +505,6 @@
             let attr = $('.subscription_type').prop('checked') ? "data-price-year" : "data-price-month";
             let total = 0;
             total += parseInt($('.users_count option:selected').attr(attr));
-            total += parseInt($('.sys_lang option:selected').attr(attr));
             let modules = $('.module:checked');
             modules.each(function() {
                 total += parseInt($(this).attr(attr));
@@ -524,11 +526,9 @@
                 var form_data = new FormData($('#' + wizard)[0]);
                 if ($('#' + wizard).find('.type').val() != 'free') {
                     form_data.append("users_count", $('.users_count').val());
-                    form_data.append("sys_lang", "ar");
                     form_data.append("sub_type", $('input[name=subscription_type]').val());
                 } else {
                     form_data.append("users_count", 4);
-                    form_data.append("sys_lang", "ar");
                     form_data.append("free_trial_checkbox", "on");
                 }
                 let modules = [];
@@ -695,7 +695,7 @@
                 option_value = $(this).val();
                 price_amount = option_value.split('-')[1];
                 pkg_sub_type = option_value.split('-')[0];
-                $('input[name=subscription_type_' +pack_id+']').val(pkg_sub_type);
+                $('input[name=subscription_type_' + pack_id + ']').val(pkg_sub_type);
                 $('#dy_amnt_pkg_' + pack_id).html('<strong>$' + price_amount + '</strong>');
             });
         });

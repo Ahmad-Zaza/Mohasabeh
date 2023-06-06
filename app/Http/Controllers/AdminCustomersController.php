@@ -125,9 +125,9 @@ class AdminCustomersController extends CBController
 
         $this->form[] = ['label' => 'Users Count', 'name' => 'users_count', 'type' => 'number', 'width' => 'col-sm-9'];
 
-        $this->form[] = ['label' => 'Modules', 'name' => 'modules', 'type' => 'select2', 'width' => 'col-sm-9', 'datatable' => 'modules,name_en', 'relationship_table' => 'customer_module'];
+        $this->form[] = ['label' => 'Warehouses Count', 'name' => 'warehouses_count', 'type' => 'number', 'width' => 'col-sm-9'];
 
-        $this->form[] = ['label' => 'System Language', 'name' => 'sys_lang', 'type' => 'text', 'width' => 'col-sm-9'];
+        $this->form[] = ['label' => 'Currencies Count', 'name' => 'currencies_count', 'type' => 'number', 'width' => 'col-sm-9'];
 
         $this->form[] = ['label' => 'Free Trial', 'name' => 'is_free_trial', 'type' => 'checkbox', 'validation' => 'required', 'width' => 'col-sm-9'];
 
@@ -170,10 +170,6 @@ class AdminCustomersController extends CBController
         //$this->form[] = ['label' => 'Last Renewal Date', 'name' => 'last_renewal_date', 'type' => 'date', 'width' => 'col-sm-9'];
 
         //$this->form[] = ['label' => 'Users Count', 'name' => 'users_count', 'type' => 'number', 'width' => 'col-sm-9'];
-
-        //$this->form[] = ['label' => 'Modules', 'name' => 'modules', 'type' => 'select2', 'width' => 'col-sm-9', 'datatable' => 'modules,name_en', 'relationship_table' => 'customer_module'];
-
-        //$this->form[] = ['label' => 'System Language', 'name' => 'sys_lang', 'type' => 'text', 'width' => 'col-sm-9'];
 
         //$this->form[] = ['label' => 'Free Trial', 'name' => 'is_free_trial', 'type' => 'checkbox', 'validation' => 'required', 'width' => 'col-sm-9'];
 
@@ -765,9 +761,9 @@ class AdminCustomersController extends CBController
 
             $query = str_replace('$$users_num$$', $package->users_count, $query);
 
-            $query = str_replace('$$inventories_num$$', $package->warehouses, $query);
+            $query = str_replace('$$inventories_num$$', $package->warehouses_count, $query);
 
-            $query = str_replace('$$currencies_num$$', $package->currency, $query);
+            $query = str_replace('$$currencies_num$$', $package->currencies_count, $query);
 
         }
 
@@ -929,6 +925,10 @@ class AdminCustomersController extends CBController
 
         }
 
+        $customer->warehouses_count = $data['warehouses_count'];
+        $customer->currencies_count = $data['currencies_count'];
+        $customer->users_count = $data['users_count'];
+
         $customer->is_free_trial = 0;
 
         $customer->active = 1;
@@ -945,7 +945,7 @@ class AdminCustomersController extends CBController
 
         $stmt = $dbh->prepare($sql);
 
-        $result = $stmt->execute([$data["package_id"], $data["users_count"], $data["warehouses"], $data["currency"], ($data["storage_attached_size"] * 1024), ($data["backups_size"] * 1024), $data["subscription-start-date"], $data["subscription-end-date"]]);
+        $result = $stmt->execute([$data["package_id"], $data["users_count"], $data["warehouses_count"], $data["currencies_count"], ($data["attached_size"] * 1024), ($data["backups_size"] * 1024), $data["subscription-start-date"], $data["subscription-end-date"]]);
 
         //---------------------------------------------------------------------//
 

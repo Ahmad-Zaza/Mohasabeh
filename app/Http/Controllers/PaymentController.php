@@ -11,13 +11,6 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 
 class PaymentController extends Controller
 {
-
-    public function checkout(Request $request)
-    {
-        $price = $request->session()->get('price');
-        return view('payment.checkout', compact('price'));
-    }
-
     public function successPage()
     {
         return view('payment.success');
@@ -57,7 +50,7 @@ class PaymentController extends Controller
             "purchase_units" => [
                 0 => [
                     "amount" => [
-                        "currency_code" => "USD",
+                        "currency_code" => config('paypal.currency'),
                         "value" => $price,
                     ],
                 ],

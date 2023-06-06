@@ -39,7 +39,6 @@
                         @elseif($sub_type == 'six_month')
                             {{ now()->addMonths(6)->format('d/m/Y') }}
                         @endif
-
                     </p>
 
                 </div>

@@ -392,15 +392,7 @@ class HomeController extends Controller
 
         $customer->subscription_type = $request->sub_type;
 
-        $customer->sys_lang = "ar";
-
-        $customer->notes = $request->notes;
-
         $customer->website = $website;
-
-        // $customer->logo_path = env("APP_URL") . 'images/customers/' . $filename;
-
-        // $customer->color = $request->color;
 
         $customer->host_link = 'http:/' . env("HOST_LINK") . strtolower(str_replace(' ', '', $request->domain)) . '.cloudsellpos.com';
 
@@ -710,11 +702,11 @@ class HomeController extends Controller
 
             $query = str_replace('$$users_num$$', $package->users_count, $query);
 
-            $query = str_replace('$$inventories_num$$', $package->warehouses, $query);
+            $query = str_replace('$$inventories_num$$', $package->warehouses_count, $query);
 
-            $query = str_replace('$$currencies_num$$', $package->currency, $query);
+            $query = str_replace('$$currencies_num$$', $package->currencies_count, $query);
 
-            $query = str_replace('$$attachs_size$$', $package->storage_attached_size, $query);
+            $query = str_replace('$$attachs_size$$', $package->attached_size, $query);
 
             $query = str_replace('$$backups_size$$', $package->backups_size, $query);
 
@@ -914,8 +906,6 @@ class HomeController extends Controller
 
         }
 
-        $data['language'] = $customer->sys_lang; // yazan_edits
-
         $data['users_count'] = $customer->users_count;
 
         $data['start_subscription_date'] = $customer->subscription_start_date;
@@ -931,10 +921,6 @@ class HomeController extends Controller
         $data['subscription_type'] = $customer->subscription_type; // yazan_edits
 
         $data['company'] = $customer->company;
-
-        // $data['logo'] = $customer->logo_path;
-
-        // $data['color'] = $customer->color;
 
         return $data;
 
@@ -1038,9 +1024,7 @@ class HomeController extends Controller
             }
 
         } catch (PDOException $ex) {
-
             return response()->json(["message" => __("data.unable_to_make_the_connection")], 500);
-
         }
 
     }
@@ -1504,15 +1488,11 @@ class HomeController extends Controller
 
     public function cleanCache()
     {
-
         \Artisan::call('cache:clear');
-
         \Artisan::call('config:clear');
-
         \Artisan::call('view:clear');
 
         return "done";
-
     }
 
 }

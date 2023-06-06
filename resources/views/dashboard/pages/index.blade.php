@@ -82,7 +82,7 @@
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="box card-box ">
-                  <p>{{auth()->user()->site_status->allowed_clients_count == -1 ? auth()->user()->site_status->used_clients_count ."/".__('dashboard.unlimited'): auth()->user()->site_status->used_clients_count ."/". auth()->user()->site_status->allowed_clients_count}}</p>
+                  <p>{{auth()->user()->customer_report->allowed_clients_count == -1 ? auth()->user()->customer_report->used_clients_count ."/".__('dashboard.unlimited'): auth()->user()->customer_report->used_clients_count ."/". auth()->user()->customer_report->allowed_clients_count}}</p>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
                   <i class="bi bi-list-ol "></i>
                 </div>
                 <div class="box card-box ">
-                  <p>{{auth()->user()->site_status->allowed_inventories_count == -1 ? auth()->user()->site_status->used_inventories_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_inventories_count ."/". auth()->user()->site_status->allowed_inventories_count}}</p>
+                  <p>{{auth()->user()->customer_report->allowed_inventories_count == -1 ? auth()->user()->customer_report->used_inventories_count ."/".__('dashboard.unlimited') : auth()->user()->customer_report->used_inventories_count ."/". auth()->user()->customer_report->allowed_inventories_count}}</p>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@
                   <i class="bi bi-currency-exchange"></i>
                 </div>
                 <div class="box card-box ">
-                  <p>{{auth()->user()->site_status->allowed_currencies_count == -1 ? auth()->user()->site_status->used_currencies_count ."/".__('dashboard.unlimited') : auth()->user()->site_status->used_currencies_count ."/". auth()->user()->site_status->allowed_currencies_count}}</p>
+                  <p>{{auth()->user()->customer_report->allowed_currencies_count == -1 ? auth()->user()->customer_report->used_currencies_count ."/".__('dashboard.unlimited') : auth()->user()->customer_report->used_currencies_count ."/". auth()->user()->customer_report->allowed_currencies_count}}</p>
                 </div>
               </div>
             </div>
@@ -131,7 +131,7 @@
                   <i class="bi bi-sd-card"></i>
                 </div>
                 <div class="box card-box ">
-                  <p>{{auth()->user()->site_status->allowed_attachs_size == -1 ? auth()->user()->site_status->used_attachs_size ."MB/".__('dashboard.unlimited') : auth()->user()->site_status->used_attachs_size ."MB/". auth()->user()->site_status->allowed_attachs_size ."MB"}}</p>
+                  <p>{{auth()->user()->customer_report->allowed_attachs_size == -1 ? auth()->user()->customer_report->used_attachs_size ."MB/".__('dashboard.unlimited') : auth()->user()->customer_report->used_attachs_size ."MB/". auth()->user()->customer_report->allowed_attachs_size ."MB"}}</p>
                 </div>
               </div>
             </div>

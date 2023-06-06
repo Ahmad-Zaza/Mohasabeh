@@ -52,8 +52,6 @@
                                             <input type="hidden" id="subscription_type_{{ $pkg->id }}" class="subscription_type" name="subscription_type_{{ $pkg->id }}" value="month" />                                       
                                             <input type="hidden" id="pkgg_id" class="pkgg_id" name="pkgg_id" value="{{ $pkg->id }}" />
 
-                                            <input type="hidden" name="sys_lang" value="ar">
-
                                             <select class="form-control subscription_ttype" name="subscription_type_{{ $pkg->id }}" pack_id="{{ $pkg->id }}">
 
                                                 <option value="month-{{ $pkg['monthly_price'] }}" selected>
@@ -235,9 +233,8 @@
                 url: "{{url('/profile/upgrade-account-ajax')}}",
                 success: function(data) {
                     if (data) {
-                        window.location.href = '/profile/upgrade-account';
+                        window.location.href = '/profile/checkout';
                     }
-
                 }
             });
         });

@@ -45,11 +45,11 @@ class HomeController extends Controller
         return response()->json(array('msg' => 'success'));
     }
 
-    public function upgrade_account_view(Request $request)
+    public function checkout(Request $request)
     {
         $sub_type = $request->session()->get('sub_type');
         $pkgg_id = $request->session()->get('pkgg_id');
-        $package = DB::table('price_pkgs')->where('id', '=', $pkgg_id)->first();
+        $package = DB::table('packages')->where('id', '=', $pkgg_id)->first();
         if ($sub_type == 'month') {
             $request->session()->put('price', $package->monthly_price);
         } else if ($sub_type == 'year') {

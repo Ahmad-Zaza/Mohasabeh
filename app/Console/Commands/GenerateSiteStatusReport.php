@@ -67,11 +67,11 @@ class GenerateSiteStatusReport extends Command
                     $attachment_size = $this->calculateAttachmentSize($customer->folder_location);
                     $subscription_type = $this->determineSubscriptionType($package_config_data);
                     $subscription_dates = $this->getSubscriptionDates($package_config_data);
-                    $site_status = $this->prepareSiteStatusData($customer->id, $bills_count, $vouchers_count, $package_config_data, $clients_count, $users_count, $inventories_count, $currencies_count, $attachment_size, $subscription_type, $subscription_dates);
+                    $customer_report = $this->prepareSiteStatusData($customer->id, $bills_count, $vouchers_count, $package_config_data, $clients_count, $users_count, $inventories_count, $currencies_count, $attachment_size, $subscription_type, $subscription_dates);
 
-                    DB::table('site_status')->updateOrInsert(
+                    DB::table('customer_report')->updateOrInsert(
                         ['customer_id' => $customer->id],
-                        $site_status
+                        $customer_report
                     );
                 } catch (Exception $ex) {
                     // Handle the exception as needed
@@ -100,10 +100,10 @@ class GenerateSiteStatusReport extends Command
                 $attachment_size = $this->calculateAttachmentSize($customer->folder_location);
                 $subscription_type = $this->determineSubscriptionType($package_config_data);
                 $subscription_dates = $this->getSubscriptionDates($package_config_data);
-                $site_status = $this->prepareSiteStatusData($customer->id, $bills_count, $vouchers_count, $package_config_data, $clients_count, $users_count, $inventories_count, $currencies_count, $attachment_size, $subscription_type, $subscription_dates);
-                DB::table('site_status')->updateOrInsert(
+                $customer_report = $this->prepareSiteStatusData($customer->id, $bills_count, $vouchers_count, $package_config_data, $clients_count, $users_count, $inventories_count, $currencies_count, $attachment_size, $subscription_type, $subscription_dates);
+                DB::table('customer_report')->updateOrInsert(
                     ['customer_id' => $customer->id],
-                    $site_status
+                    $customer_report
                 );
             } catch (Exception $ex) {
                 // Handle the exception as needed

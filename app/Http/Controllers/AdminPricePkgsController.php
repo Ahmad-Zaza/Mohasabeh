@@ -27,7 +27,7 @@ class AdminPricePkgsController extends CBController
         $this->sortable_table = true;
         $this->record_seo = false;
         $this->page_seo = false;
-        $this->table = "price_pkgs";
+        $this->table = "packages";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
 
         # START COLUMNS DO NOT REMOVE THIS LINE
@@ -40,7 +40,7 @@ class AdminPricePkgsController extends CBController
         $this->col[] = ["label" => "Monthly Price", "name" => "monthly_price"];
         $this->col[] = ["label" => "Six Month_price", "name" => "six_month_price"];
         $this->col[] = ["label" => "Year Price", "name" => "year_price"];
-        $this->col[] = ["label" => "Storage", "name" => "storage_attached_size", 'callback_php' => '($row->storage_attached_size ? $row->storage_attached_size . " GB" : "")'];
+        $this->col[] = ["label" => "Storage", "name" => "attached_size", 'callback_php' => '($row->attached_size ? $row->attached_size . " GB" : "")'];
         $this->col[] = ["label" => "Backup Size", "name" => "backups_size", 'callback_php' => '($row->backups_size ? $row->backups_size . " GB" : "")'];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
@@ -57,9 +57,9 @@ class AdminPricePkgsController extends CBController
         $this->form[] = ['label' => 'Year Price', 'name' => 'year_price', 'type' => 'number', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Image', 'name' => 'image', 'type' => 'filemanager', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Users Count', 'name' => 'users_count', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
-        $this->form[] = ['label' => 'Warehouses', 'name' => 'warehouses', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
-        $this->form[] = ['label' => 'Currency', 'name' => 'currency', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
-        $this->form[] = ['label' => 'Storage', 'name' => 'storage_attached_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9', 'help' => 'Size in GB'];
+        $this->form[] = ['label' => 'Warehouses', 'name' => 'warehouses_count', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
+        $this->form[] = ['label' => 'Currency', 'name' => 'currencies_count', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9'];
+        $this->form[] = ['label' => 'Storage', 'name' => 'attached_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9', 'help' => 'Size in GB'];
         $this->form[] = ['label' => 'Backup Size', 'name' => 'backups_size', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-9', 'help' => 'Size in GB'];
 
         # END FORM DO NOT REMOVE THIS LINE
