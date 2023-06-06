@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
     Route::post('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_personal_info'])->name('dashboard.change_personal_info');
     Route::get('/profile/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
-    Route::get('/profile/upgrade-account', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_view'])->name('dashboard.upgrade_account_view');
+    Route::get('/profile/checkout', [\App\Http\Controllers\Dashboard\HomeController::class, 'checkout'])->name('dashboard.upgrade_account_view');
     Route::get('/profile/my-payments', [\App\Http\Controllers\Dashboard\HomeController::class, 'my_payments'])->name('dashboard.my_payments');
 
     Route::get('/logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');

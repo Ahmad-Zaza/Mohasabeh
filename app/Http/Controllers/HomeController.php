@@ -222,13 +222,7 @@ class HomeController extends Controller
         }
         $customer->company = $request->company;
         $customer->subscription_type = $request->sub_type == "undefined" ? "free_trail" : $request->sub_type;
-        $customer->sys_lang = "ar";
-        $customer->notes = $request->notes;
         $customer->website = $website;
-
-        // $customer->logo_path = env("APP_URL") . 'images/customers/' . $filename;
-
-        // $customer->color = $request->color;
 
         $customer->host_link = 'http:/' . env("HOST_LINK") . strtolower(str_replace(' ', '', $request->domain)) . '.cloudsellpos.com';
         if (!$request->package_id) {
