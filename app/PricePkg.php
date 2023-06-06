@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PricePkg extends Model
 {
+    public $table = 'packages';
     //
     public function price_pkg_options()
     {
