@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('/profile/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
     Route::get('/profile/upgrade-account', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_view'])->name('dashboard.upgrade_account_view');
 
+    Route::post('/profile/delete-customer', [\App\Http\Controllers\Dashboard\HomeController::class, 'delete_customer'])->name('dashboard.delete_customer');
+
     Route::get('/logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
 
     ## Payment
@@ -49,7 +51,6 @@ Route::group(['middleware' => ['auth:customer']], function () {
         Route::post('/', [PaymentController::class, 'createTransaction'])->name('create-transaction');
         Route::post('/{id}/capture', [PaymentController::class, 'captureTransaction'])->name('capture-transaction');
     });
-
 });
 
 Route::post('login-customer', "HomeController@loginCustomer")->name("login-customer");
@@ -65,44 +66,12 @@ Route::get('customers/{token}', 'HomeController@activationProgress');
 Route::get('customers/email/{email}', 'HomeController@checkEmailUnique');
 // Route::get('pricing', 'HomeController@pricing');
 
-Route::get('admin/customers/set-free-trial/{id}', 'AdminCustomersController@setFreeTrial');
-Route::post('admin/customers/saveFreeTrial', 'AdminCustomersController@saveFreeTrial');
-Route::get('admin/customers/set-subscription/{id}', 'AdminCustomersController@setSubscription');
-Route::post('admin/customers/saveSubscription', 'AdminCustomersController@saveSubscription');
 Route::get('admin/customers/renewal-subscription/{id}', 'AdminCustomersController@renewalSubscription');
 Route::post('admin/customers/saveRenewalSubscription', 'AdminCustomersController@saveRenewalSubscription');
-Route::get('admin/customers/generateJson/{id}', 'AdminCustomersController@generateJson');
-Route::get('admin/customers/activateCustomer/{id}', 'AdminCustomersController@activateCustomer');
 Route::get('admin/customers/renewalSubscriptionPage/{id}', 'AdminCustomersController@renewalSubscriptionPage');
 Route::get('admin/customers/deleteCustomer/{id}', 'AdminCustomersController@deleteCustomer');
-Route::get('admin/customers/send-link/{id}', 'AdminCustomersController@sendLink');
-Route::get('admin/customers/set-free-trial-link/{id}', 'AdminCustomersController@setFreeTrialLink');
-Route::post('admin/customers/saveLink', 'AdminCustomersController@saveLink');
 
-$base_url = config('crudbooster.ADMIN_PATH');
-Route::get($base_url . '/pages/{id}', "PageInfoController@viewpage");
-Route::post($base_url . '/sort', "SortingModelController@sorting");
-Route::get($base_url . '/seo/{model}/{model_id?}', 'SEOController@get');
-Route::post('/seo-store/{model}', 'SEOController@store');
-Route::get($base_url . '/information/{model}', 'PageInfoController@get');
-Route::post('/info-page-store/{model}', 'PageInfoController@store');
-Route::get($base_url . '/style/form/{id}', 'CmsFormController@getForm');
-Route::get($base_url . '/response/form/{id}', 'CmsFormController@getSubmits');
-Route::get($base_url . '/viewpage/{page_id}', 'AdminPagesController@viewpage');
-Route::get($base_url . '/getForms', 'CmsFormController@getForms');
-Route::post('request/form/{id}', 'CmsFormController@submit');
 
 //images manage
-Route::get('admin/saveImagesModule', 'ImageController@saveImagesModule');
-Route::get('admin/deleteImageModule/{id}', 'ImageController@deleteImageModule');
-Route::get('admin/image/{fleet_id?}', "ImageController@index");
-Route::get('image/upload', 'ImageController@fileCreate')->name('images.upload');
-Route::post('image/upload/store/{fleet_id}', 'ImageController@fileStore');
-Route::get('/image/delete/{id}', 'ImageController@fileDestroy');
-Route::get('/image/showImageJson/{fleet_id?}', 'ImageController@showImageJson');
-Route::get('/manage-image/resize/{width?}/{height?}/{img}', 'ImageController@resizeImage')->name('manage-image-resize')->where('img', '(.*)');
-Route::get('/manage-image/crop/{width?}/{height?}/{img}', 'ImageController@cropImage')->name('manage-image-crop')->where('img', '(.*)');
-
 Route::get('/clear/route', 'HomeController@cleanCache');
-Route::post('modules/sort', "SortingModelController@sorting");
 Route::post('save-contact', 'HomeController@saveContact');

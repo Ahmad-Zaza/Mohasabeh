@@ -126,13 +126,6 @@ class AdminCustomersController extends CBController
          */
         $this->addaction = array();
         $this->addaction[] = [
-            'label' => 'Activate',
-            'url' => CRUDBooster::mainpath('activateCustomer/[id]'),
-            'icon' => 'fa fa-check',
-            'color' => 'success',
-            'showIf' => '[is_free_trial] == 0 && [active] == 0',
-        ];
-        $this->addaction[] = [
             'label' => 'Renewal',
             'url' => CRUDBooster::mainpath('renewalSubscriptionPage/[id]'),
             'icon' => 'fa fa-check',
@@ -507,28 +500,6 @@ class AdminCustomersController extends CBController
         );
     }
     //---------------------------------------------------------------------------------------------//
-    public function sendLink($id)
-    {
-        $customer = Customer::where('id', $id)->first();
-        $value = $customer->host_link;
-        return view('customer.set-host-link', compact('id', 'value'));
-    }
-    public function saveLink()
-    {
-        $data = $_REQUEST;
-        $customer = Customer::where('id', $data['id'])->first();
-        $customer->host_link = $_REQUEST['host_link'];
-        $customer->save();
-        $full_name = $customer['first_name'] . ' ' . $customer['last_name'];
-        $link = $customer['host_link'];
-        $email = $customer['email'];
-        $data = [
-            'full_name' => $full_name,
-            'link' => $link,
-        ];
-        CRUDBooster::sendEmail(['to' => $email, 'data' => $data, 'template' => 'email_template_send_host_link', 'attachments' => []]);
-        CRUDBooster::redirect(CRUDBooster::adminPath('customers'), "Email has been sent successfully to Customer {$customer->first_name} {$customer->last_name}", "success");
-    }
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -715,72 +686,6 @@ class AdminCustomersController extends CBController
             "success"
         );
         //-----------------------------//
-    }
-    private function createSubdomainIfNotExist($folderName, $subdomainName)
-    {
-        //--------- 1- create subdomain
-        //--- Check if subdomain already exist
-        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "cloudsellpos.com"]);
-        if ($da->error) {
-            return new Exception("error");
-        }
-        $exist = false;
-        if (count($result) > 0) {
-            foreach ($result as $domain) {
-                if ($domain . ".cloudsellpos.com" == $folderName) {
-                    $exist = true;
-                }
-            }
-        }
-        //---------------------//
-        if (!$exist) {
-            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
-            $result = $da->query(
-                'CMD_API_SUBDOMAINS',
-                array(
-                    'action' => 'create',
-                    'domain' => 'cloudsellpos.com',
-                    'subdomain' => $subdomainName,
-                )
-            );
-            if ($da->error) {
-                throw new Exception("error");
-            }
-        }
-    }
-    private function deleteSubDomain($subdomainName)
-    {
-        //--- Check if subdomain already exist
-        $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
-        $result = $da->query('CMD_API_SUBDOMAINS', ["domain" => "cloudsellpos.com"]);
-        if ($da->error) {
-            return new Exception("error");
-        }
-        $exist = false;
-        if (count($result) > 0) {
-            foreach ($result as $item) {
-                if ($item == $subdomainName) {
-                    $exist = true;
-                }
-            }
-        }
-        //---------------------//
-        if ($exist) {
-            $da = new DirectAdmin("https://cloudsellpos.com:2222", config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_USER"), config("app.cloudsellpos_settings.DIRECT_ADMIN_USER_PASSWORD"));
-            $result = $da->query(
-                'CMD_API_SUBDOMAINS',
-                array(
-                    'action' => 'delete',
-                    'domain' => 'cloudsellpos.com',
-                    'select0 ' => $subdomainName,
-                    'contents ' => "yes",
-                )
-            );
-            if ($da->error) {
-                throw new Exception("error");
-            }
-        }
     }
     private function createDomainIfNotExist($folderName, $domainName)
     {
