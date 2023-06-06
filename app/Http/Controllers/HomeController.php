@@ -537,6 +537,7 @@ class HomeController extends Controller
         $customerDBPassword = "{$customer->database_password}";
         try {
             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            // $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $query = "select * from cms_users where email = '$email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];

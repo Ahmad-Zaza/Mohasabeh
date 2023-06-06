@@ -28,6 +28,11 @@ class HomeController extends Controller
         $user = Auth::user();
         return view('dashboard.pages.change-personal-info', compact('user'));
     }
+    public function my_payments()
+    {
+        $user = Auth::user();
+        return view('dashboard.pages.my-payments', compact('user'));
+    }
     public function logout()
     {
         Auth::guard('customer')->logout();

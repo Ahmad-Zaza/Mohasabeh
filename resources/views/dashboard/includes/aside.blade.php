@@ -26,4 +26,11 @@
         </ul>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('dashboard.my_payments')}}" class="{{ (\Request::route()->getName() == 'dashboard.my_payments') ? 'active' : '' }}">
+            <i class="bi bi-wallet"></i>
+            <span>{{__('dashboard.my_payments')}}</span>
+        </a>
+    </li>
+
 </ul>
