@@ -155,5 +155,11 @@
     "dashboard.subscription_ends_at": "ينتهي الاشتراك في تاريخ",
     "dashboard.free_trail_ends_at": "تنتهي الجولة المجانية في تاريخ",
     "dashboard.are_you_sure": "هل أنت متأكد من حذف الحساب بشكل دائم؟! لن تتمكن من استرجاع الحساب في حال حذفه.",
-    "dashboard.are_you_sure?": "هل أنت متأكد؟"
+    "dashboard.are_you_sure?": "هل أنت متأكد؟",
+    "dashboard.my_payments": "مدفوعاتي",
+    "dashboard.date": "التاريخ",
+    "dashboard.process": "العملية",
+    "dashboard.amount": "المبلغ",
+    "dashboard.account": "الحساب",
+    "dashboard.table_of_payments": "جدول مدفوعاتي"
 }

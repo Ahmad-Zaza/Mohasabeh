@@ -1,13 +1,13 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use crocodicstudio\crudbooster\controllers\CBController;
 
 class AdminFeaturesController extends CBController
 {
-
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "name_en";
         $this->limit = "20";
@@ -29,7 +29,6 @@ class AdminFeaturesController extends CBController
         $this->sortable_table = true;
         $this->table = "features";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Name En", "name" => "name_en"];
@@ -38,7 +37,6 @@ class AdminFeaturesController extends CBController
         $this->col[] = ["label" => "Description Ar", "name" => "description_ar", "str_limit" => 150];
         $this->col[] = ["label" => "active", "name" => "active", "switch" => true];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Name En', 'name' => 'name_en', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
@@ -48,7 +46,6 @@ class AdminFeaturesController extends CBController
         $this->form[] = ['label' => 'Image', 'name' => 'image', 'type' => 'filemanager', 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'switch', 'validation' => 'required', 'width' => 'col-sm-9'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ['label'=>'Name En','name'=>'name_en','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
@@ -58,7 +55,6 @@ class AdminFeaturesController extends CBController
         //$this->form[] = ['label'=>'Image','name'=>'image','type'=>'upload','width'=>'col-sm-9'];
         //$this->form[] = ['label'=>'Active','name'=>'active','type'=>'radio','validation'=>'required','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No;'];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -72,7 +68,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -85,7 +80,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->addaction = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -97,7 +91,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -107,7 +100,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -118,7 +110,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -128,7 +119,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -136,10 +126,8 @@ class AdminFeaturesController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -148,7 +136,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -158,7 +145,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -168,7 +154,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -178,7 +163,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -188,7 +172,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -198,7 +181,6 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -208,9 +190,7 @@ class AdminFeaturesController extends CBController
         |
          */
         $this->load_css = array();
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -222,9 +202,7 @@ class AdminFeaturesController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -235,9 +213,7 @@ class AdminFeaturesController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -248,7 +224,6 @@ class AdminFeaturesController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -259,9 +234,7 @@ class AdminFeaturesController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -272,9 +245,7 @@ class AdminFeaturesController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -286,9 +257,7 @@ class AdminFeaturesController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -299,9 +268,7 @@ class AdminFeaturesController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -312,9 +279,7 @@ class AdminFeaturesController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     public function getAllFeatures()
     {
         return 'Lama';
@@ -329,7 +294,5 @@ class AdminFeaturesController extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
 }

@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Session;
 
 class AdminCmsUsersController extends CBController
 {
-
     public function cbInit()
     {
         # START CONFIGURATION DO NOT REMOVE THIS LINE
@@ -19,7 +18,6 @@ class AdminCmsUsersController extends CBController
         $this->button_import = false;
         $this->button_export = false;
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = array();
         $this->col[] = array("label" => "Name", "name" => "name");
@@ -27,7 +25,6 @@ class AdminCmsUsersController extends CBController
         $this->col[] = array("label" => "Privilege", "name" => "id_cms_privileges", "join" => "cms_privileges,name");
         $this->col[] = array("label" => "Photo", "name" => "photo", "image" => 1);
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = array();
         $this->form[] = array("label" => "Name", "name" => "name", 'required' => true, 'validation' => 'required|alpha_spaces|min:3');
@@ -38,9 +35,7 @@ class AdminCmsUsersController extends CBController
         $this->form[] = array("label" => "Password", "name" => "password", "type" => "password", "help" => "Please leave empty if not change");
         $this->form[] = array("label" => "Password Confirmation", "name" => "password_confirmation", "type" => "password", "help" => "Please leave empty if not change");
         # END FORM DO NOT REMOVE THIS LINE
-
     }
-
     public function getProfile()
     {
         $this->button_addmore = false;
@@ -50,7 +45,6 @@ class AdminCmsUsersController extends CBController
         $this->button_delete = false;
         $this->sortable_table = false;
         // $this->hide_form       = ['id_cms_privileges'];
-
         $data['page_title'] = cbLang("label_button_profile");
         $data['row'] = CRUDBooster::first('cms_users', CRUDBooster::myId());
         Session::put('admin_photo', ($data['row']->photo ? asset($data['row']->photo) : null));

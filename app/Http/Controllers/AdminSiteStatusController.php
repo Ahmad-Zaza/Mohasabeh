@@ -15,7 +15,6 @@ use PDOException;
 
 class AdminSiteStatusController extends CBController
 {
-
     public function cbInit()
     {
         # START CONFIGURATION DO NOT REMOVE THIS LINE
@@ -40,7 +39,6 @@ class AdminSiteStatusController extends CBController
         $this->page_seo = false;
         $this->table = "customer_report";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Customer", "name" => "customer_id", "join" => "customers,email"];
@@ -60,7 +58,6 @@ class AdminSiteStatusController extends CBController
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];
         # END COLUMNS DO NOT REMOVE THIS LINE
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Customer Id', 'name' => 'customer_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'customers,id'];
@@ -79,16 +76,13 @@ class AdminSiteStatusController extends CBController
         $this->form[] = ['label' => 'Subscription Type', 'name' => 'subscription_type', 'type' => 'text', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Subscription Start Date', 'name' => 'subscription_start_date', 'type' => 'date', 'validation' => 'required', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Subscription End Date', 'name' => 'subscription_end_date', 'type' => 'date', 'validation' => 'required', 'width' => 'col-sm-10'];
-
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ["label"=>"Customer Id","name"=>"customer_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"customer,id"];
         //$this->form[] = ["label"=>"Bills Count","name"=>"bills_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         //$this->form[] = ["label"=>"Vouchers Count","name"=>"vouchers_count","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -101,9 +95,7 @@ class AdminSiteStatusController extends CBController
         | @parent_columns = Sparate with comma, e.g : name,created_at
         |
          */
-
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -120,7 +112,6 @@ class AdminSiteStatusController extends CBController
         $this->addaction[] = ['label' => 'Users Info', 'url' => CRUDBooster::mainpath('generate-users-info/[customer_id]'), 'icon' => 'fa fa-users', 'color' => 'success'];
         $this->addaction[] = ['label' => 'Currencies', 'url' => CRUDBooster::mainpath('generate-currencies-info/[customer_id]'), 'icon' => 'fa fa-dollar', 'color' => 'success'];
         $this->addaction[] = ['label' => 'Bills & Vouchers', 'url' => CRUDBooster::mainpath('generate-bills-info/[customer_id]'), 'icon' => 'fa fa-money', 'color' => 'success'];
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -132,7 +123,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -142,7 +132,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -154,7 +143,6 @@ class AdminSiteStatusController extends CBController
          */
         $this->index_button = array();
         $this->index_button[] = ['label' => 'Generate Report', 'url' => CRUDBooster::mainpath("generate-report"), "icon" => "fa fa-history"];
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -164,7 +152,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -173,7 +160,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -183,7 +169,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->script_js = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -193,7 +178,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->pre_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -203,7 +187,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -213,7 +196,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -223,7 +205,6 @@ class AdminSiteStatusController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -245,9 +226,7 @@ class AdminSiteStatusController extends CBController
     public function actionButtonSelected($id_selected, $button_name)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -258,9 +237,7 @@ class AdminSiteStatusController extends CBController
     public function hook_query_index(&$query)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -271,7 +248,6 @@ class AdminSiteStatusController extends CBController
     {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -282,9 +258,7 @@ class AdminSiteStatusController extends CBController
     public function hook_before_add(&$postdata)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -295,9 +269,7 @@ class AdminSiteStatusController extends CBController
     public function hook_after_add($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -309,9 +281,7 @@ class AdminSiteStatusController extends CBController
     public function hook_before_edit(&$postdata, $id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -322,9 +292,7 @@ class AdminSiteStatusController extends CBController
     public function hook_after_edit($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -335,9 +303,7 @@ class AdminSiteStatusController extends CBController
     public function hook_before_delete($id)
     {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -348,11 +314,8 @@ class AdminSiteStatusController extends CBController
     public function hook_after_delete($id)
     {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
-
     public function getGenerateReport()
     {
         try {
@@ -363,7 +326,6 @@ class AdminSiteStatusController extends CBController
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_report"), 'message_type' => 'danger']);
         }
     }
-
     public function getGenerateUsersInfo($id)
     {
         header('Content-Type: text/html; charset=utf-8');
@@ -384,14 +346,11 @@ class AdminSiteStatusController extends CBController
             } catch (PDOException $ex) {
                 return redirect()->back()->with(['message' => trans("recaptcha.error_generating_usres_info_report"), 'message_type' => 'danger']);
             }
-
             $customer_name = $customer->first_name . " " . $customer->last_name;
             $customer_email = $customer->email;
-
             $user_query = "SELECT `cms_users`.`name`, `cms_users`.`email`, `cms_users`.`last_login_date`, `cms_privileges`.`name` as `privileges_name`
                 FROM `cms_users`
                 INNER JOIN `cms_privileges` ON `cms_users`.`id_cms_privileges` = `cms_privileges`.`id`";
-
             $user_stmt = $dbh->query($user_query);
             $users = $user_stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $ex) {
@@ -399,7 +358,6 @@ class AdminSiteStatusController extends CBController
         }
         return view('cms_reports.users_info_details', compact('users', 'customer_name', 'customer_email', 'cols'));
     }
-
     public function getGenerateCurrenciesInfo($id)
     {
         header('Content-Type: text/html; charset=utf-8');
@@ -421,10 +379,8 @@ class AdminSiteStatusController extends CBController
             } catch (PDOException $ex) {
                 return redirect()->back()->with(['message' => trans("recaptcha.error_generating_currencies_info_report"), 'message_type' => 'danger']);
             }
-
             $customer_name = $customer->first_name . " " . $customer->last_name;
             $customer_email = $customer->email;
-
             $currencies_query = "SELECT `currencies`.`name_en`, `currencies`.`name_ar`,`currencies`.`code`,`currencies`.`is_major`,`currencies`.`active`
                                      FROM `currencies`";
             $currencies_stmt = $dbh->query($currencies_query);
@@ -434,7 +390,6 @@ class AdminSiteStatusController extends CBController
         }
         return view('cms_reports.currencies_details', compact('currencies', 'customer_name', 'customer_email', 'cols'));
     }
-
     public function getGenerateBillsInfo(Request $request, $id)
     {
         header('Content-Type: text/html; charset=utf-8');
@@ -464,48 +419,39 @@ class AdminSiteStatusController extends CBController
                     $bills_query = "SELECT COUNT(*) AS count FROM `bills` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
                     $bills_stmt = $dbh->query($bills_query);
                     $bills = $bills_stmt->fetchColumn();
-
                     $vouchers_query = "SELECT COUNT(*) AS count FROM `vouchers` WHERE YEAR(create_at) = $subscription_year AND MONTH(create_at) = $month GROUP BY MONTH($month)";
                     $vouchers_stmt = $dbh->query($vouchers_query);
                     $vouchers = $vouchers_stmt->fetchColumn();
-
                     $totalBills[] = $bills == false ? '0' : $bills;
                     $totalVouchers[] = $vouchers == false ? '0' : $vouchers;
                 }
             }
-
             $startSubscriptionDate = $customer->created_at;
             $endSubscriptionDate = $customer->subscription_end_date ?? $customer->free_trial_end_date;
             if (!$endSubscriptionDate) {
                 $endSubscriptionDate = $customer->created_at;
             }
-
             $startYear = null;
             $endYear = null;
             if ($startSubscriptionDate) {
                 $startYear = intval(date('Y', strtotime($startSubscriptionDate)));
             }
-
             if ($endSubscriptionDate) {
                 $endYear = intval(date('Y', strtotime($endSubscriptionDate)));
             }
-
             $currentYear = intval(date('Y'));
             if ($endYear > $currentYear) {
                 $endYear = $currentYear;
             }
-
         } catch (Exception $ex) {
             return redirect()->back()->with(['message' => trans("recaptcha.error_generating_bills_info_report"), 'message_type' => 'danger']);
         }
         return view('cms_reports.vouchers_bills_details', compact('totalBills', 'totalVouchers', 'customer_name', 'customer_email', 'cols', 'subscription_year', 'startYear', 'endYear', 'id'));
     }
-
     public function getDetail($id)
     {
         $this->cbLoader();
         $row = DB::table($this->table)->where($this->primary_key, $id)->first();
-
         if (!CRUDBooster::isRead() && $this->global_privilege == false || $this->button_detail == false) {
             CRUDBooster::insertLog(cbLang("log_try_view", [
                 'name' => $row->{$this->title_field},
@@ -513,13 +459,10 @@ class AdminSiteStatusController extends CBController
             ]));
             CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
         }
-
         $module = CRUDBooster::getCurrentModule();
-
         $page_menu = Route::getCurrentRoute()->getActionName();
         $page_title = cbLang("detail_data_page_title", ['module' => $module->name, 'name' => $row->{$this->title_field}]);
         $command = 'detail';
-
         Session::put('current_row_id', $id);
         $manualView = null;
         if (view()->exists(CRUDBooster::getCurrentModule()->path . '.form')) {

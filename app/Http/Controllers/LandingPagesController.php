@@ -14,7 +14,6 @@ class LandingPagesController extends CBController
 {
     public function cbInit()
     {
-
         # START CONFIGURATION DO NOT REMOVE THIS LINE
         $this->title_field = "name";
         $this->limit = "20";
@@ -33,7 +32,6 @@ class LandingPagesController extends CBController
         $this->button_export = false;
         $this->table = "landing_pages";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
-
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
         $this->col[] = ["label" => "Name", "name" => "name"];
@@ -45,7 +43,6 @@ class LandingPagesController extends CBController
         $this->col[] = ["label" => "Applications", "name" => "id", "callback" => function ($row) {
             return DB::table('applications')->where("landing_page_id", $row->id)->get()->count();
         }];
-
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['label' => 'Name', 'name' => 'name', 'type' => 'text', 'validation' => 'required|string|min:3|max:300', 'width' => 'col-sm-10'];
@@ -58,7 +55,6 @@ class LandingPagesController extends CBController
         $this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'radio', 'width' => 'col-sm-10', 'dataenum' => '1|Yes;0|No'];
         $this->form[] = ['label' => 'Is Rtl', 'name' => 'is_rtl', 'type' => 'radio', 'width' => 'col-sm-9', 'dataenum' => '1|Yes;0|No'];
         # END FORM DO NOT REMOVE THIS LINE
-
         # OLD START FORM
         //$this->form = [];
         //$this->form[] = ['label' => 'Name', 'name' => 'name', 'type' => 'text', 'validation' => 'required|string|min:3|max:300', 'width' => 'col-sm-10'];
@@ -70,7 +66,6 @@ class LandingPagesController extends CBController
         //$this->form[] = ['label' => 'Response Message', 'name' => 'response_message', 'type' => 'wysiwyg', 'width' => 'col-sm-10'];
         //$this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'radio', 'width' => 'col-sm-10', 'dataenum' => '1|Yes;0|No'];
         # OLD END FORM
-
         /*
         | ----------------------------------------------------------------------
         | Sub Module
@@ -84,7 +79,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->sub_module = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -102,12 +96,10 @@ class LandingPagesController extends CBController
         if ($templates > 0) {
             $this->addaction[] = ['label' => 'Build from Template', 'target' => '_blank', "color" => "primary", 'title' => 'Build from Template', "url" => CRUDBooster::mainpath('builder-template') . '/[id]', 'icon' => 'fa fa-wrench'];
         }
-
         $this->addaction[] = ['label' => 'Applications', 'title' => 'Applications', 'url' => CRUDBooster::mainpath('applications') . '/[id]', "color" => "info"];
         $this->addaction[] = ['label' => '', 'title' => 'Go TO', 'target' => '_blank', 'url' => CRUDBooster::mainpath('show-form/[url]'), 'icon' => 'fa fa-search', "color" => "success"];
         $this->addaction[] = ['label' => '', 'title' => 'SEO', 'url' => CRUDBooster::adminPath('seo/pages/[id]'), 'icon' => 'fa fa-globe', 'color' => 'warning', 'showIf' => "true"];
         $this->addaction[] = ['label' => 'Export Applications', 'target' => '_blank', 'title' => 'Export Applications', 'url' => CRUDBooster::mainpath('export-excel/[id]'), 'icon' => 'fa fa-excel', 'color' => 'success', 'showIf' => "true"];
-
         /*
         | ----------------------------------------------------------------------
         | Add More Button Selected
@@ -119,7 +111,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->button_selected = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add alert message to this module at overheader
@@ -129,7 +120,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->alert = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add more button to header button
@@ -140,7 +130,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->index_button = array();
-
         /*
         | ----------------------------------------------------------------------
         | Customize Table Row Color
@@ -150,7 +139,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->table_row_color = array();
-
         /*
         | ----------------------------------------------------------------------
         | FESAL VOILA DONT REMOVE THIS LINE
@@ -158,10 +146,8 @@ class LandingPagesController extends CBController
         | IF NOT SUCCESS ADD  $this->col[] = ["label"=>"active","name"=>"active"]; IN COLUMNS
         |
          */
-
         $this->table_row_color[] = ["condition" => "[active]==1", "color" => "success"];
         $this->table_row_color[] = ["condition" => "[active]==0", "color" => "danger"];
-
         /*
         | ----------------------------------------------------------------------
         | You may use this bellow array to add statistic at dashboard
@@ -170,7 +156,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->index_statistic = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add javascript at body
@@ -187,7 +172,6 @@ class LandingPagesController extends CBController
                 });
             });
         ";
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code before index table
@@ -223,9 +207,7 @@ class LandingPagesController extends CBController
             </div>
         </div>
         <!-- The modal END -->
-
 `;
-
         /*
         | ----------------------------------------------------------------------
         | Include HTML Code after index table
@@ -235,7 +217,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->post_index_html = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include Javascript File
@@ -245,7 +226,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->load_js = array();
-
         /*
         | ----------------------------------------------------------------------
         | Add css style at body
@@ -255,7 +235,6 @@ class LandingPagesController extends CBController
         |
          */
         $this->style_css = null;
-
         /*
         | ----------------------------------------------------------------------
         | Include css File
@@ -266,7 +245,6 @@ class LandingPagesController extends CBController
          */
         $this->load_css = array();
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for button selected
@@ -276,11 +254,9 @@ class LandingPagesController extends CBController
     |
      */
     public function actionButtonSelected($id_selected, $button_name)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate query of index result
@@ -289,11 +265,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_query_index(&$query)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate row of index table html
@@ -301,10 +275,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_row_index($column_index, &$column_value)
-{
+    {
         //Your code here
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before add data is execute
@@ -313,11 +286,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_before_add(&$postdata)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after add public static function called
@@ -326,11 +297,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_after_add($id)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for manipulate data input before update data is execute
@@ -340,11 +309,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_before_edit(&$postdata, $id)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after edit public static function called
@@ -353,11 +320,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_after_edit($id)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command before delete public static function called
@@ -366,11 +331,9 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_before_delete($id)
-{
+    {
         //Your code here
-
     }
-
     /*
     | ----------------------------------------------------------------------
     | Hook for execute command after delete public static function called
@@ -379,32 +342,26 @@ class LandingPagesController extends CBController
     |
      */
     public function hook_after_delete($id)
-{
+    {
         //Your code here
-
     }
-
     //By the way, you can still create your own method in here... :)
-
     public function getBuilder($landingPageId)
-{
+    {
         $landingPage = DB::table('landing_pages')->find($landingPageId);
         return view('crudbooster::landing_page_builder.index', compact("landingPageId", "landingPage"));
     }
-
     public function getBuilderTemplate($landingPageId)
-{
+    {
         $landingPage = DB::table('landing_pages')->find($landingPageId);
         $templates = DB::table('landing_pages')->where("is_template", 1)->get();
         return view("crudbooster::landing_page_builder.templates", compact("landingPageId", "landingPage", "templates"));
     }
-
     public function postLandingPage(Request $request)
-{
+    {
         if (!$request->id) {
             return response()->json(["message" => "Error No Landing Page"], 500);
         }
-
         $landingPage = DB::table('landing_pages')->where('id', $request->id)
             ->update([
                 'html' => $request["gjs-html"],
@@ -413,12 +370,10 @@ class LandingPagesController extends CBController
                 'components' => $request["gjs-components"],
                 'variables' => $request["variables"],
             ]);
-
         return response()->json();
     }
-
     public function getLandingPage(Request $request)
-{
+    {
         $landingPage = DB::table('landing_pages')->find($request->id);
         if (!$landingPage->html && $request->template_id) {
             $landingPage = DB::table('landing_pages')->find($request->template_id);
@@ -438,36 +393,31 @@ class LandingPagesController extends CBController
             "variables" => $landingPage->variables,
         ]);
     }
-
     public function getApplications($landingPageId)
-{
+    {
         $applications = DB::table('applications')->where('landing_page_id', $landingPageId)->get();
         return view('crudbooster::form_builder.submits', array('data' => $applications));
     }
-
     public function getExportExcel($id)
-{
+    {
         $landingPage = DB::table('landing_pages')->where('id', $id)->first();
         $applications = DB::table('applications')->where('landing_page_id', $id)->get();
         $columns = [];
         if ($applications) {
             $columns = DB::table('form_field')->where("form_id", $applications[0]->form_id)->get();
         }
-
         foreach ($applications as $application) {
             $application->fields = DB::table('applications_fields')->where("application_id", $application->id)->pluck("value", "field_id")->toArray();
         }
         return Excel::download(new LandingPageExport($applications, $columns), $landingPage->name . ".xls");
     }
-
     public function postSetTemplate(Request $request)
-{
+    {
         $templateLandingPage = DB::table('landing_pages')->find($request->templateId);
         $landingPage = DB::table('landing_pages')->find($request->landingPageId);
         if (!$templateLandingPage || !$landingPage) {
             return response()->json([], 500);
         }
-
         //--- HTML
         $html = $templateLandingPage->html;
         $html = str_replace('name="landing_page_id" value="' . $request->templateId . '"', 'name="landing_page_id" value="' . $request->landingPageId . '"', $html);
@@ -482,9 +432,8 @@ class LandingPagesController extends CBController
         ]);
         return response()->json([], 200);
     }
-
     public function getShowForm($url)
-{
+    {
         $landingPage = DB::table('landing_pages')->where("url", $url)->first();
         if ($landingPage) {
             $landingPageSeo = DB::table('cms_seo')->where("page", "pages")->where("page_id", $landingPage->id)->first();

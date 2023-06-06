@@ -17,7 +17,6 @@ class ProfileController extends Controller
     {
         return $request->all();
     }
-
     public function change_password(Request $request)
     {
         $this->validate($request, [
@@ -25,7 +24,6 @@ class ProfileController extends Controller
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required|min:8'
         ]);
-
         $password = $request->current_password;
         $customer = Auth::user();
         $customerDB = "{$customer->database_name}";
@@ -34,29 +32,21 @@ class ProfileController extends Controller
         $customerDBPassword = "{$customer->database_password}";
         try {
             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-
             $query = "select * from cms_users where email = '$customer->email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];
-
-
             if (Hash::check($password, $user['password'])) {
-
                 $new_password = Hash::make($request->password);
-
                 $query = "UPDATE `cms_users` SET `password` = '$new_password' WHERE `cms_users`.`email` = '$customer->email';";
                 $dbh->exec($query);
-
                 return Redirect::back()->with(['success' => 'dashboard.The password updated successfully']);
             } else {
-
                 return Redirect::back()->with(['error' => 'dashboard.The current password is incorrect']);
             }
         } catch (PDOException $ex) {
             return Redirect::back()->with(['error' => 'dashboard.Unable to make the connection']);
         }
     }
-
     public function change_personal_info(Request $request)
     {
         $this->validate($request, [
@@ -66,7 +56,6 @@ class ProfileController extends Controller
             'last_name' => 'required|max:255|string',
             'first_name' => 'required|max:255|string',
         ]);
-
         $data = $request->all();
         $customer = Customer::find(Auth::user()->id);
         $customer->update($data);
