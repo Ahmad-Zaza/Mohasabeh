@@ -159,7 +159,6 @@ class HomeController extends Controller
     }
     public function saveCustomer(Request $request)
     {
-        dd($request->all());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
