@@ -15,10 +15,16 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->integer('customer_id');
             $table->string('payment_id');
-            $table->string('buyer_id');
-            $table->string('buyer_email');
-            $table->float('amount', 10, 2);
+            $table->string('payer_id');
+            $table->string('payer_email')->nullable();
+            $table->string('payer_name')->nullable();
+            $table->string('payer_surname')->nullable();
+            $table->float('init_amount', 10, 2)->nullable();
+            $table->float('gross_amount', 10, 2)->nullable();
+            $table->float('net_amount', 10, 2)->nullable();
+            $table->float('fee', 10, 2)->nullable();
             $table->string('currency');
             $table->string('status');
             $table->string('error_name')->nullable();

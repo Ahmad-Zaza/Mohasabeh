@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -12,7 +14,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-         Artisan::call('report:generate', ['customer' => auth()->user()->id]);
+        Artisan::call('report:generate', ['customer' => auth()->user()->id]);
         return view('dashboard.pages.index');
     }
     public function change_email_view()
@@ -47,6 +49,12 @@ class HomeController extends Controller
 
     public function checkout(Request $request)
     {
+        $customer = Customer::where('id', auth()->user()->id)->first();
+        if ($customer->package_id) {
+            $request->session()->put('pkgg_id', $customer->package_id);
+            $request->session()->put('sub_type', $customer->subscription_type);
+        }
+
         $sub_type = $request->session()->get('sub_type');
         $pkgg_id = $request->session()->get('pkgg_id');
         $package = DB::table('packages')->where('id', '=', $pkgg_id)->first();
@@ -57,7 +65,7 @@ class HomeController extends Controller
         } else {
             $request->session()->put('price', $package->six_month_price);
         }
-        return view('dashboard.pages.upgrade-account', compact('sub_type', 'pkgg_id', 'package'));
+        return view('dashboard.pages.checkout', compact('customer', 'sub_type', 'pkgg_id', 'package'));
     }
 
 }

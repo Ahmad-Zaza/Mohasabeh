@@ -99,10 +99,6 @@ class AdminCustomersController extends CBController
         //$this->form[] = ['label' => 'Last Renewal Date', 'name' => 'last_renewal_date', 'type' => 'date', 'width' => 'col-sm-9'];
         //$this->form[] = ['label' => 'Users Count', 'name' => 'users_count', 'type' => 'number', 'width' => 'col-sm-9'];
 
-        //$this->form[] = ['label' => 'Modules', 'name' => 'modules', 'type' => 'select2', 'width' => 'col-sm-9', 'datatable' => 'modules,name_en', 'relationship_table' => 'customer_module'];
-
-        //$this->form[] = ['label' => 'System Language', 'name' => 'sys_lang', 'type' => 'text', 'width' => 'col-sm-9'];
-
         //$this->form[] = ['label' => 'Free Trial', 'name' => 'is_free_trial', 'type' => 'checkbox', 'validation' => 'required', 'width' => 'col-sm-9'];
         //$this->form[] = ['label' => 'Active', 'name' => 'active', 'type' => 'radio', 'width' => 'col-sm-10'];
         # OLD END FORM
@@ -119,6 +115,8 @@ class AdminCustomersController extends CBController
         |
          */
         $this->sub_module = array();
+        $this->sub_module[] = ['label' => 'Payment Orders', 'path' => 'payments', 'parent_columns' => '', 'foreign_key' => 'customer_id', 'button_color' => 'success'];
+
         /*
         | ----------------------------------------------------------------------
         | Add More Action Button / Menu
@@ -677,7 +675,6 @@ class AdminCustomersController extends CBController
         }
         return implode($pass) . "&L123"; //turn the array into a string
     }
-
 
     public function getDeleteCustomer($id)
     {

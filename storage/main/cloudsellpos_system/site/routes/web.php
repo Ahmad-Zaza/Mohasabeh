@@ -35,7 +35,6 @@ Route::group([
 
 
 // Route::get("/import-data",function(){
-
 //     $faq=DB::table("products_catalog_users")
 //     ->select(
 //         'products_catalog_users.*',
@@ -58,8 +57,6 @@ Route::group([
 //             'ip'=>$value->ip."-".$value->country_name
 //         ]);
 //     }
-
-
 // });
 
 Route::post('/contact/request', "FrontController@contactUsRequest");

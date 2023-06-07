@@ -18,19 +18,19 @@ Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch
 
 ## Mini Dashboard
 
-Route::group(['middleware' => ['auth:customer']], function () {
-    Route::get('/profile', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
-    Route::get('/profile/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
-    Route::post('/profile/change-email', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_email'])->name('dashboard.change_email');
+Route::group(['prefix'  => 'profile','middleware' => ['auth:customer']], function () {
+    Route::get('/', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
+    Route::get('/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
+    Route::post('/change-email', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_email'])->name('dashboard.change_email');
 
-    Route::get('/profile/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
-    Route::post('/profile/change-password', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_password'])->name('dashboard.change_password');
+    Route::get('/change-password', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_password_view'])->name('dashboard.change_password_view');
+    Route::post('/change-password', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_password'])->name('dashboard.change_password');
 
-    Route::get('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
-    Route::post('/profile/change-personal-info', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_personal_info'])->name('dashboard.change_personal_info');
-    Route::get('/profile/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
-    Route::get('/profile/checkout', [\App\Http\Controllers\Dashboard\HomeController::class, 'checkout'])->name('dashboard.upgrade_account_view');
-    Route::get('/profile/my-payments', [\App\Http\Controllers\Dashboard\HomeController::class, 'my_payments'])->name('dashboard.my_payments');
+    Route::get('/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
+    Route::post('/change-personal-info', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_personal_info'])->name('dashboard.change_personal_info');
+    Route::get('/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
+    Route::get('/checkout', [\App\Http\Controllers\Dashboard\HomeController::class, 'checkout'])->name('dashboard.upgrade_account_view');
+    Route::get('/my-payments', [\App\Http\Controllers\Dashboard\HomeController::class, 'my_payments'])->name('dashboard.my_payments');
 
     Route::get('/logout', [\App\Http\Controllers\Dashboard\HomeController::class, 'logout'])->name('dashboard.logout');
 
