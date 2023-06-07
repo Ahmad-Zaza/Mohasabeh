@@ -190,18 +190,18 @@ class HomeController extends Controller
             return response()->json(['success' => false, 'errors' => $validator->errors(), 'request' => $request->all()], 200);
         }
         //---------------------------------//
-        if ($request->file('logo')) {
-            $file = $request->file('logo');
-        } elseif ($request->file('logo2')) {
-            $file = $request->file('logo2');
-        }
-        if ($file) {
-            $filename = time() . '_' . $file->getClientOriginalName();
-            // Upload file
-            $file->move("images/customers", $filename);
-            // File path
-            $filepath = 'images/customers/' . $filename;
-        }
+        // if ($request->file('logo')) {
+        //     $file = $request->file('logo');
+        // } elseif ($request->file('logo2')) {
+        //     $file = $request->file('logo2');
+        // }
+        // if ($file) {
+        //     $filename = time() . '_' . $file->getClientOriginalName();
+        //     // Upload file
+        //     $file->move("images/customers", $filename);
+        //     // File path
+        //     $filepath = 'images/customers/' . $filename;
+        // }
         //---------------------------------//
         $website = strtolower(str_replace(" ", "", $request->domain));
         $existed = Customer::where("website", $website)->get()->count();
