@@ -135,7 +135,7 @@
 	        */
             $this->table_row_color = array();
 
-           
+
 
 	        /*
 	        | ----------------------------------------------------------------------
@@ -333,9 +333,9 @@
 
 
 	    //By the way, you can still create your own method in here... :)
-        public function getIndex(\Illuminate\Http\Request $request)
+        public function getIndex()
         {
-
+			$request = $_REQUEST;
 			if(CRUDBooster::isSuperAdmin()) {
             	if (!CRUDBooster::isView()) CRUDBooster::denyAccess();
 			}
@@ -368,7 +368,7 @@
 				$persons = DB::table('persons')->get();
 			}
 
-           
+
 
             $query = DB::table("entry_base")->select(
                 'entry_base.date as entryDate','entry_base.narration as entryNarration','entry_base.id as entryBaseId',
@@ -379,7 +379,7 @@
 				'vouchers.voucher_type_id as VoucherTypeId',
 				'voucher_types.name_ar as VoucherTypeName',
 				'accounts.name_ar as accountName'
-				
+
 
             )
                 ->join("entries", "entries.entry_base_id", "entry_base.id")
@@ -477,7 +477,7 @@
 					"credit"=>$credit,
 					"currency_nameAr"=>$arr['currency_nameAr']
 				);
-				
+
 				$all_debit +=$debit;
 				$all_credit +=$credit;
 
@@ -494,16 +494,16 @@
 				);
 			array_push($new_data,$result);
 			$data= $new_data;
-			
+
 			Excel::create('export_account_statement_'.date('Y-m-d H:i:s',time()), function($excel) use ($data,$rows_count) {
 
 				// Set the title
 				$excel->setTitle('Export To Excel');
-			
+
 				// Chain the setters
 				$excel->setCreator('Voila')
 						->setCompany('Voila');
-			
+
 				// Call them separately
 				$excel->setDescription('Accounting System');
 
@@ -514,7 +514,7 @@
 				$excel->sheet('Result', function($sheet) use ($data,$rows_count) {
 					$sheet->setOrientation('landscape');
 					$sheet->setPageMargin(0.25);
-					
+
 					$sheet->fromArray($data);
 					// Add before first row
 					$sheet->prependRow(1, array(
@@ -528,12 +528,12 @@
 					$sheet->row(1, function($row) {
 						// call cell manipulation methods
 						$row->setBackground('#cccccc');
-					
+
 					});
 					$sheet->row($rows_count, function($row) {
 						//style last row
 						$row->setBackground('#cccccc');
-					
+
 					});
 					$sheet->appendRow(2, array(
 						'', '','','','','','', '','',''
@@ -543,12 +543,12 @@
 					// Set auto size for sheet
 					$sheet->setAutoSize(true);
 
-					
+
 
 				});
-			
+
 			})->export('xls');
-			
+
 		}
 
 	}

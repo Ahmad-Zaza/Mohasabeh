@@ -336,14 +336,15 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 
 	}
 
-	public function getIndex(Request $request)
+	public function getIndex()
 	{
+		$request = request();
 
 		//if (!CRUDBooster::isView()) CRUDBooster::denyAccess();
         $conditions = array(['entry_base.delete_by', '=',  0 ],['entries.delete_by', '=',  0 ],['entry_base.rotate_year', '=',  NULL ],['entries.rotate_year', '=',  NULL ]);
 
 
-		
+
 
 		if ($request->has('currency_id')&& $request->input('currency_id')!=-1 && is_numeric($request->currency_id)) {
 
@@ -372,17 +373,17 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 				$accounts_ids[] = $obj_id->account_id;
 			}
 			//dd($accounts_ids);
-			
+
 			$accounts = DB::table("accounts")->whereIn('id', $accounts_ids)->get();
 		}else{
 			$accounts = DB::table("accounts")->get();
 		}
-		
+
 
 		$currencies = DB::table("currencies")->get();
 
 
-	
+
 			$query = DB::table("entries")->select(
 				'accounts.id as id',
 				'accounts.parent_id as parent_id',
@@ -408,7 +409,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 				->where('accounts.id',$request->account_id)
 				->orderby('entry_base.date');
 
-        
+
         if ($me->id_cms_privileges == 4)
         {
             if($me->account_id != $request->account_id) {
@@ -459,7 +460,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 				foreach($first_childs as $child){
 					$temp= array('id'=>$child->id,'name'=>$child->name_ar);
 					$currencies_balance = array();
-					
+
 					foreach($active_currencies as $curr){
 						$currencies_balance['curr_balance_'.$curr->id] = 0;
 					}
@@ -469,13 +470,13 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 					}
 					array_push($data,$temp);
 				}
-				
+
 			}
-		   
+
 		}else{
 			$data = [];
 		}
-		
+
 
         if(!CRUDBooster::isSuperAdmin())
         {
@@ -520,7 +521,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 
 		$gfunc= new GeneralFunctionsController();
 		$active_currencies = $gfunc->getActiveCurrencies();
-		
+
 		//dd($type_display);
 		if($type_display==2){ //report display type رصيد تجميعي
 			    $new_data = array();
@@ -529,7 +530,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 				foreach($active_currencies as $curr){
 					$final_balances['curr_balance_'.$curr->id] = 0;
 				}
-				
+
 				foreach($data as $arr){
 					$temp = array(
 						"name"=>$arr['name']
@@ -538,7 +539,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 						$temp['curr_balance_'.$curr->id] = $arr['curr_balance_'.$curr->id]!=null?$arr['curr_balance_'.$curr->id]:'0';
 						$final_balances['curr_balance_'.$curr->id] += $temp['curr_balance_'.$curr->id];
 					}
-					
+
 					array_push($new_data,$temp);
 				}
 				$result =  array(
@@ -546,18 +547,18 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 					);
 				$heading=array(
 						"name"=>"الحساب"
-					);	
+					);
 				$empty_row =array(
 						''
-					);	
+					);
 				foreach($active_currencies as $curr){
 						$result['curr_balance_'.$curr->id]=$final_balances['curr_balance_'.$curr->id];
 						$heading['curr_balance_'.$curr->id] = "رصيد ".$curr->name_ar;
 						array_push($empty_row,'');
-				}	
+				}
 				array_push($new_data,$result);
-				
-				
+
+
 				$data= $new_data;
 
 
@@ -584,10 +585,10 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 							"currency"=>$arr['currency'],
 							"total"=>$total!=0?$total:'0'
 						);
-						
+
 						array_push($new_data,$temp);
 					}
-					
+
 					$data= $new_data;
 
 					$heading=array(
@@ -598,27 +599,27 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 						"narration"=>"البيان",
 						"currency"=>"العملة",
 						"total"=>"الرصيد",
-					);	
+					);
 					$empty_row =array(
 						'', '','','','','',''
 					);
 			}else{
 				$new_data = array();
-					
+
 					$final_balances = array();
 					foreach($active_currencies as $curr){
 						$final_balances['curr_balance_'.$curr->id] = 0;
 					}
 
-					foreach($data as $arr){			
-						//convert object to array	
+					foreach($data as $arr){
+						//convert object to array
 						$json  = json_encode($arr);
 						$arr = json_decode($json, true);
 						$received_amount= $arr['received_amount']!=null?$arr['received_amount']:'0';
 						$paid_amount=$arr['paid_amount']!=null?$arr['paid_amount']:'0';
 
 						$final_balances['curr_balance_'.$arr['currency_id']] +=($received_amount - $paid_amount);
-						
+
 						$temp = array(
 							"name"=>$arr['name'],
 							"received_amount"=>$received_amount,
@@ -633,8 +634,8 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 						}
 						array_push($new_data,$temp);
 					}
-					
-					
+
+
 
 					$result =  array(
 						"name"=>'',
@@ -651,7 +652,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 						"date"=>"التاريخ",
 						"narration"=>"البيان",
 						"currency"=>"العملة",
-					);	
+					);
 					$empty_row =array(
 						'', '','','','',''
 					);
@@ -664,19 +665,19 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 
 					$data= $new_data;
 			}
-			
+
 		}
-		
-	
+
+
 		Excel::create('export_account_'.date('Y-m-d H:i:s',time()), function($excel) use ($data,$heading,$empty_row,$rows_count) {
 
 			// Set the title
 			$excel->setTitle('Export To Excel');
-		
+
 			// Chain the setters
 			$excel->setCreator('Voila')
 					->setCompany('Voila');
-		
+
 			// Call them separately
 			$excel->setDescription('Accounting System');
 
@@ -687,7 +688,7 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 			$excel->sheet('Result', function($sheet) use ($data,$heading,$empty_row,$rows_count) {
 				$sheet->setOrientation('landscape');
 				$sheet->setPageMargin(0.25);
-				
+
 				$sheet->fromArray($data);
 				// Add before first row
 				$sheet->prependRow(1, $heading);
@@ -706,11 +707,11 @@ class AdminReports99Controller extends \crocodicstudio_voila\crudbooster\control
 				// Set auto size for sheet
 				$sheet->setAutoSize(true);
 
-				
+
 
 			});
-		
+
 		})->export('xls');
-		
+
 	}
 }

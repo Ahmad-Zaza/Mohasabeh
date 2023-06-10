@@ -336,14 +336,15 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 
 	}
 
-	public function getIndex(Request $request)
+	public function getIndex()
 	{
+		$request = request();
 
 		//if (!CRUDBooster::isView()) CRUDBooster::denyAccess();
         $conditions = array(['entry_base.delete_by', '=',  0 ],['entries.delete_by', '=',  0 ],['entry_base.rotate_year', '=',  NULL ],['entries.rotate_year', '=',  NULL ]);
 
 
-		
+
 
 		if ($request->has('currency_id')&& $request->input('currency_id')!=-1 && is_numeric($request->currency_id)) {
 
@@ -372,12 +373,12 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 				$accounts_ids[] = $obj_id->account_id;
 			}
 			//dd($accounts_ids);
-			
+
 			$accounts = DB::table("accounts")->whereIn('id', $accounts_ids)->get();
 		}else{
 			$accounts = DB::table("accounts")->get();
 		}
-		
+
 
 		$currencies = DB::table("currencies")->get();
 
@@ -413,7 +414,7 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 				->where($conditions)
 				->orderby('entry_base.id');
 
-							
+
         if( $request->has('account_id') && $request->input('account_id')!=-1){
 			$query->where('accounts.id',$request->account_id);
 		}
@@ -507,16 +508,16 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 			array_push($new_data,$temp);
 		}
 		$data= $new_data;
-		
+
 		Excel::create('export_general_entry_record_'.date('Y-m-d H:i:s',time()), function($excel) use ($data) {
 
 			// Set the title
 			$excel->setTitle('Export To Excel');
-		
+
 			// Chain the setters
 			$excel->setCreator('Voila')
 				->setCompany('Voila');
-		
+
 			// Call them separately
 			$excel->setDescription('Accounting System');
 
@@ -527,7 +528,7 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 			$excel->sheet('Result', function($sheet) use ($data) {
 				$sheet->setOrientation('landscape');
 				$sheet->setPageMargin(0.25);
-				
+
 				$sheet->fromArray($data);
 				// Add before first row
 				$sheet->prependRow(1, array(
@@ -543,7 +544,7 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 				$sheet->row(1, function($row) {
 					// call cell manipulation methods
 					$row->setBackground('#cccccc');
-				
+
 				});
 				$sheet->appendRow(2, array(
 					'', '','','','','','', '','',''
@@ -553,9 +554,9 @@ class AdminReports118Controller extends \crocodicstudio_voila\crudbooster\contro
 				// Set auto size for sheet
 				$sheet->setAutoSize(true);
 			});
-		
+
 		})->export('xls');
-		
+
 	}
 
 }

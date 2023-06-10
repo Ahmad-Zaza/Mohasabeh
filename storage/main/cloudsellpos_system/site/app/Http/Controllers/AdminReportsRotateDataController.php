@@ -338,54 +338,57 @@ class AdminReportsRotateDataController extends \crocodicstudio_voila\crudbooster
 	}
 
 
-	public function getIndex(Request $request)
+	public function getIndex()
 	{
+		$request = request();
 		$rotate_date = date("Y-m-d");
-		$gfunc= new GeneralFunctionsController();
-		$main_accounts_ids = explode(',',$gfunc->getSystemConfigValue('Main_Accounts_ids'));
-		$accounts = DB::table("accounts")->where('major_classification',0)->whereNotIn('id',$main_accounts_ids)->orderby('id','desc')->get();
-		
-		$currencies_not_major = DB::table('currencies')->where('is_major',0)->where('active',1)->get();
+		$gfunc = new GeneralFunctionsController();
+		$main_accounts_ids = explode(',', $gfunc->getSystemConfigValue('Main_Accounts_ids'));
+		$accounts = DB::table("accounts")->where('major_classification', 0)->whereNotIn('id', $main_accounts_ids)->orderby('id', 'desc')->get();
+
+		$currencies_not_major = DB::table('currencies')->where('is_major', 0)->where('active', 1)->get();
 		//dd($currencies_not_major);
-		
-		return view("report.rotate_data_setting", array("rotate_date"=>$rotate_date,"accounts"=>$accounts,
-		                                                "currencies_not_major"=>$currencies_not_major
-													));
+
+		return view("report.rotate_data_setting", array(
+			"rotate_date" => $rotate_date, "accounts" => $accounts,
+			"currencies_not_major" => $currencies_not_major
+		));
 	}
 
-	
+
 	public function continue_rotate_data(Request $request)
 	{
 		Session::forget('rotate_setting');
 		Session::forget('rotate_bals_all_values');
-		
-	    $rotate_setting = $request->request->all();
+
+		$rotate_setting = $request->request->all();
 		Session::put('rotate_setting', $rotate_setting);
-		
-		$gfunc= new GeneralFunctionsController();
+
+		$gfunc = new GeneralFunctionsController();
 		//جلب معلومات الأرصدة الإفتتاحية للسنة الماليةالجديدة
 		$res = $gfunc->calculate_opening_balances($rotate_setting['rotate_date']);
 		//dd($res);
-		$accounts_info = $res['accounts_info']; 
+		$accounts_info = $res['accounts_info'];
 		$activeCurrencies = $gfunc->getActiveCurrencies();
 		$final_balances = array();
-		foreach($activeCurrencies as $curr){
-			$final_balances['final_balance_'.$curr->id] = $res['final_balance_'.$curr->id];
+		foreach ($activeCurrencies as $curr) {
+			$final_balances['final_balance_' . $curr->id] = $res['final_balance_' . $curr->id];
 		}
-		
+
 		/******************** جلب المخزون المتبقي من المواد ضمن المستودعات ****************/
 		$inventories_data = $gfunc->getItemsAmountInAllInventories($rotate_setting['rotate_date']);
 		//dd($inventories_data);
 		/************** حساب الأرباح والخسائر **********************/
-		
+
 		Session::put('rotate_bals_all_values', $final_balances);
-		
+
 		$profits_and_loss = (object) $gfunc->calculateProfitsAndLoss();
 		//dd($accounts_info);
 
-		return view("report.rotate_data", array("data" => $accounts_info,"inventories_data"=>$inventories_data,
-		'profits_and_loss' => $profits_and_loss,
-		'final_balances'=>$final_balances,'activeCurrencies'=>$activeCurrencies
+		return view("report.rotate_data", array(
+			"data" => $accounts_info, "inventories_data" => $inventories_data,
+			'profits_and_loss' => $profits_and_loss,
+			'final_balances' => $final_balances, 'activeCurrencies' => $activeCurrencies
 		));
 	}
 

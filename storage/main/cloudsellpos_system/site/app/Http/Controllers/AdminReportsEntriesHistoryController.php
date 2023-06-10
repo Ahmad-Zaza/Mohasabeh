@@ -336,14 +336,15 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 
 	}
 
-	public function getIndex(Request $request)
+	public function getIndex()
 	{
+		$request = request();
 
 		//if (!CRUDBooster::isView()) CRUDBooster::denyAccess();
         $conditions = array(['entry_base.delete_by', '<>',  0 ],['entries.delete_by', '<>',  0 ],['entry_base.rotate_year', '=',  NULL ],['entries.rotate_year', '=',  NULL ]);
 
-		
-		
+
+
 
 		if ($request->has('currency_id')&& $request->input('currency_id')!=-1 && is_numeric($request->currency_id)) {
 
@@ -362,7 +363,7 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 
         }
 
-		
+
 
 		//dd($request);
 		$me = DB::table('cms_users')->find(CRUDBooster::myId());
@@ -375,12 +376,12 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				$accounts_ids[] = $obj_id->account_id;
 			}
 			//dd($accounts_ids);
-			
+
 			$accounts = DB::table("accounts")->whereIn('id', $accounts_ids)->get();
 		}else{
 			$accounts = DB::table("accounts")->get();
 		}
-		
+
 
 		$currencies = DB::table("currencies")->get();
 
@@ -402,7 +403,7 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				'entry_base.delete_at as delete_date',
 				'bills.delete_action as bill_delete_action',
 				'vouchers.delete_action as vouchers_delete_action',
-				
+
 				 DB::raw("(SELECT name FROM cms_users WHERE
 				 cms_users.id = entry_base.delete_by) as employee_name"),
 				'entry_base.narration as narration',
@@ -422,15 +423,15 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				->where($conditions)
 				->orderby('entry_base.delete_at','desc');
 
-	     			
-						
+
+
         if( $request->has('account_id') && $request->input('account_id')!=-1){
 			$query->where('accounts.id',$request->account_id);
 		}
 
-		
+
 		if ($request->has('action')&& $request->input('action')!=-1 && is_numeric($request->action)) {
-			
+
 			if($request->action == 1){
 				$query->where('bills.delete_action','edit')
 				->orWhere('vouchers.delete_action', 'edit');
@@ -438,8 +439,8 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				$query->where('bills.delete_action', 'delete')
 				->orWhere('vouchers.delete_action','delete');
 			}
-			
-		}	
+
+		}
 
         if ($me->id_cms_privileges == 4)
         {
@@ -538,16 +539,16 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 			array_push($new_data,$temp);
 		}
 		$data= $new_data;
-		
+
 		Excel::create('export_entries_history_report_'.date('Y-m-d H:i:s',time()), function($excel) use ($data) {
 
 			// Set the title
 			$excel->setTitle('Export To Excel');
-		
+
 			// Chain the setters
 			$excel->setCreator('Voila')
 				->setCompany('Voila');
-		
+
 			// Call them separately
 			$excel->setDescription('Accounting System');
 
@@ -558,7 +559,7 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 			$excel->sheet('Result', function($sheet) use ($data) {
 				$sheet->setOrientation('landscape');
 				$sheet->setPageMargin(0.25);
-				
+
 				$sheet->fromArray($data);
 				// Add before first row
 				$sheet->prependRow(1, array(
@@ -575,7 +576,7 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				$sheet->row(1, function($row) {
 					// call cell manipulation methods
 					$row->setBackground('#cccccc');
-				
+
 				});
 				$sheet->appendRow(2, array(
 					'', '','','','','','', '','',''
@@ -585,9 +586,9 @@ class AdminReportsEntriesHistoryController extends \crocodicstudio_voila\crudboo
 				// Set auto size for sheet
 				$sheet->setAutoSize(true);
 			});
-		
+
 		})->export('xls');
-		
+
 	}
 
 }

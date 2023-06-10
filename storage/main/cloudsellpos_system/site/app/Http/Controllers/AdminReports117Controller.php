@@ -335,17 +335,18 @@ class AdminReports117Controller extends \crocodicstudio_voila\crudbooster\contro
 
 	}
 
-	public function getIndex(Request $request)
+	public function getIndex()
 	{
+		$request = request();
 		//query from db to get information
 
 		$closing_account_type =$request->input('closing_account_type');
 		if($closing_account_type == null){
 			$closing_account_type = 1;
 		}
-	
+
 		$closing_types= DB::table('closing_accounts_types')->where('active','1')->get();
-		
+
 		$res = DB::table('closing_accounts_types')->find($closing_account_type);
 		$closing_account_type_name = $res->name_ar;
 
@@ -428,22 +429,22 @@ class AdminReports117Controller extends \crocodicstudio_voila\crudbooster\contro
 			}
 
 			array_push($new_data,$result);
-			
-			
+
+
 			$data= $new_data;
 
-			
 
-		
+
+
 		Excel::create('export_closing_accounts_'.date('Y-m-d H:i:s',time()), function($excel) use ($data,$heading,$empty_row,$rows_count) {
 
 			// Set the title
 			$excel->setTitle('Export To Excel');
-		
+
 			// Chain the setters
 			$excel->setCreator('Voila')
 				->setCompany('Voila');
-		
+
 			// Call them separately
 			$excel->setDescription('Accounting System');
 
@@ -454,7 +455,7 @@ class AdminReports117Controller extends \crocodicstudio_voila\crudbooster\contro
 			$excel->sheet('Result', function($sheet) use ($data,$heading,$empty_row,$rows_count) {
 				$sheet->setOrientation('landscape');
 				$sheet->setPageMargin(0.25);
-				
+
 				$sheet->fromArray($data);
 				// Add before first row
 				$sheet->prependRow(1, $heading);
@@ -472,9 +473,9 @@ class AdminReports117Controller extends \crocodicstudio_voila\crudbooster\contro
 				// Set auto size for sheet
 				$sheet->setAutoSize(true);
 			});
-		
+
 		})->export('xls');
-		
+
 	}
 
 }
