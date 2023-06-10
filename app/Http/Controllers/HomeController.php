@@ -8,7 +8,6 @@ use App\Http\Models\Customer;
 use App\Http\Models\CustomerModule;
 use App\Http\Models\Feature;
 use App\Http\Models\Module;
-use App\Http\Models\PriceOption;
 use App\Http\Models\Section;
 use App\Http\Models\Solution;
 use App\PricePkg;
@@ -36,6 +35,7 @@ use Illuminate\Validation\Rule;
 use PDO;
 use PDOException;
 use PHPUnit\Exception;
+
 // use Validator;
 class HomeController extends Controller
 {
@@ -58,10 +58,10 @@ class HomeController extends Controller
         $advantages = Advantages::where('active', '1')->orderby("sorting")->get();
         $solutions = Solution::with(['modules'])->where('active', '1')->orderby("sorting")->get();
         //---------------------//
-        $usersOptions = PriceOption::where('code', 'users')->orderby("sorting")->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->orderby("sorting")->get();
+        // $usersOptions = PriceOption::where('code', 'users')->orderby("sorting")->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->orderby("sorting")->get();
         //---------------------//
-        return view('home', compact(['solutions', 'sections', 'lang', 'features', 'advantages', 'settings', 'modules', 'usersOptions', 'languagesOptions']));
+        return view('home', compact(['solutions', 'sections', 'lang', 'features', 'advantages', 'settings', 'modules']));
         //---------------------//
     }
     public function solutions($id)
@@ -85,12 +85,12 @@ class HomeController extends Controller
             'code' => 'pricing',
         ])->first();
         //------------------------//
-        $usersOptions = PriceOption::where('code', 'users')->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->get();
+        // $usersOptions = PriceOption::where('code', 'users')->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
         $modules = Module::where('active', 1)->get();
         //------------------------//
-        return view('pricing', compact(['lang', 'settings', 'section', 'usersOptions', 'modules', 'languagesOptions']));
+        return view('pricing', compact(['lang', 'settings', 'section', 'modules']));
     }
     public function pricing()
     {
@@ -104,9 +104,9 @@ class HomeController extends Controller
         ])->first();
         //------------------------//
         $packages = PricePkg::select('*')->get();
-        $languagesOptions = PriceOption::where('code', 'languages')->get();
+        // $languagesOptions = PriceOption::where('code', 'languages')->get();
         //------------------------//
-        return view('pricing', compact(['lang', 'settings', 'section', 'packages', 'languagesOptions']));
+        return view('pricing', compact(['lang', 'settings', 'section', 'packages']));
     }
     public function activationProgress($token)
     {
@@ -191,18 +191,18 @@ class HomeController extends Controller
             return response()->json(['success' => false, 'errors' => $validator->errors(), 'request' => $request->all()], 200);
         }
         //---------------------------------//
-        if ($request->file('logo')) {
-            $file = $request->file('logo');
-        } elseif ($request->file('logo2')) {
-            $file = $request->file('logo2');
-        }
-        if ($file) {
-            $filename = time() . '_' . $file->getClientOriginalName();
-            // Upload file
-            $file->move("images/customers", $filename);
-            // File path
-            $filepath = 'images/customers/' . $filename;
-        }
+        // if ($request->file('logo')) {
+        //     $file = $request->file('logo');
+        // } elseif ($request->file('logo2')) {
+        //     $file = $request->file('logo2');
+        // }
+        // if ($file) {
+        //     $filename = time() . '_' . $file->getClientOriginalName();
+        //     // Upload file
+        //     $file->move("images/customers", $filename);
+        //     // File path
+        //     $filepath = 'images/customers/' . $filename;
+        // }
         //---------------------------------//
         $website = strtolower(str_replace(" ", "", $request->domain));
         $existed = Customer::where("website", $website)->get()->count();
@@ -221,12 +221,9 @@ class HomeController extends Controller
             $customer->users_count = $pac->users_count;
         }
         $customer->company = $request->company;
-        $customer->subscription_type = $request->sub_type;
-        $customer->sys_lang = "ar";
-        $customer->notes = $request->notes;
+        $customer->subscription_type = $request->sub_type == "undefined" ? "free_trail" : $request->sub_type;
         $customer->website = $website;
-        // $customer->logo_path = env("APP_URL") . 'images/customers/' . $filename;
-        // $customer->color = $request->color;
+
         $customer->host_link = 'http:/' . env("HOST_LINK") . strtolower(str_replace(' ', '', $request->domain)) . '.cloudsellpos.com';
         if (!$request->package_id) {
             $customer->is_free_trial = 1;
@@ -382,9 +379,13 @@ class HomeController extends Controller
         } else {
             $package = PricePkg::where("id", $customer->package_id)->first();
             $query = str_replace('$$users_num$$', $package->users_count, $query);
-            $query = str_replace('$$inventories_num$$', $package->warehouses, $query);
-            $query = str_replace('$$currencies_num$$', $package->currency, $query);
-            $query = str_replace('$$attachs_size$$', $package->storage_attached_size, $query);
+
+            $query = str_replace('$$inventories_num$$', $package->warehouses_count, $query);
+
+            $query = str_replace('$$currencies_num$$', $package->currencies_count, $query);
+
+            $query = str_replace('$$attachs_size$$', $package->attached_size, $query);
+
             $query = str_replace('$$backups_size$$', $package->backups_size, $query);
         }
         $query = str_replace('$$free_trial_start_date$$', $customer->free_trial_start_date ?: 'null', $query);
@@ -483,7 +484,7 @@ class HomeController extends Controller
         foreach ($obligatedModules as $module) {
             $data[$module->code] = true;
         }
-        $data['language'] = $customer->sys_lang; // yazan_edits
+
         $data['users_count'] = $customer->users_count;
         $data['start_subscription_date'] = $customer->subscription_start_date;
         $data['end_subscription_date'] = $customer->subscription_end_date;
@@ -492,8 +493,7 @@ class HomeController extends Controller
         $data['last_renewal_date'] = $customer->last_renewal_date;
         $data['subscription_type'] = $customer->subscription_type; // yazan_edits
         $data['company'] = $customer->company;
-        // $data['logo'] = $customer->logo_path;
-        // $data['color'] = $customer->color;
+
         return $data;
     }
     private function randomPassword()
@@ -536,7 +536,8 @@ class HomeController extends Controller
         $customerDBUser = "{$customer->database_name}";
         $customerDBPassword = "{$customer->database_password}";
         try {
-            $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            // $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $query = "select * from cms_users where email = '$email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];

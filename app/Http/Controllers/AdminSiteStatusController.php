@@ -37,7 +37,7 @@ class AdminSiteStatusController extends CBController
         $this->button_import = false;
         $this->button_export = false;
         $this->page_seo = false;
-        $this->table = "site_status";
+        $this->table = "customer_report";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
@@ -468,7 +468,8 @@ class AdminSiteStatusController extends CBController
         if (view()->exists(CRUDBooster::getCurrentModule()->path . '.form')) {
             $manualView = view(CRUDBooster::getCurrentModule()->path . '.form', compact('row', 'page_menu', 'page_title', 'command', 'id'));
         }
-        $view = $manualView ?: view('cms_reports.show_site_status', compact('row', 'page_menu', 'page_title', 'command', 'id'));
+
+        $view = $manualView ?: view('cms_reports.show_customer_report', compact('row', 'page_menu', 'page_title', 'command', 'id'));
         return $view;
     }
 }

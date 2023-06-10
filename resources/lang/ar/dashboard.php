@@ -1,20 +1,10 @@
 <?php
 
-
-
-
-
-
-
 return [
-
-
 
     'Sign Out' => 'تسجيل خروج',
 
     'All Rights Reserved' => 'جميع الحقوق محفوظة',
-
-
 
     'Dashboard' => 'لوحة التحكم',
 
@@ -25,8 +15,6 @@ return [
     'Change Password' => 'تغيير كلمة المرور',
 
     'Change Profile Info' => 'تغيير المعلومات الشخصية',
-
-
 
     'User Name' => 'اسم المستخدم',
 
@@ -49,10 +37,6 @@ return [
     'Customers Count' => 'عدد الزبائن',
 
     'Login' => 'تسجيل دخول',
-
-
-
-
 
     'Change Personal Information' => 'تغيير المعلومات الشخصية',
 
@@ -98,12 +82,7 @@ return [
     'a year' => 'سنة',
     'six months' => 'ستة أشهر',
     'to' => 'حتى',
-    'from' => 'من'
-
-
-
-
-
-
+    'from' => 'من',
+    'renew' => 'تجديد الحساب',
 
 ];

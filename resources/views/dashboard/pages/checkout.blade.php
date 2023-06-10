@@ -21,26 +21,51 @@
                 </div>
                 <div class="info">
                     <h3>{{ __('dashboard.Description') }}</h3>
-                    <p>{{ __('dashboard.upgrade_your_account_for') }} @if ($sub_type == 'month')
-                            {{ __('dashboard.a_month') }}
-                        @elseif($sub_type == 'year')
-                            {{ __('dashboard.a_year') }}
-                        @elseif($sub_type == 'six_month')
-                            {{ __('dashboard.six_months') }}
-                        @endif
+                    @if ($customer->package_id)
+                        <p>{{ __('dashboard.renew_your_account_for') }}
 
-                        </br>
-                        {{ __('dashboard.from') }} {{ now()->format('d/m/Y') }} {{ __('dashboard.to') }}
 
-                        @if ($sub_type == 'month')
-                            {{ now()->addMonths(1)->format('d/m/Y') }}
-                        @elseif($sub_type == 'year')
-                            {{ now()->addYears(1)->format('d/m/Y') }}
-                        @elseif($sub_type == 'six_month')
-                            {{ now()->addMonths(6)->format('d/m/Y') }}
-                        @endif
+                            @if ($sub_type == 'month')
+                                {{ __('dashboard.a_month') }}
+                            @elseif($sub_type == 'year')
+                                {{ __('dashboard.a_year') }}
+                            @elseif($sub_type == 'six_month')
+                                {{ __('dashboard.six_months') }}
+                            @endif
+                            </br>
+                            {{ __('dashboard.from') }} {{ $customer->subscription_start_date->format('d/m/Y') }}
+                            {{ __('dashboard.to') }}
+                            @if ($sub_type == 'month')
+                                {{ $customer->subscription_end_date->addMonths(1)->format('d/m/Y') }}
+                            @elseif($sub_type == 'year')
+                                {{ $customer->subscription_end_date->addYears(1)->format('d/m/Y') }}
+                            @elseif($sub_type == 'six_month')
+                                {{ $customer->subscription_end_date->addMonths(6)->format('d/m/Y') }}
+                            @endif
+                        </p>
+                    @else
+                        <p>{{ __('dashboard.upgrade_your_account_for') }}
 
-                    </p>
+                            @if ($sub_type == 'month')
+                                {{ __('dashboard.a_month') }}
+                            @elseif($sub_type == 'year')
+                                {{ __('dashboard.a_year') }}
+                            @elseif($sub_type == 'six_month')
+                                {{ __('dashboard.six_months') }}
+                            @endif
+
+                            </br>
+                            {{ __('dashboard.from') }} {{ now()->format('d/m/Y') }} {{ __('dashboard.to') }}
+
+                            @if ($sub_type == 'month')
+                                {{ now()->addMonths(1)->format('d/m/Y') }}
+                            @elseif($sub_type == 'year')
+                                {{ now()->addYears(1)->format('d/m/Y') }}
+                            @elseif($sub_type == 'six_month')
+                                {{ now()->addMonths(6)->format('d/m/Y') }}
+                            @endif
+                        </p>
+                    @endif
 
                 </div>
                 <div class="info">
@@ -63,14 +88,7 @@
                     <p>Paypal</p>
                 </div>
             </div>
-
-
-            {{-- <button class="checkout-button" onclick="window.location.href = '{{ route('checkout') }}'">
-                {{ __('dashboard.checkout') }}
-            </button> --}}
-
             <div id="paypal-button-container" class="paypal-button-container"></div>
-
         </div>
 
         <div class="col-xl-6">

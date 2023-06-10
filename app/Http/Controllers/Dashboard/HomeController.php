@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\DirectAdmin;
 use App\Http\Models\Customer;
+use App\Http\Controllers\DirectAdmin;
 use App\SiteStatus;
 use Exception;
 use Illuminate\Http\Request;
@@ -34,6 +34,11 @@ class HomeController extends Controller
         $user = Auth::user();
         return view('dashboard.pages.change-personal-info', compact('user'));
     }
+    public function my_payments()
+    {
+        $user = Auth::user();
+        return view('dashboard.pages.my-payments', compact('user'));
+    }
     public function logout()
     {
         Auth::guard('customer')->logout();
@@ -45,11 +50,18 @@ class HomeController extends Controller
         Session::put('pkgg_id', $request->pkgg_id);
         return response()->json(array('msg' => 'success'));
     }
-    public function upgrade_account_view(Request $request)
+
+    public function checkout(Request $request)
     {
+        $customer = Customer::where('id', auth()->user()->id)->first();
+        if ($customer->package_id) {
+            $request->session()->put('pkgg_id', $customer->package_id);
+            $request->session()->put('sub_type', $customer->subscription_type);
+        }
+
         $sub_type = $request->session()->get('sub_type');
         $pkgg_id = $request->session()->get('pkgg_id');
-        $package = DB::table('price_pkgs')->where('id', '=', $pkgg_id)->first();
+        $package = DB::table('packages')->where('id', '=', $pkgg_id)->first();
         if ($sub_type == 'month') {
             $request->session()->put('price', $package->monthly_price);
         } else if ($sub_type == 'year') {
@@ -57,7 +69,7 @@ class HomeController extends Controller
         } else {
             $request->session()->put('price', $package->six_month_price);
         }
-        return view('dashboard.pages.upgrade-account', compact('sub_type', 'pkgg_id', 'package'));
+        return view('dashboard.pages.checkout', compact('customer', 'sub_type', 'pkgg_id', 'package'));
     }
     public function delete_customer()
     {

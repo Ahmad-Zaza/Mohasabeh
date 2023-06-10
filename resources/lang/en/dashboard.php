@@ -94,7 +94,8 @@ return [
     'a year' => 'a year',
     'six months' => 'six months',
     'to' => 'to',
-    'from' => 'from'
+    'from' => 'from',
+    'renew' => 'Renew',
 
 
 

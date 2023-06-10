@@ -33,7 +33,7 @@ class AdminPricePkgOptions27Controller extends CBController
         # END CONFIGURATION DO NOT REMOVE THIS LINE
         # START COLUMNS DO NOT REMOVE THIS LINE
         $this->col = [];
-        $this->col[] = ["label" => "Price Pkg Id", "name" => "price_pkg_id", "join" => "price_pkgs,id"];
+        $this->col[] = ["label" => "Price Pkg Id", "name" => "price_pkg_id", "join" => "packages,id"];
         $this->col[] = ["label" => "Type", "name" => "type", "callback_php" => '$row->type == 1 ? "Text" : "Select"'];
         $this->col[] = ["label" => "Code", "name" => "code"];
         $this->col[] = ["label" => "Value", "name" => "value"];
@@ -43,7 +43,7 @@ class AdminPricePkgOptions27Controller extends CBController
         # END COLUMNS DO NOT REMOVE THIS LINE
         # START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
-        $this->form[] = ['label' => 'Price Pkg Id', 'name' => 'price_pkg_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'price_pkgs,id'];
+        $this->form[] = ['label' => 'Price Pkg Id', 'name' => 'price_pkg_id', 'type' => 'select2', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10', 'datatable' => 'packages,id'];
         $this->form[] = ['label' => 'Type', 'name' => 'type', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Code', 'name' => 'code', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
         $this->form[] = ['label' => 'Value', 'name' => 'value', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-10'];
@@ -52,7 +52,7 @@ class AdminPricePkgOptions27Controller extends CBController
         # END FORM DO NOT REMOVE THIS LINE
         # OLD START FORM
         //$this->form = [];
-        //$this->form[] = ['label'=>'Price Pkg Id','name'=>'price_pkg_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'price_pkgs,id'];
+        //$this->form[] = ['label'=>'Price Pkg Id','name'=>'price_pkg_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'packages,id'];
         //$this->form[] = ['label'=>'Type','name'=>'type','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
         //$this->form[] = ['label'=>'Code','name'=>'code','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
         //$this->form[] = ['label'=>'Value','name'=>'value','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
@@ -202,19 +202,19 @@ class AdminPricePkgOptions27Controller extends CBController
         $return_url = request('return_url');
         $data['page_title'] = "Add Data";
         $data['action'] = 'Add';
-        $price_pkgs = \App\PricePkg::all();
+        $packages = \App\PricePkg::all();
         $reports = \App\PricingReport::all();
-        return view('add_pkg_options', compact('data', 'price_pkgs', 'reports', 'return_url'));
+        return view('add_pkg_options', compact('data', 'packages', 'reports', 'return_url'));
     }
     public function getEdit($id)
     {
         $return_url = request('return_url');
         $data['page_title'] = "Edit Data";
         $data['action'] = 'Edit';
-        $price_pkgs = \App\PricePkg::all();
+        $packages = \App\PricePkg::all();
         $reports = \App\PricingReport::all();
         $pricingOption = DB::table('price_pkg_options')->where('id', $id)->first();
-        return view('add_pkg_options', compact('id', 'data', 'pricingOption', 'price_pkgs', 'reports', 'return_url'));
+        return view('add_pkg_options', compact('id', 'data', 'pricingOption', 'packages', 'reports', 'return_url'));
     }
     /*
     | ----------------------------------------------------------------------

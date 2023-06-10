@@ -31,14 +31,12 @@ class CreateCustomersTable extends Migration
             $table->text('website')->nullable();
             $table->text('host_link')->nullable();
             $table->integer('users_count')->nullable();
-            $table->text('sys_lang')->nullable();
+            $table->integer('warehouses_count')->nullable();
+            $table->integer('currencies_count')->nullable();
             $table->text('subscription_type')->nullable();
             $table->tinyInteger('active')->nullable();
             $table->integer('sorting')->nullable();
-            $table->text('notes')->nullable();
             $table->text('custom_token')->nullable();
-            $table->text('logo_path')->nullable();
-            $table->text('color')->nullable();
             $table->text('folder_location')->nullable();
             $table->text('database_name')->nullable();
             $table->text('database_password')->nullable();

@@ -245,17 +245,17 @@
                                 @if ($package->id == $customer->package_id)
                                     <option selected value="{{ $package->id }}"
                                         data-users_count="{{ $package->users_count }}"
-                                        data-currency="{{ $package->currency }}"
-                                        data-warehouses="{{ $package->warehouses }}"
-                                        data-storage="{{ $package->storage_attached_size }}"
+                                        data-currency="{{ $package->currencies }}"
+                                        data-warehouses="{{ $package->warehouses_count }}"
+                                        data-storage="{{ $package->attached_size }}"
                                         data-backups_size="{{ $package->backups_size }}">
 
                                         {{ $package->title_en }}</option>
                                 @else
                                     <option value="{{ $package->id }}" data-users_count="{{ $package->users_count }}"
-                                        data-currency="{{ $package->currency }}"
-                                        data-warehouses="{{ $package->warehouses }}"
-                                        data-storage="{{ $package->storage_attached_size }}"
+                                        data-currency="{{ $package->currencies }}"
+                                        data-warehouses="{{ $package->warehouses_count }}"
+                                        data-storage="{{ $package->attached_size }}"
                                         data-backups_size="{{ $package->backups_size }}">
 
                                         {{ $package->title_en }}</option>
@@ -308,7 +308,7 @@
                         <div class="input-group">
 
                             <input type='number' title="Warehouses Count" required class='form-control'
-                                name="warehouses" id="warehouses" />
+                                name="warehouses_count" id="warehouses" />
 
                         </div>
 
@@ -330,7 +330,7 @@
 
                         <div class="input-group">
 
-                            <input type='number' title="Currencies Count" required class='form-control' name="currency"
+                            <input type='number' title="Currencies Count" required class='form-control' name="currencies_count"
                                 id="currency" />
 
                         </div>
@@ -356,7 +356,7 @@
                         <div class="input-group">
 
                             <input type='number' title="Storage Size" required class='form-control'
-                                name="storage_attached_size" id="storage" />
+                                name="attached_size" id="storage" />
 
                         </div>
 

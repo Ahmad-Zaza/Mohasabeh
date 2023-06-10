@@ -13,7 +13,7 @@ class CreatePricePkgsTable extends Migration
      */
     public function up()
     {
-        Schema::create('price_pkgs', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('title_ar')->nullable();
             $table->string('title_en')->nullable();
@@ -27,9 +27,9 @@ class CreatePricePkgsTable extends Migration
             $table->float('year_price')->nullable();
             $table->string('image')->nullable();
             $table->integer('users_count')->nullable();
-            $table->integer('warehouses')->nullable();
-            $table->integer('currency')->nullable();
-            $table->integer('storage_attached_size')->nullable();
+            $table->integer('warehouses_count')->nullable();
+            $table->integer('currencies_count')->nullable();
+            $table->integer('attached_size')->nullable();
             $table->integer('show_in_home')->nullable();
             $table->integer('sorting')->nullable();
             $table->integer('active')->default(1);
@@ -45,6 +45,6 @@ class CreatePricePkgsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('price_pkgs');
+        Schema::dropIfExists('packages');
     }
 }

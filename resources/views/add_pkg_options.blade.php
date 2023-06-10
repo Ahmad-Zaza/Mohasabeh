@@ -34,7 +34,7 @@
                         </label>
                         <div class="col-sm-10">
                             <select class="form-control select2 " name="price_pkg_id">
-                                @foreach ($price_pkgs as $pkg)
+                                @foreach ($packages as $pkg)
                                     <option value="{{ $pkg->id }}">{{ $pkg->title_en }}</option>
                                 @endforeach
                             </select>
