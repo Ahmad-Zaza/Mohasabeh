@@ -93,14 +93,12 @@ Route::get('lang/{locale}', function ($locale) {
 
 Route::get('modules/category-tree-view','CategoryController@manageCategory')->name('category-tree-view');
 Route::post('add-category','CategoryController@addCategory')->name('add.category');
-Route::get('modules/getToSort/{parent_id}','AdminCategoriesController@getToSort')->name('getToSort');
-Route::post('post-sortable','AdminCategoriesController@ordring');
+// Route::get('modules/getToSort/{parent_id}','AdminCategoriesController@getToSort')->name('getToSort');
+// Route::post('post-sortable','AdminCategoriesController@ordring');
 
 
-
-
-Route::get('/comment/approvecomment/{id}', 'commentController@approvecomment')->name('approvecomment');
-Route::get('/comment/rejectioncomment/{id}', 'CommentController@rejectioncomment')->name('rejectioncomment');
+// Route::get('/comment/approvecomment/{id}', 'commentController@approvecomment')->name('approvecomment');
+// Route::get('/comment/rejectioncomment/{id}', 'CommentController@rejectioncomment')->name('rejectioncomment');
 
 //requests
 Route::post('/request/save/{id}', "FrontController@requestEvent");
@@ -122,7 +120,7 @@ Route::post($base_url . '/saveImagesModule', 'ImageController@saveImagesModule')
 Route::get($base_url . '/deleteImageModule/{id}', 'ImageController@deleteImageModule');
 Route::get($base_url . '/style/form/{id}', 'CmsFormController@getForm');
 Route::get($base_url . '/response/form/{id}', 'CmsFormController@getSubmits');
-Route::get($base_url . '/viewpage/{page_id}', 'AdminPagesController@viewpage');
+// Route::get($base_url . '/viewpage/{page_id}', 'AdminPagesController@viewpage');
 Route::get($base_url . '/getForms', 'CmsFormController@getForms');
 Route::post('request/form/{id}', 'CmsFormController@submit');
 Route::get($base_url . '/languages', 'LanguageTranslationController@index')->name('languages');
@@ -133,13 +131,13 @@ Route::post('translations/create', 'LanguageTranslationController@store')->name(
 
 //images manage
 
-Route::get('/manage-image/resize/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-    return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
-})->name('manage-image-resize')->where('img', '(.*)');
+// Route::get('/manage-image/resize/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
+//     return \Image::make(public_path("$img"))->resize($width, $height)->response('jpg');
+// })->name('manage-image-resize')->where('img', '(.*)');
 
-Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
-    return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
-})->name('manage-image-crop')->where('img', '(.*)');
+// Route::get('/manage-image/crop/{width?}/{height?}/{img}', function ($width = 100, $height = 100, $img) {
+//     return \Image::make(public_path("$img"))->crop($width, $height)->response('jpg');
+// })->name('manage-image-crop')->where('img', '(.*)');
 
 Route::get('/landingPage/create/{template_id}', 'LandingPageController@store');
 Route::get('/landingPage/getAllForms', 'LandingPageController@getAllForms');
