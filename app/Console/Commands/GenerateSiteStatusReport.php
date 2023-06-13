@@ -54,6 +54,7 @@ class GenerateSiteStatusReport extends Command
                 try {
                     $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
                 } catch (PDOException $ex) {
+                    report($ex);
                     continue;
                 }
                 try {
@@ -88,6 +89,7 @@ class GenerateSiteStatusReport extends Command
                 $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword);
             } catch (PDOException $ex) {
                 report($ex);
+                return 1;
             }
             try {
                 $bills_count = $this->getCount($dbh, 'bills');
@@ -108,6 +110,7 @@ class GenerateSiteStatusReport extends Command
             } catch (Exception $ex) {
                 // Handle the exception as needed
                 report($ex);
+                return 1;
             }
         }
         return 0;

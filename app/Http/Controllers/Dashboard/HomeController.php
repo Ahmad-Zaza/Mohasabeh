@@ -18,7 +18,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        Artisan::call('report:generate', ['customer' => auth()->user()->id]);
+        Artisan::call('report:generate', ['customer_id' => auth()->user()->id]);
         return view('dashboard.pages.index');
     }
     public function change_email_view()

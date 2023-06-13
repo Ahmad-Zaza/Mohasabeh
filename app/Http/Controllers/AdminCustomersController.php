@@ -115,7 +115,7 @@ class AdminCustomersController extends CBController
         |
          */
         $this->sub_module = array();
-        $this->sub_module[] = ['label' => 'Payment Orders', 'path' => 'payments', 'parent_columns' => '', 'foreign_key' => 'customer_id', 'button_color' => 'success'];
+        $this->sub_module[] = ['label' => 'Payment Orders', 'path' => 'payments', 'parent_columns' => 'email', 'foreign_key' => 'customer_id', 'button_color' => 'success'];
 
         /*
         | ----------------------------------------------------------------------
