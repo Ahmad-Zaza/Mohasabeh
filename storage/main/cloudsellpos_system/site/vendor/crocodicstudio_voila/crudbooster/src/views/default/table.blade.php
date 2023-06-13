@@ -29,6 +29,7 @@
                         showCancelButton: true,
                         confirmButtonColor: "#008D4C",
                         confirmButtonText: "{{trans('crudbooster.confirmation_yes')}}",
+                        cancelButtonText: "{{trans('crudbooster.confirmation_cancel')}}",
                         closeOnConfirm: false,
                         showLoaderOnConfirm: true
                     },
@@ -64,6 +65,7 @@ foreach ($columns as $col) {
     }
 
     $sort_column = Request::get('filter_column');
+    
     $colname = $col['label'];
     $name = $col['name'];
     $field = $col['field_with'];
@@ -97,6 +99,8 @@ foreach ($columns as $col) {
             @if($button_table_action)
                 @if(CRUDBooster::isUpdate() || CRUDBooster::isDelete() || CRUDBooster::isRead())
                     <th width='{{$button_action_width?:"auto"}}' style="text-align:right">{{trans("crudbooster.action_label")}}</th>
+                @else
+                    <th></th>
                 @endif
             @endif
         </tr>
@@ -192,36 +196,39 @@ $total = $result->total();
 
 @if($columns)
     @push('bottom')
+            @php $module_id = CRUDBooster::getCurrentModule()->id; @endphp
+            @if($module_id == '126') 
+            <script>
+            //fesal
+            $('#table_dashboard tbody').sortable({
+            axis: 'y',
+            update: function (event, ui) {
+                var data_list=new Array();
+                $('#table_dashboard').find('input[type="checkbox"]').each(function (e) {
+                    data_list.push($(this).val());
+                });
 
-        <script>
+                var table='{{$table_name}}';
+                $('html, body').css("cursor", "wait");
 
-        //fesal
-        $('#table_dashboard tbody').sortable({
-        axis: 'y',
-        update: function (event, ui) {
-            var data_list=new Array();
-            $('#table_dashboard').find('input[type="checkbox"]').each(function (e) {
-                data_list.push($(this).val());
-             });
-
-            var table='{{$table_name}}';
-            $('html, body').css("cursor", "wait");
-
-            // POST to server using $.post or $.ajax
-            $.ajax({
-                data:{data:data_list,table_name:table},
-                type: 'POST',
-                url: '/modules/sort',
-                success:function(data){
-                    $('html, body').css("cursor", "auto");
-                },
-                error:function(data){
-                    $('html, body').css("cursor", "auto");
-                }
+                // POST to server using $.post or $.ajax
+                $.ajax({
+                    data:{data:data_list,table_name:table},
+                    type: 'POST',
+                    url: '/modules/sort',
+                    success:function(data){
+                        $('html, body').css("cursor", "auto");
+                    },
+                    error:function(data){
+                        $('html, body').css("cursor", "auto");
+                    }
+                });
+            }
             });
-        }
-        });
-
+            </script>
+        @endif
+        
+        <script>
             $(function () {
                 $('.btn-filter-data').click(function () {
                     $('#filter-data').modal('show');
@@ -270,7 +277,7 @@ $total = $result->total();
                     var p = $(this).parents('.row-filter-combo');
                     var type_data = $(this).attr('data-type');
                     var filter_value = p.find('.filter-value');
-
+                   
                     p.find('.between-group').hide();
                     p.find('.between-group').find('input').prop('disabled', true);
                     filter_value.val('').show().focus();
@@ -281,7 +288,11 @@ $total = $result->total();
                             break;
                         case 'like':
                         case 'not like':
-                            filter_value.attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}').prop('disabled', false);
+                            if(type_data == 'date' || type_data == 'datetime'){
+                                filter_value.attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_date")}}').prop('disabled', false);
+                            }else{
+                                filter_value.attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}').prop('disabled', false);
+                            }
                             break;
                         case 'asc':
                             filter_value.prop('disabled', true).attr('placeholder', '{{trans("crudbooster.filter_sort_ascending")}}');
@@ -290,7 +301,11 @@ $total = $result->total();
                             filter_value.prop('disabled', true).attr('placeholder', '{{trans("crudbooster.filter_sort_descending")}}');
                             break;
                         case '=':
-                            filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}');
+                            if(type_data == 'date' || type_data == 'datetime'){
+                                filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_datetime")}}');
+                            }else{
+                                filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}');
+                            }
                             break;
                         case '>=':
                             filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : 1000');
@@ -305,7 +320,11 @@ $total = $result->total();
                             filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : 1000');
                             break;
                         case '!=':
-                            filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}');
+                            if(type_data == 'date' || type_data == 'datetime'){
+                                filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_datetime")}}');
+                            }else{
+                                filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum")}}');
+                            }
                             break;
                         case 'in':
                             filter_value.prop('disabled', false).attr('placeholder', '{{trans("crudbooster.filter_eg")}} : {{trans("crudbooster.filter_lorem_ipsum_dolor_sit")}}');
@@ -324,8 +343,15 @@ $total = $result->total();
 
                 /* Remove disabled when reload page and input value is filled */
                 $(".filter-value").each(function () {
+                    
+                    var p = $(this).parents('.row-filter-combo');
+                    var f = p.find('.filter-combo');
+                    var f_value = f.val();
+                    
                     var v = $(this).val();
-                    if (v != '') $(this).prop('disabled', false);
+                    if (f_value !='empty') {
+                        if (v != '' || f_value !='') $(this).prop('disabled', false);
+                    }                    
                 })
 
             })
@@ -342,8 +368,8 @@ $total = $result->total();
                     </div>
                     <form method='get' action=''>
                         <div class="modal-body">
-                            <?php foreach ($columns as $key => $col): ?>
-                            <?php if (isset($col['image']) || isset($col['download']) || $col['visible'] === false) {
+                            <?php foreach ($columns as $key => $col): ?>    
+                            <?php if (isset($col['image']) || isset($col['download']) || $col['visible'] === false || $col['type_data'] === 'tinyint') {
     continue;
 }
 ?>
@@ -355,12 +381,12 @@ $total = $result->total();
                                     <div class="col-sm-2">
                                         <strong>{{$col['label']}}</strong>
                                     </div>
-
+ 
                                     <div class='col-sm-3'>
                                         <select name='filter_column[{{$col["field_with"]}}][type]' data-type='{{$col["type_data"]}}'
                                                 class="filter-combo form-control">
                                             <option value=''>** {{trans("crudbooster.filter_select_operator_type")}}</option>
-                                            @if(in_array($col['type_data'],['string','varchar','text','char']))
+                                            @if(in_array($col['type_data'],['string','varchar','text','char','longtext','decimal','datetime','date','int','bigint']))
                                                 <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'like')?"selected":"" }} value='like'>{{trans("crudbooster.filter_like")}}</option> @endif
                                             @if(in_array($col['type_data'],['string','varchar','text','char']))
                                                 <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'not like')?"selected":"" }} value='not like'>{{trans("crudbooster.filter_not_like")}}</option>@endif
@@ -381,7 +407,7 @@ $total = $result->total();
                                                     {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'in')?"selected":"" }} value='in'>{{trans("crudbooster.filter_in")}}</option>
                                             <option typeallow='all'
                                                     {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'not in')?"selected":"" }} value='not in'>{{trans("crudbooster.filter_not_in")}}</option>
-                                            @if(in_array($col['type_data'],['date','time','datetime','int','integer','double','float','decimal','timestamp']))
+                                            @if(in_array($col['type_data'],['date','time','datetime','timestamp']))
                                                 <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'between')?"selected":"" }} value='between'>{{trans("crudbooster.filter_between")}}</option>@endif
                                             <option {{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'empty')?"selected":"" }} value='empty'>Empty ( or
                                                 Null)
@@ -395,7 +421,7 @@ $total = $result->total();
                                                style="{{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'between')?"display:none":"display:block"}}"
                                                disabled name='filter_column[{{$col["field_with"]}}][value]'
                                                value='{{ (!is_array(CRUDBooster::getValueFilter($col["field_with"])))?CRUDBooster::getValueFilter($col["field_with"]):"" }}'>
-
+                                               
                                         <div class='row between-group'
                                              style="{{ (CRUDBooster::getTypeFilter($col["field_with"]) == 'between')?"display:block":"display:none" }}">
                                             <div class='col-sm-6'>
@@ -432,7 +458,7 @@ echo (CRUDBooster::getTypeFilter($col["field_with"]) == 'between') ? $value[1] :
 
                                     <div class='col-sm-2'>
                                         <select class='form-control' name='filter_column[{{$col["field_with"]}}][sorting]'>
-                                            <option value=''>** Sorting</option>
+                                            <option value=''>** {{trans("crudbooster.filter_sorting")}}</option>
                                             <option {{ (CRUDBooster::getSortingFilter($col["field_with"]) == 'asc')?"selected":"" }} value='asc'>{{trans("crudbooster.filter_ascending")}}</option>
                                             <option {{ (CRUDBooster::getSortingFilter($col["field_with"]) == 'desc')?"selected":"" }} value='desc'>{{trans("crudbooster.filter_descending")}}</option>
                                         </select>

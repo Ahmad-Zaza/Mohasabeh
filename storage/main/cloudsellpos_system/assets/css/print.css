@@ -60,4 +60,43 @@
     table.nestable caption {
       font-size: 12px;
     }
+
+   
+    .box{
+      all:unset;
+      display: block !important;
+      width:100% !important;
+    }
+
+    .box #table_dashboard {
+      display: table !important;
+      width:100% !important;
+    }
+
+    #table_dashboard thead{
+      display: table-header-group !important;
+      width:100% !important;
+     
+    }
+    #table_dashboard thead th{
+      text-align: center;
+      border: 1px solid #ccc !important;
+    }
+    #table_dashboard tbody{
+       width:100% !important;
+    }
+
+    .table-date{
+      float:none;
+      text-align: right; 
+    }
+
+    a#go-back{
+       display: none;
+    }
+
+    .alert{
+      display: none;
+    } 
+
   }

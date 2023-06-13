@@ -7,14 +7,17 @@
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" id="SideBarToggle" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
+        </a>
+        <a href="javascript::void()" id="StartTour" class="sidebar-toggle" title="Tour" role="button">
+            <i class="fa fa-play-circle"></i>
         </a>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
 
-                <li class="dropdown notifications-menu">
+                <!--li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" title='Notifications' aria-expanded="false">
                         <i id='icon_notification' class="fa fa-bell-o"></i>
                         <span id='notification_count' class="label label-danger" style="display:none">0</span>
@@ -22,7 +25,7 @@
                     <ul id='list_notifications' class="dropdown-menu">
                         <li class="header">{{trans("crudbooster.text_no_notification")}}</li>
                         <li>
-                            <!-- inner menu: contains the actual data -->
+                            
                             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
                                 <ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
                                     <li>
@@ -40,7 +43,7 @@
                         </li>
                         <li class="footer"><a href="{{route('NotificationsControllerGetIndex')}}">{{trans("crudbooster.text_view_all_notification")}}</a></li>
                     </ul>
-                </li>
+                </li-->
 
                 <!-- User Account Menu -->
                 <li class="dropdown user user-menu">
@@ -65,8 +68,15 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-{{ trans('crudbooster.left') }}">
-                                <a href="{{ route('AdminCmsUsersControllerGetProfile') }}" class="btn btn-default btn-flat"><i
+                            @php
+                                use App\Http\Controllers\General\GeneralFunctionsController;
+                                $gfunc = new GeneralFunctionsController();
+                                $hasPermission = $gfunc->checkOldCycleHasEditedPermission();
+                            @endphp   
+                            @if($hasPermission) 
+                                <a href="{{ route('Users\UsersControllerGetProfile') }}" class="btn btn-default btn-flat"><i
                                             class='fa fa-user'></i> {{trans("crudbooster.label_button_profile")}}</a>
+                            @endif                
                             </div>
                             <div class="pull-{{ trans('crudbooster.right') }}">
                                 <a title='Lock Screen' href="{{ route('getLockScreen') }}" class='btn btn-default btn-flat'><i class='fa fa-key'></i></a>

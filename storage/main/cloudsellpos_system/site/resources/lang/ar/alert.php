@@ -1,0 +1,28 @@
+<?php 
+return [
+    'you_must_choose_supplier_if_bill_isnot_cash'=>'تنبيه : في حال الدفع أجل يجب اختيار المورد ',
+    'document_number_is_used'=>'رقم الوثيقة مستخدم مسبقا',
+    'current_balance'=>'الرصيد الحالي',
+    'you_must_choose_customer_if_bill_isnot_cash'=>'تنبيه : في حال الدفع أجل يجب اختيار الزبون ',
+    'this_item_is_free'=>'هذه المادة مجانية',
+    'choose_inventory'=>'اختر المستودع',
+    'password_isnot_similar'=>'غير مطابقة لكلمة المرور',
+    'password_is_similar'=>'مطابقة لكلمة المرور',
+    'this_role_is_delegate_you_canot_change_it'=>'هذا حساب مندوب لايمكن تغييره لدور أخر ',
+    'box_balance_not_enough_current_balance_is'=>'للتذكرة رصيد الصندوق لا يكفي، ان الرصيد الحالي هو',
+    'num_password_characters_least_than_default'=>'عدد محارف كلمة المرود أقل من 8 محارف',
+    'num_password_characters_correct'=>'عدد محارف كلمة المرور مناسب',
+    'credit_account_balance'=>'رصيد حساب الدائن',
+    'not_enough_current_balance_is'=>' لا يكفي. الرصيد الحالي هو ',
+    'num_phone_number_characters_least_than_default'=>'عدد محارف رقم الهاتف المحمول أقل من 7 محارف',
+    'num_phone_number_characters_more_than_default'=>'عدد محارف رقم الهاتف المحمول أكبر من 10 محارف',
+    'num_phone_number_characters_correct'=>'عدد محارف رقم الهاتف المحمول مناسب',
+    'be_attention_you_enter_from_date_bigger_than_to_date'=>'انتبه قمت بإدخال تاريخ بداية فترة البحث أكبر من تاريخ النهاية',
+    'be_attention_you_enter_to_date_smaller_than_from_date'=>'انتبه قمت بإدخال تاريخ نهاية فترة البحث أصغر  من تاريخ البداية',
+    'discount_must_be_positive'=>'قيمة الحسم يجب أن تكون صفر أو قيمة موجبة',
+    'avilable_qty_in_inventory'=>'الكمية المتوفرة ضمن المستودع المختار',
+    'choosen_date_is_greater_than_current_date'=>'التاريخ المختار احدث من تاريخ اليوم',
+    'please_check_receipt_items'=>'رجاءا قم بتحديد المواد التي قمت باستلامها.',
+    'please_enter_note'=>'رجاءا قم بإدخال الملاحظة',
+
+];

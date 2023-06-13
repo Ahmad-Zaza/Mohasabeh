@@ -156,7 +156,13 @@
                             @foreach($moduls as $modul)
                                 <?php
                                 $roles = DB::table('cms_privileges_roles')->where('id_cms_moduls', $modul->id)->where('id_cms_privileges', $row->id)->first();
+                                //dd($moduls);
+                                $reports_moduls_arr=array('103','99','107','102','117','106','123','121','118','122');
+                                $moduls_hidden=array('116','117','119','125','126','127','131','132');
+                                $is_report = in_array($modul->id,$reports_moduls_arr);
+                                $is_hidden = in_array($modul->id,$moduls_hidden);
                                 ?>
+                                @if(!$is_hidden)
                                 <tr>
                                     <td><?php echo $no++;?></td>
                                     <td>{{$modul->name}}</td>
@@ -165,6 +171,7 @@
                                     </td>
                                     <td class='active' align="center"><input type='checkbox' class='is_visible' name='privileges[<?=$modul->id?>][is_visible]'
                                                                              <?=@$roles->is_visible ? "checked" : ""?> value='1'/></td>
+                                    @if(!$is_report)                                         
                                     <td class='warning' align="center"><input type='checkbox' class='is_create' name='privileges[<?=$modul->id?>][is_create]'
                                                                               <?=@$roles->is_create ? "checked" : ""?> value='1'/></td>
                                     <td class='info' align="center"><input type='checkbox' class='is_read' name='privileges[<?=$modul->id?>][is_read]'
@@ -173,7 +180,14 @@
                                                                               <?=@$roles->is_edit ? "checked" : ""?> value='1'/></td>
                                     <td class='danger' align="center"><input type='checkbox' class='is_delete' name='privileges[<?=$modul->id?>][is_delete]'
                                                                              <?=@$roles->is_delete ? "checked" : ""?> value='1'/></td>
+                                    @else
+                                    <td class='warning' align="center"></td>
+                                    <td class='info' align="center"></td>
+                                    <td class='success' align="center"></td>
+                                    <td class='danger' align="center"> </td>
+                                    @endif                                         
                                 </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>

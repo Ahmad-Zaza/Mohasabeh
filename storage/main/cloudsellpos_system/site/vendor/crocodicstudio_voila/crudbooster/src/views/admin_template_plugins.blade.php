@@ -56,11 +56,17 @@
     var NOTIFICATION_NOTIFICATIONS = "{{trans('crudbooster.notification_notification')}}";
     var NOTIFICATION_NEW = "{{trans('crudbooster.notification_new')}}";
 
-    
+    var RECORD_ID = "{{Request::segment(4)}}";
+
+    var  _YOU_ENTER_FROM_DATE_BIGGER_THAN_TO_DATE= "{{trans('alert.be_attention_you_enter_from_date_bigger_than_to_date')}}";
+    var  _YOU_ENTER_TO_DATE_SMALLER_THAN_FROM_DATE= "{{trans('alert.be_attention_you_enter_to_date_smaller_than_from_date')}}";
+
+    var _ERROR = "{{trans('labels.error')}}";
+    var _WARNING = "{{trans('labels.warning')}}";
+    var _INFO = "{{trans('labels.info')}}";
+    var _SUCCESS = "{{trans('labels.success')}}";
 
 
-
-   
 </script>
 
      

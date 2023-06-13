@@ -92,7 +92,7 @@ class Handler implements ExceptionHandlerContract
      *
      * @throws \Exception
      */
-    public function report(Throwable $e)
+    public function report(Exception $e)
     {
         if ($this->shouldntReport($e)) {
             return;
@@ -120,7 +120,7 @@ class Handler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return bool
      */
-    public function shouldReport(Throwable $e)
+    public function shouldReport(Exception $e)
     {
         return ! $this->shouldntReport($e);
     }
@@ -131,7 +131,7 @@ class Handler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return bool
      */
-    protected function shouldntReport(Throwable $e)
+    protected function shouldntReport(Exception $e)
     {
         $dontReport = array_merge($this->dontReport, $this->internalDontReport);
 
@@ -164,7 +164,7 @@ class Handler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Throwable $e)
+    public function render($request, Exception $e)
     {
         if (method_exists($e, 'render') && $response = $e->render($request)) {
             return Router::toResponse($request, $response);
@@ -463,7 +463,7 @@ class Handler implements ExceptionHandlerContract
      * @param  \Exception  $e
      * @return void
      */
-    public function renderForConsole($output, Throwable $e)
+    public function renderForConsole($output, Exception $e)
     {
         (new ConsoleApplication)->renderException($e, $output);
     }

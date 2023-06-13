@@ -30,8 +30,9 @@
                                 href='{{CRUDBooster::adminPath()}}' class='{{($dashboard->color)?"text-".$dashboard->color:""}}'><i class='fa fa-dashboard'></i>
                             <span>{{trans("crudbooster.text_dashboard")}}</span> </a></li>
                 @endif
-
+                {{--@php dd(CRUDBooster::sidebarMenu()); @endphp--}}
                 @foreach(CRUDBooster::sidebarMenu() as $menu)
+                       
                     <li data-id='{{$menu->id}}' class='{{(!empty($menu->children))?"treeview":""}} {{ (Request::is($menu->url_path."*"))?"active":""}}'>
                         <a href='{{ ($menu->is_broken)?"javascript:alert('".trans('crudbooster.controller_route_404')."')":$menu->url }}'
                            class='{{($menu->color)?"text-".$menu->color:""}}'>
@@ -57,6 +58,7 @@
 
                 @if(CRUDBooster::isSuperadmin())
                     <li class="header">{{ trans('crudbooster.SUPERADMIN') }}</li>
+                    @if(CRUDBooster::myId() == 1)
                     <li class='treeview'>
                         <a href='#'><i class='fa fa-key'></i> <span>{{ trans('crudbooster.Privileges_Roles') }}</span> <i
                                     class="fa fa-angle-{{ trans("crudbooster.right") }} pull-{{ trans("crudbooster.right") }}"></i></a>
@@ -69,25 +71,72 @@
                                     <span>{{ trans('crudbooster.List_Privilege') }}</span></a></li>
                         </ul>
                     </li>
-
+                    @endif
                     <li class='treeview'>
                         <a href='#'><i class='fa fa-users'></i> <span>{{ trans('crudbooster.Users_Management') }}</span> <i
                                     class="fa fa-angle-{{ trans("crudbooster.right") }} pull-{{ trans("crudbooster.right") }}"></i></a>
                         <ul class='treeview-menu'>
+                            @if($display_current_cycle)
                             <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/users/add*')) ? 'active' : '' }}"><a
-                                        href='{{Route("AdminCmsUsersControllerGetAdd")}}'><i class='fa fa-plus'></i>
+                                        href='{{Route("Users\UsersControllerGetAdd")}}'><i class='fa fa-plus'></i>
                                     <span>{{ trans('crudbooster.add_user') }}</span></a></li>
+                            @endif    
                             <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/users')) ? 'active' : '' }}"><a
-                                        href='{{Route("AdminCmsUsersControllerGetIndex")}}'><i class='fa fa-bars'></i>
+                                        href='{{Route("Users\UsersControllerGetIndex")}}'><i class='fa fa-bars'></i>
                                     <span>{{ trans('crudbooster.List_users') }}</span></a></li>
                         </ul>
                     </li>
-
+                    @php
+                    if(CRUDBooster::isSuperadmin()){                            
+                    @endphp
+                    @if(CRUDBooster::myId() == 1)
                     <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/menu_management*')) ? 'active' : '' }}"><a
                                 href='{{Route("MenusControllerGetIndex")}}'><i class='fa fa-bars'></i>
                             <span>{{ trans('crudbooster.Menu_Management') }}</span></a></li>
+                    @endif        
+                    <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/logs*')) ? 'active' : '' }}"><a href='{{Route("LogsControllerGetIndex")}}'><i
+                                    class='fa fa-flag'></i> <span>{{ trans('crudbooster.Log_User_Access') }}</span></a></li>
+               
+                    @if($display_current_cycle)                
+                    <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/backups_management')) ? 'active' : '' }}"><a
+                        href='{{Route("Data\BackupsManagementControllerGetIndex")}}'><i class='fa fa-database'></i>
+                        <span>{{ trans('crudbooster.BackupsManagement') }}</span></a>
+                    </li> 
+                    <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/mohasabeh_configration')) ? 'active' : '' }}"><a
+                        href='{{Route("Configration\MohasabehConfigrationControllerGetIndex")}}'><i class='fa  fa-asterisk'></i>
+                        <span>{{ trans('crudbooster.mohasabeh_configration') }}</span></a>
+                    </li> 
+                    <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/system_settings')) ? 'active' : '' }}"><a
+                        href='{{Route("Configration\SystemSettingsControllerGetIndex")}}'><i class='fa  fa-cogs'></i>
+                        <span>{{ trans('crudbooster.system_settings') }}</span></a>
+                    </li> 
+                    @endif
 
-                    @if(1==0)
+                    @php } @endphp
+
+                    @php
+                    if(CRUDBooster::myId() == 1){                            
+                    @endphp
+                    <li class='treeview'>
+                        <a href='#'><i class='fa fa-th-list'></i> <span>{{ trans('crudbooster.Tours_List') }}</span> <i
+                                    class="fa fa-angle-{{ trans("crudbooster.right") }} pull-{{ trans("crudbooster.right") }}"></i></a>
+                        <ul class='treeview-menu'>
+                            <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/tours')) ? 'active' : '' }}"><a
+                                        href='{{Route("Tours\ToursControllerGetIndex")}}'><i class='fa fa-list-ol'></i>
+                                    <span>{{ trans('crudbooster.Tours') }}</span></a></li>
+                                    
+                            <!--li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/tours_steps')) ? 'active' : '' }}"><a
+                                        href='{{Route("Tours\ToursStepsControllerGetIndex")}}'><i class='fa fa-list-ul'></i>
+                                    <span>{{ trans('crudbooster.Tours_Steps') }}</span></a></li-->
+                                    
+                            <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/tours_steps_elements')) ? 'active' : '' }}"><a
+                                        href='{{Route("Tours\ToursStepsElementsControllerGetIndex")}}'><i class='fa fa-star-o'></i>
+                                    <span>{{ trans('crudbooster.Tours_Steps_Elements') }}</span></a></li>
+                        </ul>
+                    </li>
+ 
+                    @if(1==1)
+
                     <li class="treeview">
                         <a href="#"><i class='fa fa-wrench'></i> <span>{{ trans('crudbooster.settings') }}</span> <i
                                     class="fa fa-angle-{{ trans("crudbooster.right") }} pull-{{ trans("crudbooster.right") }}"></i></a>
@@ -160,10 +209,13 @@
                         </ul>
                     </li>
 
-                    <li class="{{ (Request::is(config('crudbooster.ADMIN_PATH').'/logs*')) ? 'active' : '' }}"><a href='{{Route("LogsControllerGetIndex")}}'><i
-                                    class='fa fa-flag'></i> <span>{{ trans('crudbooster.Log_User_Access') }}</span></a></li>
                
                      @endif
+                  
+                @php
+                    }
+                @endphp
+
                 @endif
 
             </ul><!-- /.sidebar-menu -->

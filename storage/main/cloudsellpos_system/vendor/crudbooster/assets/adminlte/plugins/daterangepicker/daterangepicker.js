@@ -142,10 +142,10 @@
 
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';
-
+            
             this.locale = {
-                applyLabel: 'Apply',
-                cancelLabel: 'Cancel',
+                applyLabel: 'تطبيق',
+                cancelLabel: 'إلغاء',
                 fromLabel: 'From',
                 toLabel: 'To',
                 weekLabel: 'W',
@@ -841,8 +841,9 @@
             cal.find('td').removeClass('active');
 
             $(e.target).addClass('active');
-
             this.setCustomDates(startDate, endDate);
+            //edit here (clickApply when choose date)
+            this.clickApply();
 
             if (!this.timePicker)
                 endDate.endOf('day');

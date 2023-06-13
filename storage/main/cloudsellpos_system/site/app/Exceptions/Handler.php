@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Illuminate\Support\Facades\Redirect;
 
 class Handler extends ExceptionHandler
 {
@@ -33,8 +33,11 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return void
      */
-    public function report(Throwable $exception)
+    public function report(Exception $exception)
     {
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            redirect()->to('/')->send();
+        }
         parent::report($exception);
     }
 
@@ -45,8 +48,9 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Exception $exception)
     {
+        header("Content-Type: text/html");
         return parent::render($request, $exception);
     }
 }

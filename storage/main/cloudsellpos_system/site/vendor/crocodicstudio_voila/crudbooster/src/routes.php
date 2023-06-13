@@ -41,13 +41,14 @@ Route::group(['middleware' => ['web'], 'prefix' => config('crudbooster.ADMIN_PAT
 });
 
 // ROUTER FOR OWN CONTROLLER FROM CB
+# remove 'web', from next group //edit here
 Route::group([
-    'middleware' => ['web', '\crocodicstudio_voila\crudbooster\middlewares\CBBackend'],
+    'middleware' => [ '\crocodicstudio_voila\crudbooster\middlewares\CBBackend'],
     'prefix' => config('crudbooster.ADMIN_PATH'),
     'namespace' => 'App\Http\Controllers',
 ], function () use ($namespace) {
 
-    // if (Request::is(config('crudbooster.ADMIN_PATH'))) {
+    if (Request::is(config('crudbooster.ADMIN_PATH'))) {
         $menus = DB::table('cms_menus')->where('is_dashboard', 1)->first();
         if ($menus) {
             if ($menus->type == 'Statistic') {
@@ -65,7 +66,7 @@ Route::group([
                 redirect($menus->path);
             }
         }
-    // }
+    }
 
     try {
         $moduls = DB::table('cms_moduls')->where('path', '!=', '')->where('controller', '!=', '')
@@ -79,8 +80,9 @@ Route::group([
 });
 
 /* ROUTER FOR BACKEND CRUDBOOSTER */
+# remove 'web', from next group //edit here
 Route::group([
-    'middleware' => ['web', '\crocodicstudio_voila\crudbooster\middlewares\CBBackend'],
+    'middleware' => [ '\crocodicstudio_voila\crudbooster\middlewares\CBBackend'],
     'prefix' => config('crudbooster.ADMIN_PATH'),
     'namespace' => $namespace,
 ], function () {
@@ -119,3 +121,8 @@ Route::group([
 Route::get('admin/getModulesItem/{val}','crocodicstudio_voila\crudbooster\controllers\MenusClientController@getModulesItem');
 
 Route::get('/active/{table}/{value}/{id}','crocodicstudio_voila\crudbooster\controllers\CBController@active');
+
+#Route::get('admin/PricingPackageOptions','crocodicstudio_voila\crudbooster\controllers\PricingController@getAdd');
+
+############################## Mohasabeh Login ######################################
+Route::get('/modules/voila-login', $namespace.'\AdminController@postLogin');

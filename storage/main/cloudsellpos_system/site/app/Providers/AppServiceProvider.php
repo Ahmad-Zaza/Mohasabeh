@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\General\GeneralFunctionsController;
+use App\Models\SystemConfigration\SystemSetting;
+use App\Models\Tours\Tour;
+use App\Models\Tours\TourStepElements;
+use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
-
-use crocodicstudio_voila\crudbooster\CRUDBoosterServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,76 +18,124 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // URL::forceScheme('https');
 
-        view()->composer('layout.layout', function ($view) {
-            $lang = \LaravelLocalization::getCurrentLocale();
+        view()->composer('*', function ($view) {
 
+            //check url active status config
+            $lock_url_status = SystemSetting::where('setting_key', 'lock_system_url')->first()->setting_value;
+            if ($lock_url_status == 'on') {
+                die(trans('labels.lock_url_message'));
+            }
 
-            $lang_ = ($lang == 'en') ? 1 : 2;
+            //check Cycle Session
+            $gfunc = new GeneralFunctionsController();
+            $display_current_cycle = $gfunc->checkCycleSession();
 
-            $menus = \DB::table('cms_menus')
-                ->select(
-                    "cms_menus.name as title_en",
-                    "cms_menus.type as type",
-                    "cms_menus.path as url",
-                    "cms_menus.id as id",
-                    "cms_menus.parent_id"
-                )->where('cms_menus.is_active', 1)->where('cms_menus.is_front', 1)->where('parent_id','=',0)->where('lang_id', $lang_)->orderBy("cms_menus.sorting")
-                ->get();
+            //check old_cycle_edited
+            $old_cycle_edited_status = false;
+            if (CRUDBooster::getCurrentModule()->path != 'financial_cycles') {
+                $old_cycle_edited_status = $gfunc->checkOldCycleEdited();
+            } else {
+                $old_cycle_edited_status = false;
+            }
 
-            $sons =  \DB::table('cms_menus')
-            ->select(
-                "cms_menus.name as title_en",
-                "cms_menus.type as type",
-                "cms_menus.path as url",
-                "cms_menus.id as id",
-                "cms_menus.parent_id"
-            )->where('cms_menus.is_active', 1)->where('cms_menus.is_front', 1)->where('parent_id','!=',0)->where('lang_id', $lang_)->orderBy("cms_menus.sorting")
-            ->get();
-
-            foreach ($sons as $item) {
-                foreach ($menus as $m) {
-                    if ($item->parent_id == $m->id) {
-                        $m->sons[] = $item;
-                    }
+            //get System Settings values
+            $system_status = 'off';
+            $user = CRUDBooster::getUser();
+            if ($user && !$user->isSuperAdmin) {
+                $system_status = SystemSetting::where('setting_key', 'system_stop')->first()->setting_value;
+                if ($system_status == 'on') {
+                    //dd("System stoped now. please try later.");
+                    $system_status = 'on';
                 }
             }
 
-            $info=\DB::table('info_site')
-            ->select(
-                'address_' . $lang . ' as address',
-                'open_hours_' . $lang . ' as open_hours',
-                'about_footer_' . $lang . ' as about_footer',
-                'email',
-                'phone'
-            )->where(
-                'active',1
-            )->first();
+            $image_max_size = SystemSetting::where('setting_key', 'image_max_size')->first()->setting_value;
+            if ($image_max_size) {
+                $image_max_size = $image_max_size * 1000;
+            }
+            $image_types = SystemSetting::where('setting_key', 'image_types')->first()->setting_value;
 
+            /*
+            //add this code to tracking redirect message
+            if(Session::get('redirect_with_message')){
+            //dd(Session::all());
+            $user_name= Session::get('admin_name');
+            $item_id= Session::get('opened_item');
+            $session_message= Session::get('message');
+            $session_message_type= Session::get('message_type');
+            Storage::append( 'after_redirect_messages.txt',"message:($session_message) message_type:($session_message_type) to:($to) item_id:($item_id) username:($user_name) date:(".date('Y-m-d h:i:s').")" );
+            Session::forget('redirect_with_message');
+            }
+             */
+            /*---------Tours -------*/
+            $module_id = CRUDBooster::getCurrentModule()->id;
+            $page_type = CRUDBooster::getCurrentMethod();
 
-            $footer_links=\DB::table('footer_links')
-            ->select(
-                'name_' . $lang . ' as name',
-                'link',
-                'id'
-            )->where(
-                'active',1
-            )->get();
+            if ($page_type != "importDataForm") {
+                $tour = Tour::where('module_id', $module_id)
+                    ->where('page_type', $page_type)
+                    ->where('active', 1)
+                    ->with('steps')->first();
+            } else {
+                $tour = Tour::where('page_type', $page_type)
+                    ->where('active', 1)
+                    ->with('steps')->first();
+            }
+            $tour_steps = $tour->steps;
 
-              $socials = \DB::table('social_media')->orderBy('sorting', 'asc')->where([
-                'active' => 1,
-            ])->get();
+            $steps = [];
+            if ($tour_steps) {
+                foreach ($tour_steps as $step) {
+                    $elem = $step->element_key;
+                    if ($elem == "") {
+                        $elem = TourStepElements::find($step->element_id)->element_key;
+                    }
+                    $temp = array(
+                        'element' => "$elem",
+                        'title' => $step->title,
+                        'description' => $step->description,
+                    );
+                    array_push($steps, $temp);
+                }
+            }
 
+            //check tour cookies and process autoplay
+            $tour_autoplay = false;
+            /*
+            if($steps && CRUDBooster::myId()){
 
-            $view->with([
-                "menus" => $menus,
-                "socials" => $socials,
-                "info" =>$info,
-                "footer_links"=>$footer_links
-            ]);
+            $tour_cookie_name = "Tour_".$tour->id."_user_".CRUDBooster::myId();
+            //$cookie_value = Cookie::get($tour_cookie_name);
+            $cookie_value = $_COOKIE[$tour_cookie_name];
+            if($cookie_value != null){
+            //there is tour cookies
+            $tour_autoplay = false;
+            }else{
+            $tour_autoplay = true;
+            //Cookie::queue($tour_cookie_name, 1, 2);
+            setcookie($tour_cookie_name, 1, time() + (10 * 365 * 24 * 60 * 60)); //expired after 10 years
+            }
+            }
+             */
+
+            /*----------------------*/
+            $view->with('tour', $steps);
+            $view->with('tour_autoplay', $tour_autoplay);
+            $view->with('system_status', $system_status);
+            $view->with('setting_image_max_size', $image_max_size);
+            $view->with('setting_image_types', $image_types);
+            $view->with('display_current_cycle', $display_current_cycle);
+            $view->with('old_cycle_edited_status', $old_cycle_edited_status);
         });
 
+        $systemSetting = \DB::table('system_settings')->where('setting_key', 'https_option')->first();
+
+        if ($systemSetting->setting_value == 'on') {
+            \URL::forceScheme('https');
+        } else {
+            \URL::forceScheme('http');
+        }
 
     }
 
@@ -97,7 +147,5 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-
-        $this->app->register(CRUDBoosterServiceProvider::class);
     }
 }

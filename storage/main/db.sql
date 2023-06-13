@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `p_code` varchar(50) NOT NULL,
   `delegate_id` int(11) DEFAULT NULL,
   `checked_for_update` tinyint(4) NOT NULL DEFAULT '0',
-  `status` INT(11) NOT NULL DEFAULT '1',
+  `status` INT(11) NOT NULL DEFAULT '1', 
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `create_by` int(11) DEFAULT NULL,
   `edit_at` timestamp NULL DEFAULT NULL,
@@ -2125,7 +2125,8 @@ INSERT INTO `system_settings` (`id`, `setting_key`, `setting_value`) VALUES
 (6, 'old_cycle_edited', 'false'),
 (7, 'old_cycle_edited_id', ''),
 (8, 'lock_system_url', 'off'),
-(9, 'unlock_system_url_token', '');
+(9, 'unlock_system_url_token', ''),
+(10, 'https_option', 'off');
 
 -- --------------------------------------------------------
 

@@ -6,7 +6,7 @@
     <meta name='generator' content='CRUDBooster'/>
     <meta name='robots' content='noindex,nofollow'/>
     <link rel="shortcut icon"
-          href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}">
+          href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('favicon.png') }}">
 
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
@@ -61,7 +61,7 @@
     <div class="login-logo">
         <a href="{{url('/')}}">
             <img title='{!!(Session::get('appname') == 'CRUDBooster')?"<b>CRUD</b>Booster":CRUDBooster::getSetting('appname')!!}'
-                 src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}'
+                 src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('favicon.png') }}'
                  style='max-width: 100%;max-height:170px'/>
         </a>
     </div><!-- /.login-logo -->

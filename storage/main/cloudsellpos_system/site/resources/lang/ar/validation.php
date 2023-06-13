@@ -83,9 +83,9 @@ return [
     'mimes'                => 'The :attribute must be a file of type: :values.',
     'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
-        'numeric' => 'The :attribute must be at least :min.',
+        'numeric' => ':attribute يجب أن يكون على الأقل :min محارف.',
         'file'    => 'The :attribute must be at least :min kilobytes.',
-        'string'  => 'The :attribute must be at least :min characters.',
+        'string'  => ':attribute يجب أن يكون على الأقل :min محارف.',
         'array'   => 'The :attribute must have at least :min items.',
     ],
     'not_in'               => 'The selected :attribute is invalid.',
@@ -109,7 +109,7 @@ return [
     ],
     'string'               => ':attribute يجب أن يكون محارف.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => ':attribute مستخدم سابقا.',
+    'unique'               => 'مستخدم سابقا.',
     'uploaded'             => ':attribute فشل برفع الملف.',
     'url'                  => ':attribute الصيغة غير صحيحة.',
 

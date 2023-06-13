@@ -38,6 +38,7 @@ $.fn.extend({
                     icon.toggleClass(openedClass + " " + closedClass);
                     $(this).children().children().toggle();
                 }
+                $('#tree1  li  a.float_lft span').css('display','inline-block');
             })
             branch.children().children().toggle();
         });
@@ -71,3 +72,4 @@ $('#tree1').treed();
 $('#tree2').treed({openedClass:'glyphicon-folder-open', closedClass:'glyphicon-folder-close'});
 
 $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
+

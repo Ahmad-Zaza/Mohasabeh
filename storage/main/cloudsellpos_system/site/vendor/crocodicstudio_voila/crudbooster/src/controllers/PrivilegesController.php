@@ -196,6 +196,9 @@ class PrivilegesController extends CBController
 
     public function getDelete($id)
     {
+        if($id == 1 || $id == 4){
+            return  CRUDBooster::redirect($_SERVER['HTTP_REFERER'],trans("crudbooster.alert_this_main_role_you_cannt_delete_it"),"warning");
+        }
         $this->cbLoader();
 
         $row = DB::table($this->table)->where($this->primary_key, $id)->first();

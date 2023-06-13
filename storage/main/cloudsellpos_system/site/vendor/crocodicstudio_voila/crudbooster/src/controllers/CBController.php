@@ -1,6 +1,10 @@
 <?php namespace crocodicstudio_voila\crudbooster\controllers;
+      use App\Http\Controllers\General\GeneralFunctionsController;
+      use App\Models\SystemConfigration\SystemSetting;
 
 error_reporting(E_ALL ^ E_NOTICE);
+header('Content-Type: text/plain');
+date_default_timezone_set('Asia/Damascus');
 
 use CB;
 use CRUDBooster;
@@ -147,10 +151,20 @@ class CBController extends Controller
         $this->data['index_button'] = $this->index_button;
         $this->data['show_numbering'] = $this->show_numbering;
         $this->data['button_detail'] = $this->button_detail;
-        $this->data['button_edit'] = $this->button_edit;
-        $this->data['button_show'] = $this->button_show;
-        $this->data['button_add'] = $this->button_add;
-        $this->data['button_delete'] = $this->button_delete;
+
+        $gfunc = new GeneralFunctionsController();
+        if ($gfunc->checkOldCycleHasEditedPermission()) {
+            $this->data['button_edit'] = $this->button_edit;
+            $this->data['button_show'] = $this->button_show;
+            $this->data['button_add'] = $this->button_add;
+            $this->data['button_delete'] = $this->button_delete;
+        }else{
+            $this->data['button_edit'] = false;
+            $this->data['button_show'] = false;
+            $this->data['button_add'] = false;
+            $this->data['button_delete'] = false;
+        }
+ 
         $this->data['button_filter'] = $this->button_filter;
         $this->data['button_export'] = $this->button_export;
         $this->data['button_addmore'] = $this->button_addmore;
@@ -164,6 +178,21 @@ class CBController extends Controller
         $this->data['index_statistic'] = $this->index_statistic;
         $this->data['index_additional_view'] = $this->index_additional_view;
         $this->data['table_row_color'] = $this->table_row_color;
+        
+        if(CRUDBooster::getCurrentMethod() == 'getIndex'){
+            $opened_item = Session::get('opened_item');
+            array_push($this->data['table_row_color'],['condition'=>"[id] == '$opened_item'","color"=>"success"]);
+            if($this->table == 'currencies' && CRUDBooster::isColumnExists($this->table,'is_major')){
+                array_push($this->data['table_row_color'],['condition'=>"[id] == '$opened_item' and [is_major] == '1'","color"=>"success major"]);
+            }else if($this->table == 'transfer_tracking' && CRUDBooster::isColumnExists($this->table,'status')){
+                array_push($this->data['table_row_color'],['condition'=>"[id] == '$opened_item' and [status] != '0'","color"=>"success receipted"]);
+            }else if(CRUDBooster::isColumnExists($this->table,'checked_for_update')){
+                array_push($this->data['table_row_color'],['condition'=>"[id] == '$opened_item' and [checked_for_update] == '1'","color"=>"success checked"]);
+            }
+            
+            Session::forget('opened_item');
+        }
+
         $this->data['pre_index_html'] = $this->pre_index_html;
         $this->data['post_index_html'] = $this->post_index_html;
         $this->data['load_js'] = $this->load_js;
@@ -195,6 +224,7 @@ class CBController extends Controller
 
     public function cbView($template, $data)
     {
+        header("Content-Type: text/html");
         $this->cbLoader();
         echo view($template, $data);
     }
@@ -215,6 +245,17 @@ class CBController extends Controller
     public function active($table,$val,$id)
     {
     
+        if($table == 'currencies'){
+            $curr = DB::table('currencies')->where('id',$id)->first();
+            $entries = DB::table('entries')->where('currency_id',$id)->get();
+            if($curr->is_major == 1){
+                return redirect()->back()->with(['message_type' => 'warning', 'message' => trans('messages.cannot_make_currency_unused_because_is_major')]);
+            }
+            else if($entries->count()>0){
+                return redirect()->back()->with(['message_type' => 'warning', 'message' => trans('messages.cannot_make_currency_unused_because_is_already_used') ]);
+            }
+        }
+
         DB::table($table)->where([
         "id"=>$id
         ])->update([
@@ -223,12 +264,14 @@ class CBController extends Controller
 
         //fesal
         if($val==1){
-            $message ="Activeted";
+            $message =trans('crudbooster.Activeted');
         }
         else{
-            $message ="Anactiveted";
+            $message =trans('crudbooster.Anactiveted');
 
         }
+        
+        
         return redirect()->back()->with(['message_type' => 'success', 'message' => $message]);
 
     }
@@ -236,12 +279,12 @@ class CBController extends Controller
     public function getIndex()
     {
         $this->cbLoader();
-
+        
         $module = CRUDBooster::getCurrentModule();
 
         if (! CRUDBooster::isView() && $this->global_privilege == false) {
             CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access')); 
         }
 
         if (Request::get('parent_table')) {
@@ -446,7 +489,11 @@ class CBController extends Controller
                     switch ($type) {
                         default:
                             if ($key && $type && $value) {
-                                $w->where($key, $type, $value);
+                                if($type == '!='){
+                                    $w->where($key, $type, $value)->orwhereNull($key);
+                                }else{
+                                    $w->where($key, $type, $value);
+                                }
                             }
                             break;
                         case 'like':
@@ -457,11 +504,18 @@ class CBController extends Controller
                             }
                             break;
                         case 'in':
-                        case 'not in':
                             if ($value) {
                                 $value = explode(',', $value);
                                 if ($key && $value) {
                                     $w->whereIn($key, $value);
+                                }
+                            }
+                            break;
+                        case 'not in':
+                            if ($value) {
+                                $value = explode(',', $value);
+                                if ($key && $value) {
+                                    $w->whereNotIn($key, $value);
                                 }
                             }
                             break;
@@ -1018,6 +1072,12 @@ class CBController extends Controller
                 ])->send();
                 exit;
             } else {
+                if($this->table == 'inventory_beginning_tracking'){
+                    $this->setBeginningItemsDataToSession();
+                }
+                if($this->table == 'transfer_tracking'){
+                    $this->setTransferItemsDataToSession();
+                }
                 $res = redirect()->back()->with("errors", $message)->with([
                     'message' => trans('crudbooster.alert_validation_error', ['error' => implode(', ', $message_all)]),
                     'message_type' => 'warning',
@@ -1197,6 +1257,10 @@ class CBController extends Controller
             $this->arr['created_at'] = date('Y-m-d H:i:s');
         }
 
+        if (Schema::hasColumn($this->table, 'cycle_id')) {
+            $this->arr['cycle_id'] = Session::get('display_cycle');
+        }
+
         $this->hook_before_add($this->arr);
 
 //         $this->arr[$this->primary_key] = $id = CRUDBooster::newId($this->table); //error on sql server
@@ -1256,7 +1320,7 @@ class CBController extends Controller
                 $name = str_slug($ro['label'], '');
                 $columns = $ro['columns'];
                 $getColName = Request::get($name.'-'.$columns[0]['name']);
-                $count_input_data = ($getColName)?(count($getColName) - 1):0;
+                $count_input_data = ($getColName)?(count($getColName) - 1):-1;
                 $child_array = [];
 
                 for ($i = 0; $i <= $count_input_data; $i++) {
@@ -1274,13 +1338,34 @@ class CBController extends Controller
                 DB::table($childtable)->insert($child_array);
             }
         }
-
+        
+        Session::put('opened_item',$lastInsertId); // to highlight item was opened
         $this->hook_after_add($lastInsertId);
 
         $this->return_url = ($this->return_url) ? $this->return_url : Request::get('return_url');
 
         //insert log
-        CRUDBooster::insertLog(trans("crudbooster.log_add", ['name' => $this->arr[$this->title_field], 'module' => CRUDBooster::getCurrentModule()->name]));
+        $item_title = '';
+        if (CRUDBooster::isColumnExists($this->table, 'name_ar')) {
+            $item_title = "[".$this->arr['name_ar']."]";
+        }else if (CRUDBooster::isColumnExists($this->table, 'p_code')) {
+            $item_title = "[".$this->arr['p_code']."]";
+        }else{
+            $item_title = $this->arr[$this->title_field];
+        }
+        CRUDBooster::insertLog(trans("crudbooster.log_add", ['name' => $item_title, 'module' => CRUDBooster::getCurrentModule()->name]),
+                               LogsController::displayAddSource($lastInsertId)
+        );
+
+        //change old_cycle_edited setting
+        if(Session::get('display_cycle') != Session::get('current_cycle')){
+            SystemSetting::where('setting_key', 'old_cycle_edited')->update([
+                'setting_value'=>'true'
+            ]);
+            SystemSetting::where('setting_key', 'old_cycle_edited_id')->update([
+                'setting_value'=>Session::get('display_cycle')
+            ]);
+        }
 
         if ($this->return_url) {
             if (Request::get('submit') == trans('crudbooster.button_save_more')) {
@@ -1315,7 +1400,7 @@ class CBController extends Controller
         $page_title = trans("crudbooster.edit_data_page_title", ['module' => CRUDBooster::getCurrentModule()->name, 'name' => $row->{$this->title_field}]);
         $command = 'edit';
         Session::put('current_row_id', $id);
-
+        Session::put('opened_item',$id); // to highlight item was opened
         return view('crudbooster::default.form', compact('id', 'row', 'page_menu', 'page_title', 'command'));
     }
 
@@ -1336,6 +1421,9 @@ class CBController extends Controller
 
         if (Schema::hasColumn($this->table, 'updated_at')) {
             $this->arr['updated_at'] = date('Y-m-d H:i:s');
+        }
+        if (Schema::hasColumn($this->table, 'cycle_id')) {
+            $this->arr['cycle_id'] = Session::get('display_cycle');
         }
         // dd($this->arr);
         $this->hook_before_edit($this->arr, $id);
@@ -1396,7 +1484,7 @@ class CBController extends Controller
                 $name = str_slug($ro['label'], '');
                 $columns = $ro['columns'];
                 $getColName = Request::get($name.'-'.$columns[0]['name']);
-                $count_input_data = ($getColName)?(count($getColName) - 1):0;
+                $count_input_data = ($getColName)?(count($getColName) - 1):-1;
                 $child_array = [];
                 $childtable = CRUDBooster::parseSqlTable($ro['table'])['table'];
                 $fk = $ro['foreign_key'];
@@ -1420,23 +1508,42 @@ class CBController extends Controller
                     $lastId++;
                 }
                 $child_array = array_reverse($child_array);
-
                 DB::table($childtable)->insert($child_array);
                 
             }
         }
 
-
+        
         $this->hook_after_edit($id);
 
         $this->return_url = ($this->return_url) ? $this->return_url : Request::get('return_url');
 
         //insert log
+        $item_title = '';
+        if (CRUDBooster::isColumnExists($this->table, 'name_ar')) {
+            $item_title = "[".$this->arr['name_ar']."]";
+        }else if (CRUDBooster::isColumnExists($this->table, 'p_code')) {
+            $item_title = "[".$row->p_code."]";
+        }else{
+            $item_title = $this->arr[$this->title_field];
+        }
+        
         $old_values = json_decode(json_encode($row), true);
         CRUDBooster::insertLog(trans("crudbooster.log_update", [
-            'name' => $this->arr[$this->title_field],
+            'name' => $item_title,
             'module' => CRUDBooster::getCurrentModule()->name,
-        ]), LogsController::displayDiff($old_values, $this->arr));
+        ]), LogsController::displayEditSource($this->table,$id,$old_values, $this->arr));
+
+        //change old_cycle_edited setting
+        if(Session::get('display_cycle') != Session::get('current_cycle')){
+            SystemSetting::where('setting_key', 'old_cycle_edited')->update([
+                'setting_value'=>'true'
+            ]);
+
+            SystemSetting::where('setting_key', 'old_cycle_edited_id')->update([
+                'setting_value'=>Session::get('display_cycle')
+            ]);        
+        }
 
         if ($this->return_url) {
             CRUDBooster::redirect($this->return_url, trans("crudbooster.alert_update_data_success"), 'success');
@@ -1463,7 +1570,17 @@ class CBController extends Controller
         }
 
         //insert log
-        CRUDBooster::insertLog(trans("crudbooster.log_delete", ['name' => $row->{$this->title_field}, 'module' => CRUDBooster::getCurrentModule()->name]));
+        $item_title = '';
+        if (CRUDBooster::isColumnExists($this->table, 'name_ar')) {
+            $item_title = "[".$row->name_ar."]";
+        }else if (CRUDBooster::isColumnExists($this->table, 'p_code')) {
+            $item_title = "[".$row->p_code."]";
+        }else{
+            $item_title = $row->{$this->title_field};
+        }
+        CRUDBooster::insertLog(trans("crudbooster.log_delete", ['name' => $item_title, 'module' => CRUDBooster::getCurrentModule()->name]),
+                                    LogsController::displayDeleteSource($this->table,$id)
+        );
 
         $this->hook_before_delete($id);
 
@@ -1474,6 +1591,18 @@ class CBController extends Controller
         }
 
         $this->hook_after_delete($id);
+
+        //change old_cycle_edited setting
+        if(Session::get('display_cycle') != Session::get('current_cycle')){
+            SystemSetting::where('setting_key', 'old_cycle_edited')->update([
+                'setting_value'=>'true'
+            ]);
+
+            SystemSetting::where('setting_key', 'old_cycle_edited_id')->update([
+                'setting_value'=>Session::get('display_cycle')
+            ]);
+        }
+
 
         $url = g('return_url') ?: CRUDBooster::referer();
 
@@ -1500,6 +1629,13 @@ class CBController extends Controller
         $command = 'detail';
 
         Session::put('current_row_id', $id);
+
+        ////customize details pages
+        // if (\View::exists('detail_pages.'.$module->path)) {
+        //     return view('detail_pages.'.$module->path, compact('row', 'page_menu', 'page_title', 'command', 'id'));
+        // } else {
+        //     return view('crudbooster::default.form', compact('row', 'page_menu', 'page_title', 'command', 'id'));
+        // }
 
         return view('crudbooster::default.form', compact('row', 'page_menu', 'page_title', 'command', 'id'));
     }
@@ -1829,9 +1965,25 @@ class CBController extends Controller
     {
         $this->cbLoader();
         $name = 'userfile';
-        if ($file = CRUDBooster::uploadFile($name, true)) {
-            echo asset($file);
+        
+        $number=$_REQUEST['number'];
+        $module_path = CRUDBooster::getCurrentModule()->path;
+        $info = array('number'=>$number,'module_path'=>$module_path);
+       
+        //check package attachs size config 
+        $gfunc = new GeneralFunctionsController();
+        $totat_attachs_size = $this->getPackageConfigValue('attachs_size');
+        
+        $attachs_path = storage_path('app/uploads');
+        $current_attachs_size = $gfunc->getFolderSize($attachs_path);
+        if($totat_attachs_size > 0 &&  $current_attachs_size >= $totat_attachs_size ){
+            echo "attachs_size_error";
+        }else{
+            if ($file = CRUDBooster::uploadFile($name, true,null,null,null,$info)) {
+                echo asset($file);
+            }
         }
+      
     }
 
     public function actionButtonSelected($id_selected, $button_name)

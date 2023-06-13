@@ -10,8 +10,8 @@
 }
 
 .item-child{
-    background: #333;
-    color: #FFF;
+    background: #fff;
+    color: #333;
 }
 
 .float_lft{
@@ -22,4 +22,8 @@
 
 .float_lft.btn-delete{
     margin-right:5px;
+}
+
+.float_lft.btn-detail{
+    margin-left: 5px;
 }

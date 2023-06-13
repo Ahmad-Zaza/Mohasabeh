@@ -11,11 +11,13 @@ display:none;
 
         @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
             @if(g('return_url'))
-                <p><a title='Return' href='{{g("return_url")}}'><i class='fa fa-chevron-circle-left '></i>
+                <p><a title='Return' href='{{g("return_url")}}' id="go-back"><i class='fa fa-chevron-circle-left '></i>
                         &nbsp; {{trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
             @else
-                <p><a title='Main Module' href='{{CRUDBooster::mainpath()}}'><i class='fa fa-chevron-circle-left '></i>
+                @if(!isset($_REQUEST['link']))
+                <p><a title='Main Module' href='{{CRUDBooster::mainpath()}}' id="go-back"><i class='fa fa-chevron-circle-left '></i>
                         &nbsp; {{trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
+                @endif        
             @endif
         @endif
 
@@ -57,9 +59,9 @@ $return_url = ($return_url) ?: g('return_url');
 
                                     @if(CRUDBooster::isCreate() && $button_addmore==TRUE && $command == 'add')
                                        @if(CRUDBooster::getCurrentModule()->hasImage==1)
-                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save_and_images")}}' class='btn btn-success'>
+                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save_and_images")}}' class='btn btn-success' id="btn-save-more">
                                         @else
-                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save_more")}}' class='btn btn-success'>
+                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save_more")}}' class='btn btn-success' id="btn-save-more">
                                         @endif
                                     @endif
 
@@ -102,10 +104,10 @@ $return_url = ($return_url) ?: g('return_url');
                                 @endif
                                 @if($button_cancel && CRUDBooster::getCurrentMethod() != 'getDetail')
                                     @if(g('return_url'))
-                                        <a href='{{g("return_url")}}' class='btn btn-default'><i
+                                        <a href='{{g("return_url")}}' class='btn btn-default' id="btn-back"><i
                                                     class='fa fa-chevron-circle-left'></i> {{trans("crudbooster.button_back")}}</a>
                                     @else
-                                        <a href='{{CRUDBooster::mainpath("?".http_build_query(@$_GET)) }}' class='btn btn-default'><i
+                                        <a href='{{CRUDBooster::mainpath("?".http_build_query(@$_GET)) }}' class='btn btn-default' id="btn-back"><i
                                                     class='fa fa-chevron-circle-left'></i> {{trans("crudbooster.button_back")}}</a>
                                     @endif
                                 @endif
@@ -141,7 +143,8 @@ $return_url = ($return_url) ?: g('return_url');
         console.log(data);
     debugger;
 
-});
+    });
+
 
 </script>
 

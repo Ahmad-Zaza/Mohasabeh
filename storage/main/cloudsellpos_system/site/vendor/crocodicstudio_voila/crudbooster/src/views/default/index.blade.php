@@ -96,7 +96,7 @@
                     </a>
                 @endif
 
-                <form method='get' style="display:inline-block;width: 260px;" action='{{Request::url()}}'>
+                <form method='get' id='box-tool-search' style="display:inline-block;width: 260px;" action='{{Request::url()}}'>
                     <div class="input-group">
                         <input type="text" name="q" value="{{ Request::get('q') }}" class="form-control input-sm pull-{{ trans('crudbooster.right') }}"
                                placeholder="{{trans('crudbooster.filter_search')}}"/>
@@ -122,6 +122,7 @@
                 <form method='get' id='form-limit-paging' style="display:inline-block" action='{{Request::url()}}'>
                     {!! CRUDBooster::getUrlParameters(['limit']) !!}
                     <div class="input-group">
+                        <input name="page" type="hidden" value="1"/>
                         <select onchange="$('#form-limit-paging').submit()" name='limit' style="width: 56px;" class='form-control input-sm'>
                             <option {{($limit==5)?'selected':''}} value='5'>5</option>
                             <option {{($limit==10)?'selected':''}} value='10'>10</option>

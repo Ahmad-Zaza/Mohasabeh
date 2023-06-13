@@ -20,15 +20,13 @@ class CBBackend
 
         if (CRUDBooster::myId() == '') {
             $url = url($admin_path.'/login');
-
             return redirect($url)->with('message', trans('crudbooster.not_logged_in'));
         }
+        
         if (CRUDBooster::isLocked()) {
             $url = url($admin_path.'/lock-screen');
-
             return redirect($url);
         }
-
         return $next($request);
     }
 }

@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{trans("crudbooster.page_title_forgot")}} : {{$appname}}</title>
+    <title>{{trans("crudbooster.page_title_forgot")}} : {{config('setting.AppName')}}</title>
     <meta name='generator' content='CRUDBooster.com'/>
     <meta name='robots' content='noindex,nofollow'/>
     <link rel="shortcut icon"
-          href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}">
+          href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('favicon.png') }}">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="{{asset('vendor/crudbooster/assets/adminlte/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"/>
@@ -23,8 +23,20 @@
     <link rel='stylesheet' href='{{asset("vendor/crudbooster/assets/css/main.css")}}'/>
     <link rel='stylesheet' href='{{asset("vendor/crudbooster/assets/css/main.css")}}'/>
     <style type="text/css">
+        @font-face {
+            font-family: 'Droid Arabic Kufi';
+            src: url({{asset('vendor/crudbooster/assets/fonts/DroidKufi/DroidArabicKufi.woff2')}}) format('woff2'),
+                url({{asset('vendor/crudbooster/assets/fonts/DroidKufi/DroidArabicKufi.woff')}}) format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        body{
+            font-family: "Droid Arabic Kufi";
+            
+        }
         .login-page, .register-page {
-            background: {{ CRUDBooster::getSetting("login_background_color")?:'#dddddd'}} url('{{ CRUDBooster::getSetting("login_background_image")?asset(CRUDBooster::getSetting("login_background_image")):asset('vendor/crudbooster/assets/bg_blur3.jpg') }}');
+            background: {{ CRUDBooster::getSetting("login_background_color")?:'#ffffff'}} url('{{ CRUDBooster::getSetting("login_background_image")?asset(CRUDBooster::getSetting("login_background_image")):asset('vendor/crudbooster/login/img/login.png') }}');
             color: {{ CRUDBooster::getSetting("login_font_color")?:'#ffffff' }}  !important;
             background-repeat: no-repeat;
             background-position: center;
@@ -36,6 +48,18 @@
             background: rgba(255, 255, 255, 0.9);
             color: {{ CRUDBooster::getSetting("login_font_color")?:'#666666' }}  !important;
         }
+        .alt {
+            position: absolute;
+            bottom: 1vw;
+            right: 25vw;
+            text-transform: uppercase;
+            color: #000000;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .login-box-body{
+            direction:rtl;
+        }
     </style>
 </head>
 <body class="login-page">
@@ -43,7 +67,7 @@
     <div class="login-logo">
         <a href="{{url('/')}}">
             <img title='{!!($appname == 'CRUDBooster')?"<b>CRUD</b>Booster":$appname!!}'
-                 src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}'
+                 src='{{ CRUDBooster::getSetting("logo")?asset(CRUDBooster::getSetting('logo')):asset('favicon.png') }}'
                  style='max-width: 100%;max-height:170px'/>
         </a>
     </div><!-- /.login-logo -->
@@ -59,7 +83,7 @@
         <form action="{{ route('postForgot') }}" method="post">
             <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" name='email' required placeholder="Email Address"/>
+                <input type="email" class="form-control" name='email' required placeholder="{{trans('labels.email_address')}}"/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="row">
@@ -77,6 +101,7 @@
 
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->
+<p class="alt">{{trans('labels.system_accounting')}}</p>
 
 <!-- jQuery 2.1.3 -->
 <script src="{{asset('vendor/crudbooster/assets/adminlte/plugins/jQuery/jQuery-2.1.4.min.js')}}"></script>

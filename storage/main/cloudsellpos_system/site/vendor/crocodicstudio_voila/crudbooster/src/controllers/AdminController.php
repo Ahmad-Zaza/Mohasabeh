@@ -1,6 +1,8 @@
 <?php namespace crocodicstudio_voila\crudbooster\controllers;
 
 use App;
+use App\Http\Controllers\Users\User;
+use App\Rules\ReCaptcha;
 use Carbon\Carbon;
 use CRUDBooster;
 use Illuminate\Support\Facades\DB;
@@ -56,8 +58,10 @@ class AdminController extends CBController
         if (CRUDBooster::myId()) {
             return redirect(CRUDBooster::adminPath());
         }
+        $recaptchaSiteKey = env('RECAPTCHA_SITE_KEY') ?? null;
+        $recaptchaSecretKey = env('RECAPTCHA_SECRET_KEY') ?? null;
 
-        return view('crudbooster::login');
+        return view('crudbooster::login', ['recaptchaSiteKey' => $recaptchaSiteKey, 'recaptchaSecretKey' => $recaptchaSecretKey]);
     }
 
     public function postLogin()
@@ -65,6 +69,7 @@ class AdminController extends CBController
         $validator = Validator::make(Request::all(), [
             'email' => 'required|email|exists:' . config('crudbooster.USER_TABLE'),
             'password' => 'required',
+            'g-recaptcha-response' => ['required', new ReCaptcha],
         ]);
 
         if ($validator->fails()) {
@@ -81,11 +86,17 @@ class AdminController extends CBController
             $priv = DB::table("cms_privileges")->where("id", $users->id_cms_privileges)->first();
 
             $roles = DB::table('cms_privileges_roles')->where('id_cms_privileges', $users->id_cms_privileges)->join('cms_moduls', 'cms_moduls.id', '=', 'id_cms_moduls')->select('cms_moduls.name', 'cms_moduls.path', 'is_visible', 'is_create', 'is_read', 'is_edit', 'is_delete')->get();
+
             $packageSettings = DB::table('package_config')->first();
+
             if ($packageSettings->free_trial_end_date && $packageSettings->free_trial_end_date != "0000-00-00" && $packageSettings->free_trial_end_date < Carbon::now()) {
+
                 return redirect()->route('getLogin')->with('message', trans('crudbooster.alert_free_trial_end'));
+
             } else if ($packageSettings->subscription_end_date && $packageSettings->subscription_end_date != "0000-00-00" && $packageSettings->subscription_end_date < Carbon::now()) {
+
                 return redirect()->route('getLogin')->with('message', trans('crudbooster.alert_subscription_end'));
+
             }
             //this code for filemanager
             @session_start();
@@ -102,15 +113,20 @@ class AdminController extends CBController
             Session::put('admin_lock', 0);
             Session::put('theme_color', $priv->theme_color);
             Session::put("appname", CRUDBooster::getSetting('appname'));
+            Session::put('user', new User());
 
+            DB::table(config('crudbooster.USER_TABLE'))->where("email", $email)->update([
+                'last_login_date' => Carbon::now(),
+            ]);
             CRUDBooster::insertLog(trans("crudbooster.log_login", ['email' => $users->email, 'ip' => Request::server('REMOTE_ADDR')]));
 
-            $cb_hook_session = new \App\Http\Controllers\CBHook;
+            $cb_hook_session = new \App\Http\Controllers\General\CBHook;
             $cb_hook_session->afterLogin();
 
             return redirect(CRUDBooster::adminPath());
         } else {
-            return redirect()->route('getLogin')->with('message', trans('crudbooster.alert_password_wrong'));
+            $email = Request::input("email");
+            return redirect()->route('getLogin')->with('email', $email)->with('message', trans('crudbooster.alert_password_wrong'));
         }
     }
 
@@ -135,7 +151,7 @@ class AdminController extends CBController
             return redirect()->back()->with(['message' => implode(', ', $message), 'message_type' => 'danger']);
         }
 
-        $rand_string = str_random(5);
+        $rand_string = str_random(8);
         $password = \Hash::make($rand_string);
 
         DB::table(config('crudbooster.USER_TABLE'))->where('email', Request::input('email'))->update(['password' => $password]);

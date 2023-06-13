@@ -131,8 +131,8 @@
       })
     }
     $(function() {
-      loader_notification();
+      //loader_notification();
       setInterval(function() {
-          loader_notification();
+          //loader_notification();
       },10000);
     });	

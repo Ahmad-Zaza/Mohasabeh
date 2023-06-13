@@ -31,7 +31,7 @@ class CRUDBoosterServiceProvider extends ServiceProvider
             $this->publishes([__DIR__.'/userfiles/controllers/CBHook.php' => app_path('Http/Controllers/CBHook.php')],'CBHook');
         }
 
-        if(!file_exists(app_path('Http/Controllers/AdminCmsUsersController.php'))) {
+        if(!file_exists(app_path('Http/Controllers/Users/UsersController.php'))) {
             $this->publishes([__DIR__.'/userfiles/controllers/AdminCmsUsersController.php' => app_path('Http/Controllers/AdminCmsUsersController.php')],'cb_user_controller');
         }        
 

@@ -2,6 +2,7 @@
 
 namespace crocodicstudio_voila\crudbooster\helpers;
 
+use App\Models\SystemConfigration\SystemSetting;
 use Cache;
 use DB;
 use Image;
@@ -11,6 +12,7 @@ use Schema;
 use Session;
 use Storage;
 use Validator;
+use File;
 
 class CRUDBooster
 {
@@ -32,8 +34,10 @@ class CRUDBooster
         $mime_type = finfo_buffer($f, $filedata, FILEINFO_MIME_TYPE);
         @$mime_type = explode('/', $mime_type);
         @$mime_type = $mime_type[1];
+        
         if ($mime_type) {
-            $filePath = 'uploads/' . $userID . '/' . date('Y-m');
+            $display_cycle = Session::get('display_cycle');
+            $filePath = 'uploads/C'.$display_cycle.'/' . $userID . '/' . date('Y-m');
             Storage::makeDirectory($filePath);
             $filename = md5(str_random(5)) . '.' . $mime_type;
             if (Storage::put($filePath . '/' . $filename, $filedata)) {
@@ -44,7 +48,7 @@ class CRUDBooster
         }
     }
 
-    public static function uploadFile($name, $encrypt = false, $resize_width = null, $resize_height = null, $id = null)
+    public static function uploadFile($name, $encrypt = false, $resize_width = null, $resize_height = null, $id = null, $info = null)
     {
         if (Request::hasFile($name)) {
             if (!self::myId()) {
@@ -61,20 +65,27 @@ class CRUDBooster
             $ext = $file->getClientOriginalExtension();
             $filename = str_slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
             $filesize = $file->getClientSize() / 1024;
-            $file_path = 'uploads/' . $userID . '/' . date('Y-m');
+            $display_cycle = Session::get('display_cycle');
+            $file_path = 'uploads/C'.$display_cycle.'/' . $userID . '/' . date('Y-m');
 
             //Create Directory Monthly
             Storage::makeDirectory($file_path);
 
             if ($encrypt == true) {
-                $filename = md5(str_random(5)) . '.' . $ext;
+                if ($info) {
+                    $info_number = str_replace(array('/', '@', '$', '%', '\\', '^', '.'), '_', $info['number']);
+                    $filename = $info['module_path'] . '_' . $info_number . '_' . date("Y-m-d_H-i-s") . '.' . $ext;
+                } else {
+                    $filename = md5(str_random(5)) . '.' . $ext;
+                }
             } else {
                 $filename = str_slug($filename, '_') . '.' . $ext;
             }
 
-            if (Storage::putFileAs($file_path, $file, $filename)) {
+            //Storage::putFileAs($file_path, $file, $filename)
+            $image = Storage::put($file_path . '/' . $filename, file_get_contents($file));
+            if ($image) {
                 self::resizeImage($file_path . '/' . $filename, $resize_width, $resize_height);
-
                 return $file_path . '/' . $filename;
             } else {
                 return null;
@@ -86,35 +97,51 @@ class CRUDBooster
 
     private static function resizeImage($fullFilePath, $resize_width = null, $resize_height = null, $qty = 100, $thumbQty = 75)
     {
-        $images_ext = config('crudbooster.IMAGE_EXTENSIONS', 'jpg,png,gif,bmp');
+        $images_ext = config('crudbooster.IMAGE_EXTENSIONS', 'jpg,jpeg,png,gif,bmp');
+        //get system image types setting values
+        $setting_image_types = SystemSetting::where('setting_key','image_types')->first()->setting_value;
+        if($setting_image_types){
+            $images_ext = $setting_image_types;
+        }
+         //get system image quality setting values
+         $setting_image_quality = SystemSetting::where('setting_key','image_quality')->first()->setting_value;
+         if($setting_image_quality){
+             $qty = $setting_image_quality;
+         }
+         
         $images_ext = explode(',', $images_ext);
 
         $filename = basename($fullFilePath);
         $file_path = trim(str_replace($filename, '', $fullFilePath), '/');
+        $temp_arr = explode('.', $filename);
+        $temp_arr[0] = $temp_arr[0] . "_thumbnail";
+        $filename_thumb = implode('.', $temp_arr);
 
-        $file_path_thumbnail = 'uploads_thumbnail/' . date('Y-m');
-        Storage::makeDirectory($file_path_thumbnail);
-
+        $ext = explode('.', $filename)[1];
         if (in_array(strtolower($ext), $images_ext)) {
 
             if ($resize_width && $resize_height) {
-                $img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                //$img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                $img = Image::make(file_get_contents(storage_path('app/' . $file_path . '/' . $filename)));
                 $img->fit($resize_width, $resize_height);
                 $img->save(storage_path('app/' . $file_path . '/' . $filename), $qty);
             } elseif ($resize_width && !$resize_height) {
-                $img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                //$img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                $img = Image::make(file_get_contents(storage_path('app/' . $file_path . '/' . $filename)));
                 $img->resize($resize_width, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
                 $img->save(storage_path('app/' . $file_path . '/' . $filename), $qty);
             } elseif (!$resize_width && $resize_height) {
-                $img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                //$img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                $img = Image::make(file_get_contents(storage_path('app/' . $file_path . '/' . $filename)));
                 $img->resize(null, $resize_height, function ($constraint) {
                     $constraint->aspectRatio();
                 });
                 $img->save(storage_path('app/' . $file_path . '/' . $filename), $qty);
             } else {
-                $img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                //$img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+                $img = Image::make(file_get_contents(storage_path('app/' . $file_path . '/' . $filename)));
                 if ($img->width() > 1300) {
                     $img->resize(1300, null, function ($constraint) {
                         $constraint->aspectRatio();
@@ -123,33 +150,32 @@ class CRUDBooster
                 $img->save(storage_path('app/' . $file_path . '/' . $filename), $qty);
             }
 
-            $img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+            //$img = Image::make(storage_path('app/' . $file_path . '/' . $filename));
+            $img = Image::make(file_get_contents(storage_path('app/' . $file_path . '/' . $filename)));
             $img->fit(350, 350);
-            $img->save(storage_path('app/' . $file_path_thumbnail . '/' . $filename), $thumbQty);
+            $img->save(storage_path('app/' . $file_path . '/' . $filename_thumb), $thumbQty);
         }
     }
 
     //fesal
     public static function getResizeImage($img, $width = null, $height = null)
     {
-    	
-    	if($img==null || $img==''){
-    	   
-    	   return url('vendor/crudbooster/avatar.jpg');
 
-    	}
-    	
-    	
+        if ($img == null || $img == '') {
+
+            return url('vendor/crudbooster/avatar.jpg');
+        }
+
+
         $name_image = 'R' . $width . 'x' . $height . str_replace("/", "_", $img);
-        
-        if(file_exists(public_path('/thumbs/____resize____/' . $name_image))){
+
+        if (file_exists(public_path('/thumbs/____resize____/' . $name_image))) {
             return url('thumbs/____resize____/' . $name_image);
         }
-        
-         if(!file_exists(public_path("$img")))
-            {
-            	return url('vendor/crudbooster/avatar.jpg');
-            }
+
+        if (!file_exists(public_path("$img"))) {
+            return url('vendor/crudbooster/avatar.jpg');
+        }
 
         $imgInfo = getimagesize(public_path("$img"));
 
@@ -183,10 +209,9 @@ class CRUDBooster
             if (!file_exists(public_path('/thumbs'))) {
                 mkdir(public_path('/thumbs'), 777, true);
             }
-            
-            if(!file_exists(public_path("$img")))
-            {
-            	return url('vendor/crudbooster/avatar.jpg');
+
+            if (!file_exists(public_path("$img"))) {
+                return url('vendor/crudbooster/avatar.jpg');
             }
 
             $img = Image::make(public_path("$img"))->resize($nWidth, $nHeight);
@@ -199,27 +224,25 @@ class CRUDBooster
         }
 
         return url('thumbs/____resize____/' . $name_image);
-
     }
 
     //fesal
     public static function getCropImage($img, $width = 100, $height = 100)
     {
-    
-    	if($img==null || $img==''){
-    	   
-    	   return url('vendor/crudbooster/avatar.jpg');
 
-    	}
-    	
+        if ($img == null || $img == '') {
+
+            return url('vendor/crudbooster/avatar.jpg');
+        }
+
         $name_image = 'R' . $width . 'x' . $height . str_replace("/", "_", $img);
 
-        if(file_exists(public_path('/thumbs/____crop____/' . $name_image))){
+        if (file_exists(public_path('/thumbs/____crop____/' . $name_image))) {
             return url('thumbs/____crop____/' . $name_image);
         }
 
 
-        $img=CRUDBooster::resizeForCrop($img,$width,$height);
+        $img = CRUDBooster::resizeForCrop($img, $width, $height);
 
         $name_image = 'C' . $width . 'x' . $height . str_replace("/", "_", $img);
 
@@ -228,9 +251,8 @@ class CRUDBooster
                 mkdir(public_path('/thumbs'), 777, true);
             }
 
-	   if(!file_exists(public_path("$img")))
-            {
-            	return url('vendor/crudbooster/avatar.jpg');
+            if (!file_exists(public_path("$img"))) {
+                return url('vendor/crudbooster/avatar.jpg');
             }
 
             $img = Image::make(public_path("$img"))->crop($width, $height);
@@ -247,25 +269,23 @@ class CRUDBooster
 
     public static function resizeForCrop($img, $width = null, $height = null)
     {
-    
-    	if($img==null || $img==''){
-    	   
-    	   return url('vendor/crudbooster/avatar.jpg');
 
-    	}
-    	
-    	
+        if ($img == null || $img == '') {
+
+            return url('vendor/crudbooster/avatar.jpg');
+        }
+
+
         $name_image = 'RC' . $width . 'x' . $height . str_replace("/", "_", $img);
 
         // if(file_exists(public_path('/thumbs/____resize____/' . $name_image))){
         //     dd(public_path('/thumbs/____resize____/' . $name_image));
         //     return url('thumbs/____resize____/' . $name_image);
         // }
-        if(!file_exists(public_path("$img")))
-            {
-            	return url('vendor/crudbooster/avatar.jpg');
-            }
-        
+        if (!file_exists(public_path("$img"))) {
+            return url('vendor/crudbooster/avatar.jpg');
+        }
+
 
         $imgInfo = getimagesize(public_path("$img"));
 
@@ -295,37 +315,35 @@ class CRUDBooster
             $nHeight = round($nHeight);
             if ($nWidth < $width || $nHeight < $height) {
                 if ($nWidth < $width) {
-                    $rate=$width / $imgInfo[0];
-                   
+                    $rate = $width / $imgInfo[0];
                 }
 
                 if ($nHeight < $height) {
-                    
-                    $rate=$height / $imgInfo[1];
+
+                    $rate = $height / $imgInfo[1];
                     // dd($nWidth." ".$width." / ". $nHeight." ".$height." rate ".$rate);
-                    
+
                 }
 
                 $nWidth = $imgInfo[0] * $rate;
                 $nHeight = $imgInfo[1] * $rate;
-    
+
                 $nWidth = round($nWidth);
                 $nHeight = round($nHeight);
             }
         }
-       
 
-       
+
+
         if (!file_exists(public_path('thumbs/____resize____/' . $name_image))) {
             if (!file_exists(public_path('/thumbs'))) {
                 mkdir(public_path('/thumbs'), 777, true);
             }
-            
-            if(!file_exists(public_path("$img")))
-            {
-            	return url('vendor/crudbooster/avatar.jpg');
+
+            if (!file_exists(public_path("$img"))) {
+                return url('vendor/crudbooster/avatar.jpg');
             }
-            
+
             $img = Image::make(public_path("$img"))->resize($nWidth, $nHeight);
 
             if (!file_exists(public_path('/thumbs/____resize____/'))) {
@@ -336,7 +354,6 @@ class CRUDBooster
         }
 
         return 'thumbs/____resize____/' . $name_image;
-
     }
 
     public static function getSetting($name)
@@ -451,7 +468,16 @@ class CRUDBooster
     {
         return Session::get('admin_privileges_name');
     }
+    public static function getUser()
+    {
+        return Session::get('user');
+    }
+    public static function isManager()
+    {
+        $user = Session::get('user');
 
+        return in_array($user->roleId,explode(',',config('setting.MANAGERS_ROLES_IDS')));
+    }
     public static function isLocked()
     {
         return Session::get('admin_lock');
@@ -459,12 +485,14 @@ class CRUDBooster
 
     public static function redirectBack($message, $type = 'warning')
     {
-
         if (Request::ajax()) {
             $resp = response()->json(['message' => $message, 'message_type' => $type, 'redirect_url' => $_SERVER['HTTP_REFERER']])->send();
             exit;
         } else {
-            $resp = redirect()->back()->with(['message' => $message, 'message_type' => $type]);
+            Session::put("message", $message);
+            Session::put("message_type", $type);
+            // return redirect()->back()->with(['message' => $message, 'message_type' => $type]);
+            $resp = redirect()->back();
             Session::driver()->save();
             $resp->send();
             exit;
@@ -473,14 +501,55 @@ class CRUDBooster
 
     public static function redirect($to, $message, $type = 'warning')
     {
-
         if (Request::ajax()) {
             $resp = response()->json(['message' => $message, 'message_type' => $type, 'redirect_url' => $to])->send();
             exit;
         } else {
-            $resp = redirect($to)->with(['message' => $message, 'message_type' => $type]);
+
+            $host = request()->getSchemeAndHttpHost();
+            if ($to == $host . "/modules") { //if redirect to mainpage (statistics)
+                if (CRUDBooster::isSuperadmin()) {
+                    $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/admin/statistics";
+                } else {
+                    $id = CRUDBooster::myId();
+                    $me = DB::table('cms_users')->find($id);
+                    if($me->id_cms_privileges == 2){
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/manager/statistics";
+                    }elseif ($me->id_cms_privileges == 3) {
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/salesmanager/statistics";
+                    }elseif ($me->id_cms_privileges == 4) {
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/salesmen/statistics";
+                    }elseif ($me->id_cms_privileges == 5) {
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/viewer/statistics";
+                    }elseif ($me->id_cms_privileges == 6) {
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/factory_delegate/statistics";
+                    }elseif ($me->id_cms_privileges == 7) {
+                        $to = $host . '/' . config('crudbooster.ADMIN_PATH') . "/factory_cashier/statistics";
+                    } 
+
+                }
+            }
+            Session::put("message", $message);
+            Session::put("message_type", $type);
+            Session::put("redirect_with_message", 1);
+
+            // return redirect($to)->with(['message' => $message, 'message_type' => $type, 'redirect_with_message' => 1]);
+            if (Request::get('submit') == trans('crudbooster.button_save_more')) { //when save and add more don't return input values
+                $resp = redirect($to);
+            }else{
+                $resp = redirect($to)->withInput();
+            }
+            
             Session::driver()->save();
+            //edit here
+            // $user_name = Session::get('admin_name');
+            // $item_id = Session::get('opened_item');
+            // $session_message = Session::get('message');
+            // $session_message_type = Session::get('message_type');
+            // Storage::append('redirect_messages.txt', "message:($session_message) message_type:($session_message_type) to:($to) item_id:($item_id) username:($user_name) date:(" . date('Y-m-d h:i:s') . ")");
+
             $resp->send();
+
             exit;
         }
     }
@@ -710,16 +779,31 @@ class CRUDBooster
 
     public static function deleteConfirm($redirectTo)
     {
-        echo "swal({
-				title: \"" . trans('crudbooster.delete_title_confirm') . "\",
-				text: \"" . trans('crudbooster.delete_description_confirm') . "\",
-				type: \"warning\",
-				showCancelButton: true,
-				confirmButtonColor: \"#ff0000\",
-				confirmButtonText: \"" . trans('crudbooster.confirmation_yes') . "\",
-				cancelButtonText: \"" . trans('crudbooster.confirmation_no') . "\",
-				closeOnConfirm: false },
-				function(){  location.href=\"$redirectTo\" });";
+        $url_segments = array_reverse(explode('/', $redirectTo));
+        $id = $url_segments[0];
+        $path = $url_segments[2];
+        echo "
+            var i=$(this).children(\".fa\");
+                i.removeClass(\"fa-trash\");
+                i.addClass(\"fa-spinner fa-spin\");
+            $.get(\"/checkBeforeDelete/$path/$id\", function(res) {
+                let json_res = JSON.parse(res);
+                let text_msg = json_res.massege;
+                swal({
+                        title: \"" . trans('crudbooster.delete_title_confirm') . "\",
+                        text: text_msg,
+                        type: \"warning\",
+                        showCancelButton: true,
+                        confirmButtonColor: \"#ff0000\",
+                        confirmButtonText: \"" . trans('crudbooster.confirmation_yes') . "\",
+                        cancelButtonText: \"" . trans('crudbooster.confirmation_no') . "\",
+                        closeOnConfirm: false },
+                        function(){  location.href=\"$redirectTo\" });
+                i.removeClass(\"fa-spinner fa-spin\");
+                i.addClass(\"fa-trash\");
+            });
+            ";
+        
     }
 
     private static function getModulePath()
@@ -811,7 +895,6 @@ class CRUDBooster
                 //MySQL & SQL Server
                 $typedata = DB::select(DB::raw("select DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='$table' and COLUMN_NAME = '$field'"))[0]->DATA_TYPE;
             } catch (\Exception $e) {
-
             }
 
             if (!$typedata) {
@@ -1097,18 +1180,18 @@ class CRUDBooster
         return self::findPrimaryKey($table);
     }
 
-//     public static function findPrimaryKey($table)
+    //     public static function findPrimaryKey($table)
     //     {
     //         if (! $table) {
     //             return 'id';
     //         }
 
-//         if (self::getCache('table_'.$table, 'primary_key')) {
+    //         if (self::getCache('table_'.$table, 'primary_key')) {
     //             return self::getCache('table_'.$table, 'primary_key');
     //         }
     //         $table = CRUDBooster::parseSqlTable($table);
 
-//         if (! $table['table']) {
+    //         if (! $table['table']) {
     //             throw new \Exception("parseSqlTable can't determine the table");
     //         }
     //         $query = config('database.connections.'.config('database.default').'.driver') == 'pgsql' ? "select * from information_schema.key_column_usage WHERE TABLE_NAME = '$table[table]'" : "select * from information_schema.COLUMNS where TABLE_SCHEMA = '$table[database]' and TABLE_NAME = '$table[table]' and COLUMN_KEY = 'PRI'";
@@ -1117,7 +1200,7 @@ class CRUDBooster
     //         if ($primary_key) {
     //             self::putCache('table_'.$table, 'primary_key', $primary_key);
 
-//             return $primary_key;
+    //             return $primary_key;
     //         } else {
     //             return 'id';
     //         }
@@ -2164,7 +2247,6 @@ class CRUDBooster
                 }
             }
         } catch (\Exception $e) {
-
         }
     }
 }

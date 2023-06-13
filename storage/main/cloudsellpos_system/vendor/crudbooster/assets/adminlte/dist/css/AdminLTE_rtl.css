@@ -11,21 +11,10 @@
  * -------------------------
  */
  
- @font-face {
-  font-family: 'Droid Arabic Naskh';
-  font-style: normal;
-  font-weight: 400;
-  src: url(fonts/DroidNaskh-Regular.eot);
-  src: url(fonts/DroidNaskh-Regular.eot?#iefix) format('embedded-opentype'),
-  url(fonts/DroidNaskh-Regular.woff2) format('woff2'),
-  url(fonts/DroidNaskh-Regular.woff) format('woff'),
-  url(fonts/DroidNaskh-Regular.ttf) format('truetype');
-}
-
 @font-face {
   font-family: 'Droid Arabic Kufi';
-  src: url('fonts/DroidKufi/DroidArabicKufi.woff2') format('woff2'),
-      url('fonts/DroidKufi/DroidArabicKufi.woff') format('woff');
+  src: url('../../../fonts/DroidKufi/DroidArabicKufi.woff2') format('woff2'),
+      url('../../../fonts/DroidKufi/DroidArabicKufi.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -165,7 +154,7 @@ body.hold-transition .main-header .logo {
 }
 /* Content */
 .content {
-  min-height: 250px;
+  min-height: 350px;
   padding: 15px;
   margin-left: auto;
   margin-right: auto;
@@ -4763,6 +4752,11 @@ table.text-center th {
   right:300px !important;
 }
 
+.daterangepicker.dropdown-menu{
+  max-width:250px !important;
+  right:300px !important;
+  direction:ltr;
+}
 /********** Add Scroll to table *******/
 .tableFixHead {
   overflow-y: auto;
@@ -4803,7 +4797,8 @@ table.text-center th {
 }
 
 #filter-form input[type=date].form-control {
-  height: 34px;
+  border:1px solid #aaa;
+  border-radius: 4px;
 }
 
 .alert.alert-warning button {
@@ -4818,3 +4813,151 @@ table.nestable td{
   padding:0px !important;
 }
 
+.main-header #StartTour.sidebar-toggle:before{
+  display: none;
+}
+
+#table_dashboard th:not(:first-child)
+{ width : 7% }
+
+.panel>.table-responsive{
+overflow-x: hidden;
+}
+
+#table_dashboard.report-table th:not(:first-child)
+{ width : inherit !important }
+
+.box-header .select2-container{
+  display: block;
+  width:100% !important;
+}
+
+.table-date{
+  direction: ltr; 
+  float:right;
+}
+
+#table_dashboard.report-table  th{
+  color:#3c8dbc !important;
+}
+
+/******* hidden upload images btn *******/
+#btn-add-table-adafsor,
+#btn-reset-form-adafsor{
+  display: none !important;
+}
+
+.tableFixHead .details-table thead th{
+    background-color: #fff;
+}
+
+ul.select2-results__options ,
+.select2-selection__rendered{
+    direction: rtl;
+}
+
+.detail-page-btns span,
+.detail-page-btns a{
+  margin-right: 5px;
+}
+
+.alert button.close{
+  float:left;
+}
+
+div#advanced_filter_modal select{
+  padding-top: 4px;
+}
+div#advanced_filter_modal .form-control{
+  font-size:13px;
+}
+
+.other_details_container{
+  position: relative;
+}
+.other_details_sect{
+  position: absolute;
+  left:0;
+  top:0px;
+  text-align:right;
+  border:1px solid #777;
+  width:300px;
+  padding:10px 15px;
+  line-height: 30px;
+  background:#ffffff;
+}
+
+/* Hide Arrows From Input Number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#btn_advanced_filter.active{
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+
+.inv-item-details{
+  padding:5px;
+}
+
+.info-box-link{
+  color:initial;
+}
+.info-box-link:hover .setting-brief,
+.info-box-link:focus .setting-brief{
+  color:initial;
+}
+.info-box-link .info-box:hover{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
+}
+
+.setting-note{
+  font-size: 10px;
+  color: #777;
+}
+
+.ajax-select2{
+  min-width: 270px;
+  width:100% !important;
+}
+
+.display_old_cycle{
+  position: fixed;
+  left:0;
+  bottom: 30px;
+  display: inline-block;
+  z-index: 3;
+}
+.display_old_cycle h4{
+  font-size: 14px;
+}
+.display_old_cycle p{
+  font-size: 11px;
+}
+
+.re-calculate-box{
+  margin-top:50px;
+}
+
+.accordion-roles .box-header{
+  padding:0px;
+}
+.accordion-roles .box-title{
+  width:100%;
+  text-align: center;
+}
+.accordion-roles .box-title a{
+  display: inline-block;
+  width:100%;
+  padding:10px;
+}

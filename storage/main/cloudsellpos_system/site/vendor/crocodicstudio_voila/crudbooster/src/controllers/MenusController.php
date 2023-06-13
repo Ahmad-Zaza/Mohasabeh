@@ -144,13 +144,13 @@ class MenusController extends CBController
 			";
 
         $this->col = [];
-        $this->col[] = ["label" => "Name", "name" => "name"];
-        $this->col[] = ["label" => "Is Active", "name" => "is_active"];
-        $this->col[] = ["label" => "Privileges", "name" => "id_cms_privileges", "join" => "cms_privileges,name"];
+        $this->col[] = ["label" => "الاسم", "name" => "name"];
+        $this->col[] = ["label" => "فعال", "name" => "is_active"];
+        $this->col[] = ["label" => "الرخص", "name" => "id_cms_privileges", "join" => "cms_privileges,name"];
 
         $this->form = [];
         $this->form[] = [
-            "label" => "Privileges",
+            "label" => "الرخص",
             "name" => "cms_menus_privileges",
             "type" => "select2",
             "select2_multiple" => true,
@@ -159,15 +159,15 @@ class MenusController extends CBController
             "required" => true,
         ];
         $this->form[] = [
-            "label" => "Name",
+            "label" => "الاسم",
             "name" => "name",
             "type" => "text",
             "required" => true,
             "validation" => "required|min:3|max:255",
-            "placeholder" => "You can only enter alphanumeric character and spaces only",
+            "placeholder" => "يمكنك فقط إدخال الأحرف الأبجدية والمسافات فقط",
         ];
         $this->form[] = [
-            "label" => "Type",
+            "label" => "النوع",
             "name" => "type",
             "type" => "radio",
             "required" => true,
@@ -176,7 +176,7 @@ class MenusController extends CBController
         ];
 
         $this->form[] = [
-            "label" => "Module",
+            "label" => "الموديول",
             "name" => "module_slug",
             "type" => "select",
             "datatable" => "cms_moduls,name",
@@ -184,7 +184,7 @@ class MenusController extends CBController
             "value" => $id_module,
         ];
         $this->form[] = [
-            "label" => "Statistic",
+            "label" => "الاحصائيات",
             "name" => "statistic_slug",
             "type" => "select",
             "datatable" => "cms_statistics,name",
@@ -193,10 +193,10 @@ class MenusController extends CBController
         ];
 
         $this->form[] = [
-            "label" => "Value",
+            "label" => "القيمة",
             "name" => "path",
             "type" => "text",
-            'help' => 'If you select type controller, you can fill this field with controller name, you may include the method also',
+            'help' => 'إن كنت تعرف الموديول. يمكنك ملأ هذا الحقل باسم الموديول مضاف إليه اسم التابع المستخدم',
             'placeholder' => 'NameController or NameController@methodName',
             "style" => "display:none",
         ];
@@ -204,9 +204,9 @@ class MenusController extends CBController
         $fontawesome = Fontawesome::getIcons();
 
         $custom = view('crudbooster::components.list_icon', compact('fontawesome', 'row'))->render();
-        $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'custom', 'html' => $custom, 'required' => true];
+        $this->form[] = ['label' => 'الأيقونة', 'name' => 'icon', 'type' => 'custom', 'html' => $custom, 'required' => true];
         $this->form[] = [
-            'label' => 'Color',
+            'label' => 'اللون',
             'name' => 'color',
             'type' => 'select2',
             'dataenum' => ['normal', 'red', 'green', 'aqua', 'light-blue', 'red', 'yellow', 'muted'],
@@ -214,21 +214,21 @@ class MenusController extends CBController
             'value' => 'normal',
         ];
         $this->form[] = [
-            "label" => "Active",
+            "label" => "فعال",
             "name" => "is_active",
             "type" => "radio",
             "required" => true,
             "validation" => "required|integer",
-            "dataenum" => ['1|Active', '0|InActive'],
+            "dataenum" => ['1|فعال', '0|غير فعال'],
             'value' => '1',
         ];
         $this->form[] = [
-            "label" => "Dashboard",
+            "label" => "الرئيسية",
             "name" => "is_dashboard",
             "type" => "radio",
             "required" => true,
             "validation" => "required|integer",
-            "dataenum" => ['1|Yes', '0|No'],
+            "dataenum" => ['1|نعم', '0|لا'],
             'value' => '0',
         ];
 
@@ -272,7 +272,7 @@ class MenusController extends CBController
 
         $return_url = Request::fullUrl();
 
-        $page_title = 'Menu Management';
+        $page_title = 'ادارة القوائم';
 
         return view('crudbooster::menus_management', compact('menu_active', 'menu_inactive', 'privileges', 'id_cms_privileges', 'return_url', 'page_title'));
     }

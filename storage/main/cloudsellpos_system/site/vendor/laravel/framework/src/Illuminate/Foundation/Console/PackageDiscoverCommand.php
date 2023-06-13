@@ -36,6 +36,5 @@ class PackageDiscoverCommand extends Command
         }
 
         $this->info('Package manifest generated successfully.');
-        return 0;
     }
 }

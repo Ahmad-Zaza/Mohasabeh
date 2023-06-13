@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Session;
+
 $name = str_slug($form['label'], '');
 ?>
 @push('bottom')
@@ -179,7 +181,8 @@ $name = str_slug($form['label'], '');
 
                                                             // Grab the files and set them to our variable
                                                             function prepareUpload{{$name_column}}(event) {
-                                                                var max_size = {{ ($col['max'])?:2000 }};
+                                                                //setting_image_max_size get value from app services provider
+                                                                var max_size = {{ ($col['max'])?:$setting_image_max_size }};
                                                                 file = event.target.files[0];
 
                                                                 var filesize = Math.round(parseInt(file.size) / 1024);
@@ -191,7 +194,8 @@ $name = str_slug($form['label'], '');
 
                                                                 filename = $('#fake-upload-{{$name_column}}').val().replace(/C:\\fakepath\\/i, '');
                                                                 var extension = filename.split('.').pop().toLowerCase();
-                                                                var img_extension = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+                                                                //setting_image_types get value from app services provider
+                                                                var img_extension = "{{$setting_image_types}}".split(",");
                                                                 var available_extension = "{{config('crudbooster.UPLOAD_TYPES')}}".split(",");
                                                                 var is_image_only = {{ ($col['upload_type'] == 'image')?"true":"false" }};
 
@@ -206,8 +210,7 @@ $name = str_slug($form['label'], '');
                                                                         return false;
                                                                     }
                                                                 }
-
-
+                                                                
                                                                 $('#{{$name_column}} .input-label').val(filename);
 
                                                                 $('#loading-{{$name_column}}').fadeIn();
@@ -217,8 +220,9 @@ $name = str_slug($form['label'], '');
 
                                                                 //Upload File To Server
                                                                 uploadFiles{{$name_column}}(event);
-                                                            }
 
+                                                            }
+                                                                
                                                             function uploadFiles{{$name_column}}(event) {
                                                                 event.stopPropagation(); // Stop stuff happening
                                                                 event.preventDefault(); // Totally stop stuff happening
@@ -229,6 +233,14 @@ $name = str_slug($form['label'], '');
                                                                 var data = new FormData();
                                                                 data.append('userfile', file);
 
+                                                                $number = '';
+                                                                if(document.getElementById("bill_number")){
+                                                                    $number=$("#bill_number").val();
+                                                                }else if(document.getElementById("voucher_number")){
+                                                                    $number=$("#voucher_number").val();
+                                                                }
+                                                                data.append('number',$number);
+
                                                                 $.ajax({
                                                                     url: '{{CRUDBooster::mainpath("upload-file")}}',
                                                                     type: 'POST',
@@ -237,16 +249,37 @@ $name = str_slug($form['label'], '');
                                                                     processData: false, // Don't process the files
                                                                     contentType: false, // Set content type to false as jQuery will tell the server its a query string request
                                                                     success: function (data, textStatus, jqXHR) {
-                                                                        console.log(data);
-                                                                        $('#btn-add-table-{{$name}}').removeClass('disabled');
-                                                                        $('#loading-{{$name_column}}').hide();
-                                                                        $('#btn-upload-{{$name_column}}').removeClass('disabled');
-                                                                        is_uploading = false;
+                                                                        if(data !== 'attachs_size_error'){
+                                                                            console.log('upload file ajax result -> '+data);
+                                                                            $('#btn-add-table-{{$name}}').removeClass('disabled');
+                                                                            $('#loading-{{$name_column}}').hide();
+                                                                            $('#btn-upload-{{$name_column}}').removeClass('disabled');
+                                                                            is_uploading = false;
 
-                                                                        var basename = data.split('/').reverse()[0];
-                                                                        $('#{{$name_column}} .input-label').val(basename);
+                                                                            var basename = data.split('/').reverse()[0];
+                                                                            $('#{{$name_column}} .input-label').val(basename);
 
-                                                                        $('#{{$name_column}} .input-id').val(data);
+                                                                            $('#{{$name_column}} .input-id').val(data);
+
+                                                                            //add uploaded image to table automatically
+                                                                            console.log("upload image finished, and add it to images table");
+                                                                            $('#btn-add-table-{{$name}}').click();
+                                                                            $("#table-adafsor a[data-label='"+basename+"']").attr('href',data);
+                                                                            $("#table-adafsor a[data-label='"+basename+"']").attr('target','_blank');
+                                                                            //show thumbnail in image src
+                                                                            var name = basename.split('.')[0];
+                                                                            thumb_name= name+'_thumbnail';
+                                                                            var thumb_path = data.replace(name,thumb_name);
+                                                                            //console.log(data);
+                                                                            //console.log('basename_thumbnail ->'+thumb_path);
+                                                                            $("#table-adafsor img[data-label='"+basename+"']").attr('src',thumb_path);
+                                                                        }else{
+                                                                            notify(_ERROR,"{{trans('messages.connot_add_image_because_no_enough_size_upgrade_you_package')}}",'error');
+                                                                            $('#btn-add-table-{{$name}}').removeClass('disabled');
+                                                                            $('#btn-upload-{{$name_column}}').removeClass('disabled');
+                                                                            is_uploading = false;
+                                                                            $('#loading-{{$name_column}}').hide();
+                                                                        }
                                                                     },
                                                                     error: function (jqXHR, textStatus, errorThrown) {
                                                                         $('#btn-add-table-{{$name}}').removeClass('disabled');
@@ -374,6 +407,10 @@ $name = str_slug($form['label'], '');
                                                 <script type="text/javascript">
                                                     function {{ $formula_function_name }}() {
                                                         var v = {!! $formula !!};
+                                                        if ('{{$name_column}}' === 'adafmadsubtotal'){
+                                                            //console.log(v.toFixed(2));
+                                                           v = v.toFixed(2); 
+                                                        }
                                                         $('#{{$name_column}}').val(v);
                                                     }
 
@@ -396,22 +433,41 @@ $name = str_slug($form['label'], '');
                                             }
 
                                             function deleteRow{{$name}}(t) {
-
                                                 if (confirm("{{trans('crudbooster.delete_title_confirm')}}")) {
                                                     $(t).parent().parent().remove();
                                                     if ($('#table-{{$name}} tbody tr').length == 0) {
                                                         var colspan = $('#table-{{$name}} thead tr th').length;
                                                         $('#table-{{$name}} tbody').html("<tr class='trNull'><td colspan='" + colspan + "' align='center'>{{trans('crudbooster.table_data_not_found')}}</td></tr>");
                                                     }
+
+                                                    //change qty in bill after delete
+                                                    if('{{$name}}' !== 'adafsor'){
+                                                        let p = $(t).parent().parent(); //parentTR
+                                                        let item_id = p.find(".item_id input").val();
+                                                        let item_qty = p.find(".quantity input").val();
+                                                        let old_qty_in_bill = $("#adafmaditem_id option[value='"+item_id+"']").attr('qty_in_bill');
+                                                        let qty_in_bill =  parseFloat(old_qty_in_bill) - parseFloat(item_qty); 
+                                                        $("#adafmaditem_id option[value='"+item_id+"']").attr('qty_in_bill',qty_in_bill);
+                                                    }
                                                 }
-
-                                                getSum();
-
+                                                if('{{$name}}' !== 'adafsor'){
+                                                    getSum();
+                                                }
+                                                $("#adafmaditem_id").val('').change();
+                                                $("#form-group-adafmad .child-form-area input").val('').change();
                                             }
 
                                             function editRow{{$name}}(t) {
                                                 
                                                 var p = $(t).parent().parent(); //parentTR
+
+                                                 //change old edit item qty in bill
+                                                if('{{$name}}' !== 'adafsor'){
+                                                    let item_id = p.find(".item_id input").val();
+                                                    let item_qty = p.find(".quantity input").val();
+                                                    $("#adafmaditem_id option[value='"+item_id+"']").attr('item_edit_qty',item_qty);
+                                                }
+
                                                 currentRow = p;
                                                 p.addClass('warning');
                                                 $('#btn-add-table-{{$name}}').val('{{trans("crudbooster.save_changes")}}');
@@ -449,6 +505,97 @@ $name = str_slug($form['label'], '');
                                                         is_false += 1;
                                                     }
                                                 })
+                                                //check if item is free
+                                                if("{{$name}}" === "adafmad"){ //for bills
+
+                                                    //check qty of item bigger than 0
+                                                    let item_qty=$("#adafmadquantity").val();
+                                                    if(parseFloat(item_qty) <= 0){
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('messages.quantity_must_bigger_than_zero')}}" , "warning");
+                                                        is_false += 1;
+                                                    }
+
+                                                    let item_unit_price=$("#adafmadunit_price").val();
+                                                    if(parseFloat(item_unit_price) < 0){
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('messages.unit_price_must_positive_value')}}" , "warning");
+                                                        is_false += 1;
+                                                    }
+
+                                                    let is_free_exist = $('#adafmad_is_free').length;
+                                                    if(is_free_exist){
+                                                        let checked= $('#adafmad_is_free').is(":checked");
+                                                        let price = $('#adafmadunit_price').val();
+                                                        if(price == 0 && !checked){
+                                                            sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('crudbooster.canot_add_item_it_isnot_free')}}" , "warning");
+                                                            is_false += 1;       
+                                                        }
+                                                    }
+
+                                                    
+                                                    //check inv has enough of choosen item
+                                                    let id = $("#adafmaditem_id").val();
+                                                    let qty= $("#adafmadquantity").val();
+                                                    let total = 0;
+                                                    let invallqty = parseFloat($("#adafmaditem_id :selected").attr('invallqty'));
+                                                    let qty_in_bill = parseFloat($("#adafmaditem_id :selected").attr('qty_in_bill'));
+
+                                                    if($('#btn-add-table-{{$name}}').val() == '{{trans("crudbooster.save_changes")}}'){//edit item    
+                                                        let item_edit_qty = parseFloat($("#adafmaditem_id :selected").attr('item_edit_qty'));
+                                                        
+                                                        if(invallqty !== 0){
+                                                            total =invallqty;
+                                                        }
+                                                        if(qty_in_bill !== 0){
+                                                            total -=qty_in_bill;
+                                                        }
+                                                        if(item_edit_qty !== 0){
+                                                            total +=item_edit_qty;
+                                                        }
+
+                                                    }else{ //add item
+                                                        if(invallqty !== 0){
+                                                            total =invallqty;
+                                                        }
+                                                        if(qty_in_bill !== 0){
+                                                            total =total - qty_in_bill;
+                                                        }
+                                                    }                                                   
+                                                  
+                                                    if(parseFloat(qty) > parseFloat(total)){
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('messages.inventory_doesnot_have_all_quantity')}}" , "warning");
+                                                        is_false += 1;
+                                                    }
+                                                    
+                                                    
+                                                }
+                                                
+                                                //for beginning items & transfer between inventories
+                                                if("{{$name}}" === "adaflljdol"){
+                                                    let beginning_item_qty=$("#adaflljdolquantity").val();
+                                                    if(parseFloat(beginning_item_qty) <= 0){
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('messages.quantity_must_bigger_than_zero')}}" , "warning");
+                                                        is_false += 1;
+                                                    }
+                                                }
+
+                                                if(("{{$name}}" === "adaflljdol") && $('#btn-add-table-{{$name}}').val() !== '{{trans("crudbooster.save_changes")}}'){
+                                                    var id = $("#{{$name}}item_id").val();
+                                                    var added_items_ids = $("input[name='{{$name}}-item_id[]']").map(function(){return $(this).val();}).get();
+                                                    let inItemTable = added_items_ids.includes(id);
+                                                    if(inItemTable){
+                                                        var id = $(this).val('').change();
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('crudbooster.canot_add_item_it_is_already_exist_in_table')}}" , "warning");
+                                                        is_false += 1;
+                                                    } 
+                                                }
+                                                
+                                                if("{{$name}}" === "adfelalsndat"){ //add to initial vouchers
+                                                    let voucher_amount=$("#adfelalsndatamount").val();
+                                                    if(parseFloat(voucher_amount) == 0){
+                                                        sweetAlert("{{trans('crudbooster.alert_warning')}}","{{trans('messages.voucher_amount_must_not_zero')}}" , "warning");
+                                                        is_false += 1;
+                                                    }
+                                                }
 
                                                 if (is_false == 0) {
                                                     return true;
@@ -463,10 +610,29 @@ $name = str_slug($form['label'], '');
                                                 if (validateForm{{$name}}() == false) {
                                                     return false;
                                                 }
+
+                                                let is_free_checked= $('#adafmad_is_free').is(":checked");
+                                                if(is_free_checked){
+                                                    $('#adafmadunit_price').val(0).change();
+                                                    $('#adafmad_is_free').removeAttr('checked');
+                                                }
+
+                                                if("{{$name}}" === "adafmad"){ //for bills
+                                                    let item_qty = parseFloat($('#adafmadquantity').val()); //new qty
+                                                    let invallqty = parseFloat($("#adafmaditem_id :selected").attr('invallqty')); //invtory all items qty
+                                                    let qty_in_bill = parseFloat($("#adafmaditem_id :selected").attr('qty_in_bill'));//item qty in this bill
+                                                    let total_qty_in_bill = 0;
+                                                    if($('#btn-add-table-{{$name}}').val() == '{{trans("crudbooster.save_changes")}}'){//edit item 
+                                                        let item_edit_qty = parseFloat($("#adafmaditem_id :selected").attr('item_edit_qty'));//edited qty of item
+                                                        total_qty_in_bill = qty_in_bill - item_edit_qty + item_qty;
+                                                    }else{
+                                                        total_qty_in_bill = qty_in_bill + item_qty;
+                                                    }
+                                                    $("#adafmaditem_id :selected").attr('qty_in_bill',total_qty_in_bill);
+                                                }
                                                 
                                                 var trRow = '<tr>';
                                                 @foreach($form['columns'] as $c)
-                                              
                                                         @if($c['type']=='select')
                                                     trRow += "<td class='{{$c['name']}}'>" + $('#{{$name.$c["name"]}} option:selected').text() +
                                                     "<input type='hidden' name='{{$name}}-{{$c['name']}}[]' value='" + $('#{{$name.$c["name"]}}').val() + "'/>" +
@@ -482,7 +648,7 @@ $name = str_slug($form['label'], '');
                                                 @elseif($c['type']=='upload')
                                                         @if($c['upload_type']=='image')
                                                     trRow += "<td class='{{$c['name']}}'>" +
-                                                    "<a data-lightbox='roadtrip' href='{{asset('/')}}" + $('#{{$name.$c["name"]}} .input-id').val() + "'><img data-label='" + $('#{{$name.$c["name"]}} .input-label').val() + "' src='{{asset('/')}}" + $('#{{$name.$c["name"]}} .input-id').val() + "' width='50px' height='50px'/></a>" +
+                                                    "<a data-lightbox='roadtrip' href='" + $('#{{$name.$c["name"]}} .input-id').val() + "'><img data-label='" + $('#{{$name.$c["name"]}} .input-label').val() + "' src='" + $('#{{$name.$c["name"]}} .input-id').val() + "' width='50px' height='50px'/> " + $('#{{$name.$c["name"]}} .input-label').val() + " </a>" +
                                                     "<input type='hidden' name='{{$name}}-{{$c['name']}}[]' value='" + $('#{{$name.$c["name"]}} .input-id').val() + "'/>" +
                                                     "</td>";
                                                 @else
@@ -511,7 +677,10 @@ $name = str_slug($form['label'], '');
 
                                                 $('#btn-add-table-{{$name}}').val('{{trans("crudbooster.button_add_to_table")}}');
                                                 $('#btn-reset-form-{{$name}}').click();
-                                                getSum();
+                                                
+                                                if('{{$name}}' !== 'adafsor'){
+                                                    getSum();
+                                                }
                                             }
 
                                             function getSum() {
@@ -520,13 +689,13 @@ $name = str_slug($form['label'], '');
                                                 $('.subtotal').each(function(){
                                                     sum += parseFloat($(this).text());  // Or this.innerHTML, this.innerText
                                                 });
-                                                debugger
+                                                //debugger
 
                                                 // $('.subtotal>span').each(function(){
                                                 //     sum += parseFloat($(this).text());  // Or this.innerHTML, this.innerText
                                                 // });
                                                 console.log(sum);
-                                                debugger
+                                                //debugger
                                                 $("#amount").val(sum);
                                                 var discount = $("#discount").val();
 
@@ -544,13 +713,17 @@ $name = str_slug($form['label'], '');
 
                                                 
                                                 if(is_cash==1 && is_cash!=undefined && (type==1 || type==4) ){
-                                                    $.post("/bill/check",param,function(res){
-                                                    
-                                                    if(res.res==false){
-                                                        alert("للتذكرة : رصيد الصندوق هو "+res.sum);
+                                                    //check if add form or edit form
+                                                    let action = $('#form').attr('action');
+                                                    var id = action.split('/').pop();
+                                                    if(!$.isNumeric(id)){ //just when add new bill 
+                                                        $.post("/bill/check",param,function(res){
+                                                            if(res.res==false){
+                                                            alert("{{trans('messages.box_balance_is')}}"+res.sum);
+                                                            }
+                                                        });
                                                     }
 
-                                                })
                                                 }
                                                
 
@@ -595,28 +768,34 @@ $name = str_slug($form['label'], '');
                                 <tbody>
 
                                 <?php
-                                $columns_tbody = [];
-                                //fesal add sorting
-                                $data_child = DB::table($form['table'])->where($form['foreign_key'], $id)->orderby($form['table'].'.sorting','asc');
-                                foreach ($form['columns'] as $i => $c) {
-                                    $data_child->addselect($form['table'].'.'.$c['name']);
+                                $oldData = Session::get('OldData');
+                                if($oldData){ //get data from session if error happend
+                                    $data_child = $oldData;
+                                    Session::forget('OldData');
+                                }else{
+                                    $columns_tbody = [];
+                                    //fesal add sorting
+                                    $data_child = DB::table($form['table'])->where($form['foreign_key'], $id)->orderby($form['table'].'.sorting','asc');
+                                    foreach ($form['columns'] as $i => $c) {
+                                        $data_child->addselect($form['table'].'.'.$c['name']);
 
-                                    if ($c['type'] == 'datamodal') {
-                                        $datamodal_title = explode(',', $c['datamodal_columns'])[0];
-                                        $datamodal_table = $c['datamodal_table'];
-                                        $data_child->join($c['datamodal_table'], $c['datamodal_table'].'.id', '=', $c['name']);
-                                        $data_child->addselect($c['datamodal_table'].'.'.$datamodal_title.' as '.$datamodal_table.'_'.$datamodal_title);
-                                    } elseif ($c['type'] == 'select') {
-                                        if ($c['datatable']) {
-                                            $join_table = explode(',', $c['datatable'])[0];
-                                            $join_field = explode(',', $c['datatable'])[1];
-                                            $data_child->join($join_table, $join_table.'.id', '=', $c['name']);
-                                            $data_child->addselect($join_table.'.'.$join_field.' as '.$join_table.'_'.$join_field);
+                                        if ($c['type'] == 'datamodal') {
+                                            $datamodal_title = explode(',', $c['datamodal_columns'])[0];
+                                            $datamodal_table = $c['datamodal_table'];
+                                            $data_child->join($c['datamodal_table'], $c['datamodal_table'].'.id', '=', $c['name']);
+                                            $data_child->addselect($c['datamodal_table'].'.'.$datamodal_title.' as '.$datamodal_table.'_'.$datamodal_title);
+                                        } elseif ($c['type'] == 'select') {
+                                            if ($c['datatable']) {
+                                                $join_table = explode(',', $c['datatable'])[0];
+                                                $join_field = explode(',', $c['datatable'])[1];
+                                                $data_child->join($join_table, $join_table.'.id', '=', $c['name']);
+                                                $data_child->addselect($join_table.'.'.$join_field.' as '.$join_table.'_'.$join_field);
+                                            }
                                         }
                                     }
-                                }
 
-                                $data_child = $data_child->orderby($form['table'].'.id', 'desc')->get();
+                                    $data_child = $data_child->orderby($form['table'].'.id', 'desc')->get();
+                                }
                                 foreach($data_child as $d):
                                 ?>
                                 <tr>
@@ -648,7 +827,23 @@ $name = str_slug($form['label'], '');
                                             } elseif ($col['type'] == 'upload') {
                                                 $filename = basename($d->{$col['name']});
                                                 if ($col['upload_type'] == 'image') {
-                                                    echo "<a href='".asset($d->{$col['name']})."' data-lightbox='roadtrip'><img data-label='$filename' src='".asset($d->{$col['name']})."' width='50px' height='50px'/></a>";
+                                                    
+                                                    //get Thumbnail link
+                                                    $fullFilePath = $d->{$col['name']};
+                                                    $file_path = trim(str_replace($filename, '', $fullFilePath), '/');
+                                                    $temp_arr = explode('.',$filename);
+                                                    $temp_arr[0] = $temp_arr[0]."_thumbnail";
+                                                    $filename_thumb = implode('.',$temp_arr);
+                                                    $file_path_thumbnail = $file_path.'/'.$filename_thumb;
+                                                    
+                                                    //check it thumbnail existed
+                                                    $http_domain = request()->getSchemeAndHttpHost();
+                                                    $storage_thumb_path = 'app/'.str_replace($http_domain.'/','',$file_path_thumbnail);
+                                                    if(!file_exists(storage_path($storage_thumb_path))){
+                                                        $file_path_thumbnail = $fullFilePath;
+                                                    }
+
+                                                    echo "<a href='".asset($d->{$col['name']})."' data-lightbox='roadtrip'><img data-label='$filename' src='".asset($file_path_thumbnail)."' width='50px' height='50px'/> $filename </a>";
                                                     echo "<input type='hidden' name='".$name."-".$col['name']."[]' value='".$d->{$col['name']}."'/>";
                                                 } else {
                                                     echo "<a data-label='$filename' href='".asset($d->{$col['name']})."'>$filename</a>";

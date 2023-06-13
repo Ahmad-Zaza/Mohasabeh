@@ -79,9 +79,22 @@ class StatisticBuilderController extends CBController
 
                     $id = CRUDBooster::myId();
                     $me = DB::table('cms_users')->find($id);
-                    if ($me->id_cms_privileges == 4) {
+                    if ($me->id_cms_privileges == 2) {
+                        return redirect(config('crudbooster.ADMIN_PATH')."/manager/statistics");
+                    }elseif ($me->id_cms_privileges == 3) {
+                        return redirect(config('crudbooster.ADMIN_PATH')."/salesmanager/statistics");
+                    }elseif ($me->id_cms_privileges == 4) {
                         return redirect(config('crudbooster.ADMIN_PATH')."/salesmen/statistics");
+                    }elseif ($me->id_cms_privileges == 5) {
+                        return redirect(config('crudbooster.ADMIN_PATH')."/viewer/statistics");
+                    }elseif ($me->id_cms_privileges == 6) {
+                        return redirect(config('crudbooster.ADMIN_PATH')."/factory_delegate/statistics");
+                    }elseif ($me->id_cms_privileges == 7) {
+                        return redirect(config('crudbooster.ADMIN_PATH')."/factory_cashier/statistics");
                     }
+                    
+                    
+                    
             }
             
 
