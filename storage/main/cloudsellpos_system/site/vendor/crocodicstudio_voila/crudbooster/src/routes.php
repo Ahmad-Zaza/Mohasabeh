@@ -47,7 +47,7 @@ Route::group([
     'namespace' => 'App\Http\Controllers',
 ], function () use ($namespace) {
 
-    if (Request::is(config('crudbooster.ADMIN_PATH'))) {
+    // if (Request::is(config('crudbooster.ADMIN_PATH'))) {
         $menus = DB::table('cms_menus')->where('is_dashboard', 1)->first();
         if ($menus) {
             if ($menus->type == 'Statistic') {
@@ -65,7 +65,7 @@ Route::group([
                 redirect($menus->path);
             }
         }
-    }
+    // }
 
     try {
         $moduls = DB::table('cms_moduls')->where('path', '!=', '')->where('controller', '!=', '')

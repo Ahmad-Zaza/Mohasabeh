@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
+use crocodicstudio_voila\crudbooster\CRUDBoosterServiceProvider;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -18,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layout.layout', function ($view) {
             $lang = \LaravelLocalization::getCurrentLocale();
-           
+
 
             $lang_ = ($lang == 'en') ? 1 : 2;
 
@@ -70,11 +72,11 @@ class AppServiceProvider extends ServiceProvider
             )->where(
                 'active',1
             )->get();
-            
+
               $socials = \DB::table('social_media')->orderBy('sorting', 'asc')->where([
                 'active' => 1,
             ])->get();
-           
+
 
             $view->with([
                 "menus" => $menus,
@@ -84,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-    
+
     }
 
     /**
@@ -95,5 +97,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
+        $this->app->register(CRUDBoosterServiceProvider::class);
     }
 }

@@ -16,13 +16,7 @@ use Illuminate\Support\Facades\Route;
 $base_url = config('crudbooster.ADMIN_PATH');
 \LaravelLocalization::setLocale(config('setting.LANG'));
 
-Route::get('/clear-cache', function () {
-    \Artisan::call('cache:clear');
-    Artisan::call('config:clear');
-    // Artisan::call('config:cache');
-    Artisan::call('view:clear');
-    // Artisan::call('view:cache');
-});
+Route::get('/clear-cache', "FrontController@clearCache");
 
 Route::group([
 
@@ -67,11 +61,7 @@ Route::post('/bill/check', "AdminBillsPurchaseInvoiceController@checkBox");
 
 Route::post('request/form/{id}', 'CmsFormController@submit');
 
-Route::get('lang/{locale}', function ($locale) {
-    \App::setLocale($locale);
-    session()->put('locale', $locale);
-    return redirect()->back();
-});
+Route::get('lang/{locale}',"FrontController@changeLocale");
 
 // Route::get('insertData', function($locale){
 //     for ($i=0; $i <100 ; $i++) {
