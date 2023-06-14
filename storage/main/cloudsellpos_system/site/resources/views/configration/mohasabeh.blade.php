@@ -93,13 +93,13 @@
                             <td><span class="badge bg-blue">{{$data->avilable_currencies_num}}</span></td>
                         </tr>
 
-                        <tr>
+                        {{-- <tr>
                             <td><i class="fa fa-user"></i></td>
                             <th > {{trans('labels.clients_num')}}</th>
                             <td><span class="badge bg-red">{{$data->clients_num}}</span></td>
                             <td><span class="badge bg-green">{{$data->current_clients_num}}</span></td>
                             <td><span class="badge bg-blue">{{$data->avilable_clients_num}}</span></td>
-                        </tr>
+                        </tr> --}}
 
                         <tr>
                             <td><i class="fa fa-list-alt"></i></td>
