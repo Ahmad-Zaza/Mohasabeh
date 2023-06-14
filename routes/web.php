@@ -18,7 +18,7 @@ Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch
 
 //Mini Dashboard
 
-Route::group(['prefix'  => 'profile','middleware' => ['auth:customer']], function () {
+Route::group(['prefix' => 'profile', 'middleware' => ['auth:customer']], function () {
     Route::get('/', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
     Route::get('/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
     Route::post('/change-email', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_email'])->name('dashboard.change_email');
@@ -29,7 +29,7 @@ Route::group(['prefix'  => 'profile','middleware' => ['auth:customer']], functio
     Route::get('/change-personal-info', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_personal_info_view'])->name('dashboard.change_personal_info_view');
     Route::post('/change-personal-info', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_personal_info'])->name('dashboard.change_personal_info');
     Route::get('/upgrade-account-ajax', [\App\Http\Controllers\Dashboard\HomeController::class, 'upgrade_account_ajax'])->name('dashboard.upgrade_account_ajax');
-    Route::get('/checkout', [\App\Http\Controllers\Dashboard\HomeController::class, 'checkout'])->name('dashboard.upgrade_account_view');
+    Route::get('/checkout/{type}', [\App\Http\Controllers\Dashboard\HomeController::class, 'checkout'])->name('dashboard.upgrade_account_view');
     Route::get('/my-payments', [\App\Http\Controllers\Dashboard\HomeController::class, 'my_payments'])->name('dashboard.my_payments');
 
     Route::post('/delete-customer', [\App\Http\Controllers\Dashboard\HomeController::class, 'delete_customer'])->name('dashboard.delete_customer');
@@ -69,7 +69,6 @@ Route::get('admin/customers/renewal-subscription/{id}', 'AdminCustomersControlle
 Route::post('admin/customers/saveRenewalSubscription', 'AdminCustomersController@saveRenewalSubscription');
 Route::get('admin/customers/renewalSubscriptionPage/{id}', 'AdminCustomersController@renewalSubscriptionPage');
 Route::get('admin/customers/deleteCustomer/{id}', 'AdminCustomersController@deleteCustomer');
-
 
 //images manage
 Route::get('/clear/route', 'HomeController@cleanCache');

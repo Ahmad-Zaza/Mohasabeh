@@ -21,10 +21,8 @@
                 </div>
                 <div class="info">
                     <h3>{{ __('dashboard.Description') }}</h3>
-                    @if ($customer->package_id)
+                    @if ($type == 'renew')
                         <p>{{ __('dashboard.renew_your_account_for') }}
-
-
                             @if ($sub_type == 'month')
                                 {{ __('dashboard.a_month') }}
                             @elseif($sub_type == 'year')
@@ -43,7 +41,7 @@
                                 {{ $customer->subscription_end_date->addMonths(6)->format('d/m/Y') }}
                             @endif
                         </p>
-                    @else
+                    @elseif($type == 'subscribe')
                         <p>{{ __('dashboard.upgrade_your_account_for') }}
 
                             @if ($sub_type == 'month')
@@ -56,13 +54,12 @@
 
                             </br>
                             {{ __('dashboard.from') }} {{ now()->format('d/m/Y') }} {{ __('dashboard.to') }}
-
                             @if ($sub_type == 'month')
-                                {{ now()->addMonths(1)->format('d/m/Y') }}
+                                {{ $customer->subscription_end_date? $customer->subscription_end_date->addMonths(1)->format('d/m/Y'): now()->addMonths(1)->format('d/m/Y') }}
                             @elseif($sub_type == 'year')
-                                {{ now()->addYears(1)->format('d/m/Y') }}
+                                {{ $customer->subscription_end_date? $customer->subscription_end_date->addMonths(12)->format('d/m/Y'): now()->addMonths(12)->format('d/m/Y') }}
                             @elseif($sub_type == 'six_month')
-                                {{ now()->addMonths(6)->format('d/m/Y') }}
+                                {{ $customer->subscription_end_date? $customer->subscription_end_date->addMonths(6)->format('d/m/Y'): now()->addMonths(6)->format('d/m/Y') }}
                             @endif
                         </p>
                     @endif

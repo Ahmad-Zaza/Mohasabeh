@@ -44,7 +44,7 @@
                         </div>
                         <div class="action-buttons">
                             @if ($pcackage)
-                                <a class="card-link" href="{{ URL('profile/checkout') }}">
+                                <a class="card-link" href="{{ URL('profile/checkout/renew') }}">
                                     {{ __('dashboard.renew') }}
                                 </a>
                             @else

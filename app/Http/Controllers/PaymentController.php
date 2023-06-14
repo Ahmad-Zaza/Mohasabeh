@@ -74,7 +74,6 @@ class PaymentController extends Controller
         $provider->setApiCredentials(config('paypal'));
         $provider->getAccessToken();
         $response = $provider->capturePaymentOrder($id);
-
         $this->updatePayment($id, $response);
         $this->updateSubscriptionDate();
 
@@ -126,12 +125,14 @@ class PaymentController extends Controller
         $pkg_id = Session::get('pkgg_id');
         $package = PricePkg::where('id', $pkg_id)->first();
         $customer = Customer::where('id', Auth::user()->id)->first();
+        $subscription_start_date = $customer->subscription_start_date ?: Carbon::now();
+        $subscription_end_date = $customer->subscription_end_date ? $customer->subscription_end_date->addMonths($months) : Carbon::now()->addMonths($months);
         $customer->update([
             'package_id' => $pkg_id,
             'is_free_trial' => 0,
-            'subscription_start_date' => Carbon::now(),
+            'subscription_start_date' => $subscription_start_date,
             'last_renewal_date' => Carbon::now(),
-            'subscription_end_date' => $customer->subscription_end_date ? $customer->subscription_end_date->addMonths($months) : Carbon::now()->addMonths($months),
+            'subscription_end_date' => $subscription_end_date,
             'subscription_type' => Session::get('sub_type'),
             'users_count' => $package->users_count,
             'currencies_count' => $package->currencies_count,
@@ -142,8 +143,6 @@ class PaymentController extends Controller
         $customerDBHost = "localhost";
         $customerDBUser = "{$customer->database_name}";
         $customerDBPassword = "{$customer->database_password}";
-        $subscription_start_date = Carbon::now();
-        $subscription_end_date = Carbon::now()->addMonths($months);
         try {
             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             // $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));

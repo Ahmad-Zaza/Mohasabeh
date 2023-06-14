@@ -1870,7 +1870,6 @@ CREATE TABLE IF NOT EXISTS `package_config` (
   `inventories_num` int(11) NOT NULL DEFAULT '1',
   `currencies_num` int(11) NOT NULL DEFAULT '1',
   `clients_num` int(11) NOT NULL DEFAULT '1',
-  `month_bills_num` int(11) NOT NULL DEFAULT '1',
   `backups_size` int(50) NOT NULL,
   `attachs_size` int(50) NOT NULL,
   `free_trial_start_date` date DEFAULT NULL,
@@ -1884,8 +1883,8 @@ CREATE TABLE IF NOT EXISTS `package_config` (
 -- Dumping data for table `package_config`
 --
 
-INSERT INTO `package_config` (`id`, `package_id`, `users_num`, `inventories_num`, `currencies_num`, `clients_num`, `month_bills_num`, `backups_size`, `attachs_size`,`free_trial_start_date`,`free_trial_end_date`,`subscription_start_date`,`subscription_end_date`) VALUES
-(1, $$package_id$$, $$users_num$$, $$inventories_num$$, $$currencies_num$$, $$clients_num$$, $$month_bills_num$$, $$backups_size$$, $$attachs_size$$,'$$free_trial_start_date$$','$$free_trial_end_date$$','$$subscription_start_date$$','$$subscription_end_date$$');
+INSERT INTO `package_config` (`id`, `package_id`, `users_num`, `inventories_num`, `currencies_num`, `clients_num`, `backups_size`, `attachs_size`,`free_trial_start_date`,`free_trial_end_date`,`subscription_start_date`,`subscription_end_date`) VALUES
+(1, $$package_id$$, $$users_num$$, $$inventories_num$$, $$currencies_num$$, $$clients_num$$, $$backups_size$$, $$attachs_size$$,'$$free_trial_start_date$$','$$free_trial_end_date$$','$$subscription_start_date$$','$$subscription_end_date$$');
 
 -- --------------------------------------------------------
 

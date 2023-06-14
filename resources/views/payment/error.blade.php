@@ -2,5 +2,5 @@
 
 @section('content')
     <h1>Error</h1>
-    <p class="text-center">Error during transfering the amount</p>
+    <p class="text-center">{{ __('dashboard.payment_error') }}</p>
 @endsection

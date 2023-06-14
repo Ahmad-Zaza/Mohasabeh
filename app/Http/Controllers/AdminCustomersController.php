@@ -487,9 +487,8 @@ class AdminCustomersController extends CBController
         //--------------------------------------------------------------------//
         // 1- Change the subscription date
         $dbh = new PDO("mysql:host=localhost;dbname=" . $customer->database_name, $customer->database_name, $customer->database_password);
-        $sql = "UPDATE package_config SET package_id=?, users_num=?, inventories_num=?, currencies_num=?,subscription_start_date=?,subscription_end_date=?,free_trial_start_date=null,free_trial_end_date=null WHERE id=1";
+        $sql = "UPDATE package_config SET package_id=?, users_num=?, inventories_num=?, currencies_num=?, attachs_size=?, backups_size=?,subscription_start_date=?,subscription_end_date=?,free_trial_start_date=null,free_trial_end_date=null WHERE id=1";
         $stmt = $dbh->prepare($sql);
-
         $result = $stmt->execute([$data["package_id"], $data["users_count"], $data["warehouses_count"], $data["currencies_count"], ($data["attached_size"] * 1024), ($data["backups_size"] * 1024), $data["subscription-start-date"], $data["subscription-end-date"]]);
 
         //---------------------------------------------------------------------//
