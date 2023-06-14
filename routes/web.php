@@ -19,7 +19,7 @@ Route::get('setLang/{lang}', "LanguageController@switchLang")->name('lang.switch
 //Mini Dashboard
 
 Route::group(['prefix' => 'profile', 'middleware' => ['auth:customer']], function () {
-    Route::get('/', [\App\Http\Controllers\Dashboard\HomeController::class, 'index']);
+    Route::get('/', [\App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('dashboard.profile');
     Route::get('/change-email', [\App\Http\Controllers\Dashboard\HomeController::class, 'change_email_view'])->name('dashboard.change_email_view');
     Route::post('/change-email', [\App\Http\Controllers\Dashboard\ProfileController::class, 'change_email'])->name('dashboard.change_email');
 

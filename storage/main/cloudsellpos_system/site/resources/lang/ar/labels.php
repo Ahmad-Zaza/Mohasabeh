@@ -359,4 +359,5 @@ return [
     'https_setting_status' => 'حالة خاصية  SSL مع إعادة توجيه https',
     'active' => 'مفعلة',
     'not_active' => 'غير مفعلة',
+    'renew' => 'تجديد الاشتراك'
 ];

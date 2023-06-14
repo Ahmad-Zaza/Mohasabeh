@@ -2,7 +2,9 @@
 namespace App\Http\Controllers\Configration;
 
 use App\Models\SystemConfigration\SystemSetting;
-use CRUDBooster;
+use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
 class SystemSettingsController extends \crocodicstudio_voila\crudbooster\controllers\CBController
@@ -481,5 +483,60 @@ class SystemSettingsController extends \crocodicstudio_voila\crudbooster\control
             'massege' => trans('messages.success_message'),
             'https_value' => Request::input('https_activity'),
         ]);
+    }
+
+    public function getRenew()
+    {
+        $customer = DB::table('cms_users')->where('id', CRUDBooster::myId())->first();
+
+        $postUrl = 'https://dev.cloudsellpos.com/login-customer';
+        $postData = [
+            'email' => $customer->email,
+            'password' => $customer->password,
+        ];
+
+        // Generate the JavaScript code to perform the POST request
+        $jsCode = <<<JS
+        <script>
+            function submitForm() {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{$postUrl}';
+
+                // Add form fields
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = "email";
+                    input.value = '{$customer->email}';
+                    form.appendChild(input);
+
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = "password";
+                    input.value = '{$customer->password}';
+                    form.appendChild(input);
+
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = "sub_domain";
+                    input.value = 1;
+                    form.appendChild(input);
+
+                // Append the form to the document and submit it
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            // Call the submitForm function when the document is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                submitForm();
+            });
+        </script>
+        JS;
+
+        // Send the JavaScript code to the browser
+        header('Content-Type: text/html');
+        echo $jsCode;
+        exit();
     }
 }

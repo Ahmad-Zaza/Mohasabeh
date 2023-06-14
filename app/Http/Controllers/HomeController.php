@@ -523,6 +523,7 @@ class HomeController extends Controller
         closedir($dir);
         rmdir($src);
     }
+
     public function loginCustomer(Request $request)
     {
         $email = $request->email;
@@ -536,14 +537,17 @@ class HomeController extends Controller
         $customerDBUser = "{$customer->database_name}";
         $customerDBPassword = "{$customer->database_password}";
         try {
-             $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", $customerDBUser, $customerDBPassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             // $dbh = new PDO("mysql:host=$customerDBHost;dbname=$customerDB", "root", null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $query = "select * from cms_users where email = '$email'";
             $res = $dbh->query($query);
             $user = $res->fetchAll(PDO::FETCH_ASSOC)[0];
-            if (Hash::check($password, $user['password'])) {
+            if (!isset($request->sub_domain) && Hash::check($password, $user['password'])) {
                 Auth::guard('customer')->login($customer);
                 return response()->json(["url" => '/profile'], 200);
+            } elseif ($request->sub_domain && $password == $user['password']) {
+                Auth::guard('customer')->login($customer);
+                return redirect()->route('dashboard.profile');
             } else {
                 return response()->json(["message" => __("data.password_wrong")], 500);
             }
