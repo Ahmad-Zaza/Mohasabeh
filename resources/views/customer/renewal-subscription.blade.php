@@ -185,7 +185,8 @@
 
                                 <input type='text' title="Subscription Start Date" required
                                     class='form-control notfocus input_date' name="subscription-start-date"
-                                    id="subscription-start-date" value='{{ date('Y-m-d') }}' />
+                                    id="subscription-start-date"
+                                    value='{{ $customer->subscription_end_date ?: $customer->free_trial_end_date }}' />
 
                             </div>
 

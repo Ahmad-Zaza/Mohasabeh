@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Models\Customer;
 use App\Http\Controllers\DirectAdmin;
+use App\Http\Models\Customer;
 use App\SiteStatus;
 use Exception;
 use Illuminate\Http\Request;
@@ -51,12 +51,14 @@ class HomeController extends Controller
         return response()->json(array('msg' => 'success'));
     }
 
-    public function checkout(Request $request)
+    public function checkout(Request $request, $type)
     {
         $customer = Customer::where('id', auth()->user()->id)->first();
-        if ($customer->package_id) {
-            $request->session()->put('pkgg_id', $customer->package_id);
-            $request->session()->put('sub_type', $customer->subscription_type);
+        if ($type == 'renew') {
+            if ($customer->package_id) {
+                $request->session()->put('pkgg_id', $customer->package_id);
+                $request->session()->put('sub_type', $customer->subscription_type);
+            }
         }
 
         $sub_type = $request->session()->get('sub_type');
@@ -69,15 +71,16 @@ class HomeController extends Controller
         } else {
             $request->session()->put('price', $package->six_month_price);
         }
-        return view('dashboard.pages.checkout', compact('customer', 'sub_type', 'pkgg_id', 'package'));
+        return view('dashboard.pages.checkout', compact('customer', 'sub_type', 'pkgg_id', 'package', 'type'));
     }
+
     public function delete_customer()
     {
         $customer = Auth::guard('customer');
         //-- Delete domain
         $domainName = strtolower($customer->website);
         if (!$domainName) {
-            Log::log("error", "failed to delete website ".$customer->website);
+            Log::log("error", "failed to delete website " . $customer->website);
         }
 
         $folderPath = "/home/cloudsell/domains/$domainName.cloudsellpos.com";
