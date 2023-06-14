@@ -4,8 +4,6 @@
 
     <div>
 
-
-
         @if (CRUDBooster::getCurrentMethod() != 'getProfile')
             @if (g('return_url'))
                 <p><a title='Return' href='{{ g('return_url') }}'><i class='fa fa-chevron-circle-left '></i>
@@ -245,7 +243,7 @@
                                 @if ($package->id == $customer->package_id)
                                     <option selected value="{{ $package->id }}"
                                         data-users_count="{{ $package->users_count }}"
-                                        data-currency="{{ $package->currencies }}"
+                                        data-currency="{{ $package->currencies_count }}"
                                         data-warehouses="{{ $package->warehouses_count }}"
                                         data-storage="{{ $package->attached_size }}"
                                         data-backups_size="{{ $package->backups_size }}">
@@ -253,7 +251,7 @@
                                         {{ $package->title_en }}</option>
                                 @else
                                     <option value="{{ $package->id }}" data-users_count="{{ $package->users_count }}"
-                                        data-currency="{{ $package->currencies }}"
+                                        data-currency="{{ $package->currencies_count }}"
                                         data-warehouses="{{ $package->warehouses_count }}"
                                         data-storage="{{ $package->attached_size }}"
                                         data-backups_size="{{ $package->backups_size }}">
@@ -330,8 +328,8 @@
 
                         <div class="input-group">
 
-                            <input type='number' title="Currencies Count" required class='form-control' name="currencies_count"
-                                id="currency" />
+                            <input type='number' title="Currencies Count" required class='form-control'
+                                name="currencies_count" id="currency" />
 
                         </div>
 
@@ -514,14 +512,10 @@
             border-radius: 0px !important
         }
 
-
-
         .select2-container .select2-selection--single {
 
             height: 35px
         }
-
-
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
 
@@ -532,8 +526,6 @@
             color: #fff !important;
 
         }
-
-
 
         .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
 
