@@ -48,18 +48,18 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 		$this->col[] = ["label" => trans('modules.delegate'), "name" => "delegate_id", "join" => "cms_users,name"];
 		# END COLUMNS DO NOT REMOVE THIS LINE
 		$user = CRUDBooster::getUser();
-		# START FORM DO NOT REMOVE THIS LINE 
+		# START FORM DO NOT REMOVE THIS LINE
 		$this->form = [];
 		$this->form[] = ['label' => trans('modules.name_en'), 'name' => 'name_en', 'type' => 'text', 'validation' => 'unique:persons,name_en', 'width' => 'col-sm-10'];
 		$this->form[] = ['label' => trans('modules.name_ar'), 'name' => 'name_ar', 'type' => 'text', 'validation' => 'required|unique:persons,name_ar', 'width' => 'col-sm-10'];
 		$this->form[] = ['label' => trans('modules.email'), 'name' => 'email', 'type' => 'email', 'width' => 'col-sm-10', 'help' => trans('help.email_help')];
 		$this->form[] = ['label' => trans('modules.phone_number'), 'name' => 'phone_number', 'type' => 'number', 'validation' => 'required', 'width' => 'col-sm-10', 'help' => trans('help.can_enter_just_numbers')];
-		if (!in_array($user->roleId,explode(',',config('setting.DELEGATES_ROLES_IDS')))) { 
+		$this->form[] = ['label' => trans('modules.delegate'), 'name' => 'delegate_id', 'type' => 'select2', 'width' => 'col-sm-10', 'validation' => 'required', 'datatable' => 'cms_users,name', 'datatable_where' => 'id_cms_privileges in ('.config('setting.DELEGATES_ROLES_IDS').') ' . $this->getDelegateCondition()];
+		if (!in_array($user->roleId,explode(',',config('setting.DELEGATES_ROLES_IDS')))) {
 			$this->form[] = ['label' => trans('modules.parent_account'), 'name' => 'account_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-10', 'datatable' => 'accounts,name_ar', 'datatable_where' => 'major_classification=1 and parent_id = ' . $this->getSystemConfigValue('Customers_Account'), 'help' => trans('help.customer_parent_account_help')];
 		}
 
 		//$this->form[] = ['label'=>trans('modules.type'),'name'=>'person_type_id','type'=>'select2','validation'=>'required','width'=>'col-sm-10','datatable'=>'person_type,name_ar'];
-		$this->form[] = ['label' => trans('modules.delegate'), 'name' => 'delegate_id', 'type' => 'select2', 'width' => 'col-sm-10', 'validation' => 'required', 'datatable' => 'cms_users,name', 'datatable_where' => 'id_cms_privileges in ('.config('setting.DELEGATES_ROLES_IDS').') ' . $this->getDelegateCondition()];
 
 		# END FORM DO NOT REMOVE THIS LINE
 
@@ -131,7 +131,7 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 		 */
 		$this->index_button = array();
 		$gfunc = new GeneralFunctionsController();
-        $hasPermission = $gfunc->checkOldCycleHasEditedPermission(); //when display old cycles hasPermission = false execipt last cycle hasPermission = true 
+        $hasPermission = $gfunc->checkOldCycleHasEditedPermission(); //when display old cycles hasPermission = false execipt last cycle hasPermission = true
 		if (CRUDBooster::getCurrentMethod() == 'getIndex' && CRUDBooster::isSuperAdmin() && $hasPermission) {
 			$this->index_button[] = ['label' => trans('modules.import_data'), 'url' => CRUDBooster::mainpath("import-data-form"), "icon" => "fa fa-download"];
 		}
@@ -182,7 +182,7 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 			});
 
 			$('#phone_number').keyup(function(){
-				let phone_number = $('#phone_number').val(); 
+				let phone_number = $('#phone_number').val();
 				if(phone_number.length < 7 ){
 					$('#form-group-phone_number div .text-danger').css('color','#a94442');
 					$('#form-group-phone_number div .text-danger').html(_NUM_PHONE_NUMBER_CHARACTERS_LEAST_THAN_DEFAULT);
@@ -194,11 +194,11 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 					$('#btn-save-data').attr('disabled',true);
 					$('#btn-save-more').attr('disabled',true);
 				}else{
-					$('#form-group-phone_number div .text-danger').html(_NUM_PHONE_NUMBER_CHARACTERS_CORRECT); 
+					$('#form-group-phone_number div .text-danger').html(_NUM_PHONE_NUMBER_CHARACTERS_CORRECT);
 					$('#form-group-phone_number div .text-danger').css('color','#00a65a');
 					$('#btn-save-data').attr('disabled',false);
 					$('#btn-save-more').attr('disabled',false);
-				}  
+				}
 			});
 		";
 
@@ -304,7 +304,7 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 	 */
 	public function hook_query_index(&$query)
 	{
-		
+
 		$user = CRUDBooster::getUser();
 		if ($user->showCustomersStatus == 'own') {
 			$query->where('delegate_id', $user->id);
@@ -336,7 +336,7 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 	 */
 	public function hook_before_add(&$postdata)
 	{
-	
+
 		//check if package config allow to add New Customer/Supplier
 		$avilableClientsNum = $this->getPackageConfigValue('clients_num');
 		$clients_now = Person::get();
@@ -454,7 +454,7 @@ class CustomersController extends \crocodicstudio_voila\crudbooster\controllers\
 			return CRUDBooster::redirect($_SERVER['HTTP_REFERER'], trans('messages.no_delete_customer_has_entries'), "warning");
 		}
 		else {
-			//delete this person and delete his account 
+			//delete this person and delete his account
 			Account::where("id", $account_id)->delete();
 		}
 
