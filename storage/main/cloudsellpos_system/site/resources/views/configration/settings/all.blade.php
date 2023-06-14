@@ -63,9 +63,9 @@
         </div>
 
         <div class="col-md-4 col-sm-6 col-xs-12">
-            <a href="{{ url(CRUDBooster::mainpath() . '/renew') }}" class="info-box-link">
+            <a href="{{ url(CRUDBooster::mainpath() . '/renew') }}" class="info-box-link" target="_blank">
                 <div class="info-box">
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-shield"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-refresh"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text"> <strong> {{ trans('labels.renew') }} </strong> </span>
                         {{-- <span class="setting-brief"> {{ trans('labels.https_settings_brief') }} </span> --}}
