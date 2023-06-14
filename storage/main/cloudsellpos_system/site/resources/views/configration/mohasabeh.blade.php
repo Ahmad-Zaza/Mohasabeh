@@ -1,8 +1,8 @@
 @extends('crudbooster::admin_template')
 @section('content')
 <div class="row">
-    
-    <div class="col-sm-8"> 
+
+    <div class="col-sm-8">
 
     <div class="box box-solid box-info">
         <div class="box-header with-border">
@@ -93,13 +93,13 @@
                             <td><span class="badge bg-blue">{{$data->avilable_currencies_num}}</span></td>
                         </tr>
 
-                        <tr>
+                        {{-- <tr>
                             <td><i class="fa fa-user"></i></td>
                             <th > {{trans('labels.clients_num')}}</th>
                             <td><span class="badge bg-red">{{$data->clients_num}}</span></td>
                             <td><span class="badge bg-green">{{$data->current_clients_num}}</span></td>
                             <td><span class="badge bg-blue">{{$data->avilable_clients_num}}</span></td>
-                        </tr>
+                        </tr> --}}
 
                         <tr>
                             <td><i class="fa fa-list-alt"></i></td>
@@ -124,7 +124,7 @@
                             <td><span class="badge bg-green">{{($data->current_attachs_size != trans('labels.unlimited'))?$data->current_attachs_size.' M':$data->current_attachs_size}}</span></td>
                             <td><span class="badge bg-blue">{{($data->avilable_attachs_size != trans('labels.unlimited'))?$data->avilable_attachs_size.' M':$data->avilable_attachs_size}}</span></td>
                         </tr>
-                       
+
                     </tbody>
                 </table>
             </div>
@@ -145,7 +145,7 @@
                     <h3 class="profile-username text-center">{{$mohasabeh_info->first_name." ".$mohasabeh_info->last_name}}</h3>
                     <p class="text-muted text-center">{{$mohasabeh_info->email}}</p>
                     <ul class="list-group list-group-unbordered">
-                       
+
                         <li class="list-group-item">
                             <b>{{trans('labels.phone')}}</b> <a class="pull-left">{{$mohasabeh_info->phone}}</a>
                         </li>
@@ -153,7 +153,7 @@
                             <b>{{trans('labels.company')}}</b> <a class="pull-left">{{$mohasabeh_info->company}}</a>
                         </li>
                     </ul>
-                    
+
                 </div>
             </div>
 
@@ -169,9 +169,9 @@
                     <p class="text-muted">{{trans('labels.mohasabeh_description')}}</p>
                     <hr>
                     <p><strong><i class="fa fa-phone margin-r-5"></i> للتواصل</strong></p>
-                   
+
                     <ul class="list-group list-group-unbordered">
-                       
+
                         <li class="list-group-item">
                             <b>{{trans('labels.phone')}}</b> <a class="pull-left">{{$mohasabeh_info->mohasabeh_phone}}</a>
                         </li>
@@ -179,8 +179,8 @@
                             <b>{{trans('modules.email')}}</b> <a class="pull-left">{{$mohasabeh_info->mohasabeh_email}}</a>
                         </li>
                     </ul>
-                  
-                    <a href="https://mohasabeh.com" target="_blank" class="btn btn-primary btn-block"><b>{{trans('labels.go_to_site')}}</b></a>
+
+                    <a href="https://cloudsellpos.com" target="_blank" class="btn btn-primary btn-block"><b>{{trans('labels.go_to_site')}}</b></a>
                 </div>
             </div>
 
@@ -190,11 +190,11 @@
                     <h3 class="box-title"> {{trans('labels.contact_us')}} </h3>
                 </div>
                 <div class="box-body">
-                    <button  class="btn btn-default btn-block" data-toggle="modal" data-target="#DomainRequestModal" id="DomainRequestBtn">  {{trans('labels.domain_request')}} <i class="fa fa-send "></i> </button> 
+                    <button  class="btn btn-default btn-block" data-toggle="modal" data-target="#DomainRequestModal" id="DomainRequestBtn">  {{trans('labels.domain_request')}} <i class="fa fa-send "></i> </button>
                     <button  class="btn btn-primary btn-block" data-toggle="modal" data-target="#MailMohasabehTeamModal" id="MailMohasabehTeamBtn"> {{trans('labels.mail_mohasabeh_team')}} <i class="fa fa-envelope "></i> </button>
-                    <button  class="btn btn-info btn-block" data-toggle="modal" data-target="#RenewalRequestModal" id="RenewalRequestBtn"> {{trans('labels.renewal_request')}} <i class="fa fa-send "></i> </button> 		
+                    <button  class="btn btn-info btn-block" data-toggle="modal" data-target="#RenewalRequestModal" id="RenewalRequestBtn"> {{trans('labels.renewal_request')}} <i class="fa fa-send "></i> </button>
                 </div>
-            </div>  
+            </div>
 
         </div>
         <!-- end Mohasabeh Info -->

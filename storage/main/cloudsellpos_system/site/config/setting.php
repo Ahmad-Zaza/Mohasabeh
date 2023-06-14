@@ -6,7 +6,7 @@ return [
     'PREF' => "/accounting_system/",
     'Public_Folder' => "public/",
     'LANG'=> 'ar',
-    'MOHASABEH_EMAIL'=>'info@mohasabeh.com',
+    'MOHASABEH_EMAIL'=>'info@cloudsellpos.com',
     'PAGINATIOM_LIMITATION' => '20',
     'MANAGERS_ROLES_IDS' => '1,2', //Super Admin, Manager
     'DELEGATES_ROLES_IDS' => '3,4,6', //Sales Manager , Delegate , Factory Delegate

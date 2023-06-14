@@ -7,6 +7,8 @@ use App\Models\SystemConfigration\SystemSetting;
 use App\Models\Tours\Tour;
 use App\Models\Tours\TourStepElements;
 use crocodicstudio_voila\crudbooster\helpers\CRUDBooster;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -129,12 +131,12 @@ class AppServiceProvider extends ServiceProvider
             $view->with('old_cycle_edited_status', $old_cycle_edited_status);
         });
 
-        $systemSetting = \DB::table('system_settings')->where('setting_key', 'https_option')->first();
+        $systemSetting = DB::table('system_settings')->where('setting_key', 'https_option')->first();
 
         if ($systemSetting->setting_value == 'on') {
-            \URL::forceScheme('https');
+            URL::forceScheme('https');
         } else {
-            \URL::forceScheme('http');
+            URL::forceScheme('http');
         }
 
     }
