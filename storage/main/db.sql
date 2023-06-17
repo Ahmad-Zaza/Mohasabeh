@@ -1190,7 +1190,8 @@ INSERT INTO `cms_settings` (`id`, `name`, `content`, `content_input_type`, `data
 (13, 'favicon', NULL, 'upload_image', NULL, NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'Favicon'),
 (14, 'api_debug_mode', 'false', 'select', 'true,false', NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'API Debug Mode'),
 (15, 'google_api_key', NULL, 'text', NULL, NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'Google API Key'),
-(16, 'google_fcm_key', NULL, 'text', NULL, NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'Google FCM Key');
+(16, 'google_fcm_key', NULL, 'text', NULL, NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'Google FCM Key'),
+(17, 'main_website', 'https://cloudsellpos.com', 'text', NULL, NULL, '2019-05-30 06:06:58', NULL, 'Application Setting', 'Main website');
 
 
 -- --------------------------------------------------------

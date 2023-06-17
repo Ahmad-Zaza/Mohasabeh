@@ -53,7 +53,7 @@ class AdminSiteStatusController extends CBController
         $this->col[] = ["label" => "Clients", "name" => "allowed_clients_count", "callback_php" => '($row->allowed_clients_count == -1 ? $row->used_clients_count .  "/unlimited" : $row->used_clients_count . "/" . $row->allowed_clients_count)'];
         $this->col[] = ["label" => "Used Clients", "name" => "used_clients_count", "visible" => false];
         $this->col[] = ["label" => "Used Attachs Size", "name" => "used_attachs_size", "visible" => false];
-        $this->col[] = ["label" => "Attachs Size", "name" => "allowed_attachs_size", "callback_php" => '($row->allowed_attachs_size == -1 ? $row->used_attachs_size .  "MB/unlimited" : $row->used_attachs_size . "MB/" . $row->allowed_attachs_size . "MB")'];
+        $this->col[] = ["label" => "Attachs Size", "name" => "allowed_attachs_size", "callback_php" => '($row->allowed_attachs_size == -1 ? $row->used_attachs_size .  "MB/unlimited" : $row->used_attachs_size . "MB/" . $row->allowed_attachs_size * 1024 . "MB")'];
         $this->col[] = ["label" => "Subscription Type", "name" => "subscription_type"];
         $this->col[] = ["label" => "Subscription Start Date", "name" => "subscription_start_date"];
         $this->col[] = ["label" => "Subscription End Date", "name" => "subscription_end_date"];

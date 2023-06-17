@@ -31,7 +31,7 @@
                                 {{ __('dashboard.six_months') }}
                             @endif
                             </br>
-                            {{ __('dashboard.from') }} {{ $customer->subscription_start_date->format('d/m/Y') }}
+                            {{ __('dashboard.from') }} {{ $customer->subscription_end_date->format('d/m/Y') }}
                             {{ __('dashboard.to') }}
                             @if ($sub_type == 'month')
                                 {{ $customer->subscription_end_date->addMonths(1)->format('d/m/Y') }}
